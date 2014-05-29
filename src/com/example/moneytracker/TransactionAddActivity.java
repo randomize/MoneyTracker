@@ -112,19 +112,18 @@ public class TransactionAddActivity extends Activity {
 
 			dlgAlert.setMessage(getString(R.string.new_trans_no_category));
 			dlgAlert.setTitle(getString(R.string.error));
-			dlgAlert.setPositiveButton(getString(R.string.ok), null);
+			dlgAlert.setPositiveButton(getString(R.string.ok),
+					
+			new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					finish();
+				}
+			}
+			);
 			dlgAlert.setCancelable(false);
 			dlgAlert.create().show();
 
-			/*dlgAlert.setPositiveButton("Ok",
-					new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					//dismiss the dialog 
-					
-				}
-			});*/
-			
-			finish();
+			return;
 		}
 		
 		ArrayList<TransactionCatagory> in = new ArrayList<TransactionCatagory>();
@@ -189,19 +188,20 @@ public class TransactionAddActivity extends Activity {
 
 			dlgAlert.setMessage(getString(R.string.new_trans_no_account));
 			dlgAlert.setTitle(getString(R.string.error));
-			dlgAlert.setPositiveButton(getString(R.string.ok), null);
+			dlgAlert.setPositiveButton(getString(R.string.ok),
+					
+			new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					finish();
+				}
+			}
+			);
+
 			dlgAlert.setCancelable(false);
 			dlgAlert.create().show();
-
-			/*dlgAlert.setPositiveButton("Ok",
-					new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					//dismiss the dialog 
-					
-				}
-			});*/
 			
-			finish();
+			return;
+			
 		}
 		
 		account_spinner_ids = new int[acs.size()];

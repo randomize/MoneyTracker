@@ -143,10 +143,17 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
 		}
 		
 	}
+	
+	@Override
+	public void onOpen(SQLiteDatabase database) {
+		super.onOpen(database);
+		database.execSQL("PRAGMA foreign_keys=ON");
+	}
 
 	@Override
 	public void onCreate(SQLiteDatabase database) {
 		Log.i(MainDatabaseHelper.class.getName(), "Creating DB" );
+		database.execSQL("PRAGMA foreign_keys=ON");
 		SuperExecSQL(database, DATABASE_CREATE);
 		SuperExecSQL(database, DATABASE_FILL_WITH_CRAP);
 	}
