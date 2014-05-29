@@ -2,7 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:minHeight="20dp"
+    android:orientation="horizontal"
+    android:background="@color/summary_header" >
     
 <CheckedTextView
     android:id="@+id/TextViewTransCategoryName"
@@ -22,9 +24,9 @@
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:layout_weight="1"
-    android:drawableRight="@drawable/ic_launcher"
     android:gravity="right|center_vertical"
+    android:paddingRight="20dp"
     android:text="0"
-    android:textAppearance="?android:attr/textAppearanceMedium" />
+    android:textAppearance="?android:attr/textAppearanceMedium" android:textStyle="bold"/>
 
 </LinearLayout>

@@ -106,15 +106,17 @@ public class DatabaseFacade {
 
 			do {
 				TransactionCatagoryItem s = new TransactionCatagoryItem();
-				s.summ = c.getFloat(0);
+				s.amount = c.getFloat(0);
 				int type = c.getInt(1);
 				s.id = c.getInt(2);
 				s.name = c.getString(3);
 				
 				if (type == 0) {
 					out.AddChild(s);
+					s.parent = out;
 				} else {
 					in.AddChild(s);
+					s.parent = in;
 				}
 
 			} while (c.moveToNext());

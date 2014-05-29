@@ -6,6 +6,8 @@ public class TransactionCatagoryItem {
 	
 	public int id;
 	
-	public float summ;
+	public float amount;
+	
+	public TransactionCategoryGroup parent;
 
 }

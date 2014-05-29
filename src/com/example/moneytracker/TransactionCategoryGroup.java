@@ -42,7 +42,7 @@ public class TransactionCategoryGroup {
 	// Auto calculate child
 	public void AddChild(TransactionCatagoryItem child) {
 		children.add(child);
-		amount+=child.summ;
+		amount+=child.amount;
 	}
 
 	public boolean isEmpty() {

@@ -58,13 +58,22 @@ public class TransactionCategoryExpandableListAdapter extends BaseExpandableList
 	public View getChildView(int groupPosition, final int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) 
 	{
-		final String ch_text = ((TransactionCatagoryItem) getChild(groupPosition, childPosition)).name;
-		TextView text = null;
+		TransactionCatagoryItem child = ((TransactionCatagoryItem) getChild(groupPosition, childPosition));
+		final String ch_text = child.name;
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.transrow_details, null);
 		}
-		text = (TextView) convertView.findViewById(R.id.TextViewAccountName);
+
+		TextView text = (TextView) convertView.findViewById(R.id.TextViewCategoryItemName);
 		text.setText(ch_text);
+
+		TextView amount = (TextView) convertView.findViewById(R.id.TextViewCategortItemAmount);
+		if (child.parent.type == GroupType.INCOME) {
+			amount.setTextColor(activity.getResources().getColor(R.color.income));
+		} else {
+			amount.setTextColor(activity.getResources().getColor(R.color.outcome));
+		}
+		amount.setText(String.format("%.2f", child.amount / rate));
 
 		convertView.setOnClickListener(new OnClickListener() {
 			@Override

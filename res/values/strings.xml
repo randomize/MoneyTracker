@@ -19,7 +19,7 @@
     <color name="black">#000000</color>
 
     <color name="errorous">#FFAAAA</color>
-    <color name="income">#00EE00</color>
+    <color name="income">#00BB00</color>
     <color name="outcome">#BB0000</color>
     <color name="account_comment">#BBBBBB</color>
 
@@ -71,6 +71,7 @@
 
     <!-- Status activity menu -->
     <string name="transaction_new">New Transaction</string>
-    <string name="change_currency">Currency...</string>
+    <string name="change_currency">Currency...</string><color name="summary_header">#d5e5ff</color>
+    
     
 </resources>
