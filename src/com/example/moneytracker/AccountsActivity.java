@@ -152,7 +152,7 @@ public class AccountsActivity extends Activity {
 		};
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(getString(R.string.status)).setPositiveButton(getString(R.string.yes), dialogClickListener)
+		builder.setMessage(getString(R.string.sure)).setPositiveButton(getString(R.string.yes), dialogClickListener)
 		.setNegativeButton(getString(R.string.no), dialogClickListener).show();
 	}
 

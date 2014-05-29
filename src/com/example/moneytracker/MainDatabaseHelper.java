@@ -58,7 +58,7 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
    		     "_id integer primary key autoincrement, " + 
    		     "amount real not null, " + 
    		     "category integer not null references transaction_category(_id) on delete cascade," + // Category id FK
-   		     "date text not null," +
+   		     "date text," +
    		     "account integer not null references accounts(_id) on delete cascade," + // Account id FK
    		     "desc text," +
    		     "member integer not null references members(_id) on delete cascade" + // Member id FK
@@ -97,7 +97,32 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
    		" values (0,'Car') ";
 
 	private static final String DATABASE_FILL_WITH_CRAP = 
-			"";
+   		" insert into accounts (currency,name,type) " + 
+   		" values (2,'VISA',1); " + 
+   		" insert into transactions (amount, category, date, account, desc, member) " + 
+   		" values (1010,1,'2012-01-19', 1, 'test_1', 1); " + 
+   		" insert into transactions (amount, category, date, account, desc, member) " + 
+   		" values (1020,1,'2012-02-19', 2, 'test_2', 1); " + 
+   		" insert into transactions (amount, category, date, account, desc, member) " + 
+   		" values (120,2,'2012-02-19', 1, 'test_3', 1); " + 
+   		" insert into transactions (amount, category, date, account, desc, member) " + 
+   		" values (200,2,'2012-01-19', 2, 'test_4', 1); " + 
+   		" insert into transactions (amount, category, date, account, desc, member) " + 
+   		" values (200,3,'2012-02-19', 1, 'test_1', 1); " + 
+   		" insert into transactions (amount, category, date, account, desc, member) " + 
+   		" values (110,3,'2012-02-29', 2, 'test_4', 1); " + 
+   		" insert into transactions (amount, category, date, account, desc, member) " + 
+   		" values (110,4,'2012-01-29', 1, 'test_4', 1); " + 
+   		" insert into transactions (amount, category, date, account, desc, member) " + 
+   		" values (120,4,'2012-01-19', 2, 'test_4', 1); " + 
+   		" insert into transactions (amount, category, date, account, desc, member) " + 
+   		" values (120,1,'2012-05-15', 1, 'test_1', 1); " + 
+   		" insert into transactions (amount, category, date, account, desc, member) " + 
+   		" values (122,1,'2012-01-15', 2, 'test_3', 1); " + 
+   		" insert into transactions (amount, category, date, account, desc, member) " + 
+   		" values (100,2,'2012-01-13', 2, null, 1); " + 
+   		" insert into transactions (amount, category, date, account, desc, member) " + 
+   		" values (100,2,'2012-03-19', 2, null, 1) ";
 
 	public MainDatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);

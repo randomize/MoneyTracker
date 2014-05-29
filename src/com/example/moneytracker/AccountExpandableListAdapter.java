@@ -61,7 +61,8 @@ public class AccountExpandableListAdapter extends BaseExpandableListAdapter  {
 		}
 
 		text = (TextView) convertView.findViewById(R.id.TextViewAmount);
-		text.setText(String.valueOf(acc.totalAmount));
+		//text.setText(String.valueOf(acc.totalAmount));
+		text.setText(String.format("%.2f", acc.totalAmount));
 
 		convertView.setOnLongClickListener(
 				new OnLongClickListener() {
