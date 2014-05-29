@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="status">Сводка</string>
+    <string name="accounts">Счета</string>
+    <string name="events_and_tasks">События и задачи</string>
+    <string name="debts">Долги</string>
+    <string name="accumumations">Накопления</string>
+    <string name="budget">Бюджет</string>
+
+    <string name="pref_sync">Галочко</string>
+    <string name="pref_sync_summ">Я есть галочко</string>
+
+    <string name="action_settings">Настройки</string>
+    <string name="action_exit">Выход</string>
+    
+    <string name="income">Доходы</string>
+    <string name="outcome">Расходы</string>
+    <string name="cancel">Отмена</string>
+    <string name="save">Сохранить</string>
+
+    <!-- Accounts list activity -->
+    <string name="account_new">Новый</string>
+    <string name="account_delete">Удалить</string>
+    <string name="account_edit">Редактировать</string>
+
+    <!--  Money account types -->
+    <string name="type_cash">Наличные</string>
+    <string name="type_cards">Карта</string>
+    <string name="type_bank_accounts">Банковский счет</string>
+    <string name="account_name">Имя счета</string>
+</resources>

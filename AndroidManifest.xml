@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.moneytracker"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="18" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.example.moneytracker.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+ 		<activity
+            android:name="com.example.moneytracker.TodoDetails"
+            android:windowSoftInputMode="stateVisible|adjustResize" >
+        </activity>
+        
+ 		<activity
+            android:name="com.example.moneytracker.SettingsActivity"
+			android:windowSoftInputMode="stateHidden" >
+        </activity>
+
+ 		<activity
+            android:name="com.example.moneytracker.AccountsActivity"
+			android:windowSoftInputMode="stateHidden" >
+        </activity>
+
+ 		<activity
+            android:name="com.example.moneytracker.AccountsActivity"
+            android:label="@string/accounts"
+			android:windowSoftInputMode="stateHidden" >
+        </activity>
+
+ 		<activity
+            android:name="com.example.moneytracker.AccountAddActivity"
+			android:windowSoftInputMode="stateHidden" >
+        </activity>
+
+ 		<activity
+            android:name="com.example.moneytracker.SummaryActivity"
+            android:label="@string/status"
+			android:windowSoftInputMode="stateHidden" >
+        </activity>
+
+ 		<activity
+            android:name="com.example.moneytracker.TransactionListActivity"
+			android:windowSoftInputMode="stateHidden" >
+        </activity>
+
+ 		<activity
+            android:name="com.example.moneytracker.TransactionAddActivity"
+			android:windowSoftInputMode="stateHidden" >
+        </activity>
+
+    </application>
+
+</manifest>

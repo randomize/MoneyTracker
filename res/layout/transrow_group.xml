@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+    
+<CheckedTextView
+    android:id="@+id/TextViewTransCategoryName"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:layout_marginLeft="8dp"
+    android:layout_weight="1"
+    android:gravity="left|center_vertical"
+    android:paddingLeft="32dp"
+    android:paddingTop="8dp"
+    android:textAlignment="textEnd"
+    android:textSize="14sp"
+    android:textStyle="bold" />
+
+<TextView
+    android:id="@+id/TextViewTransCategoryAmount"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:layout_weight="1"
+    android:drawableRight="@drawable/ic_launcher"
+    android:gravity="right|center_vertical"
+    android:text="0"
+    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</LinearLayout>

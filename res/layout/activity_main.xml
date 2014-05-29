@@ -1,0 +1,60 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity" >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:paddingTop="20dp"
+        android:src="@drawable/main" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp" >
+
+        <Button
+            android:id="@+id/ButtonStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/status" />
+
+        <Button
+            android:id="@+id/ButtonAccounts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/accounts" />
+
+        <Button
+            android:id="@+id/ButtonEventsTasks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/events_and_tasks" />
+
+        <Button
+            android:id="@+id/ButtonDebts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/debts" />
+
+        <Button
+            android:id="@+id/ButtonAccumulations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/accumumations" />
+
+        <Button
+            android:id="@+id/ButtonBudget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/budget" />
+    </LinearLayout>
+
+</LinearLayout>

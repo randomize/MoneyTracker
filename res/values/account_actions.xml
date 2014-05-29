@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="account_actions">
+        <item>@string/account_delete</item>
+        <item>@string/account_edit</item>
+    </string-array>
+</resources>

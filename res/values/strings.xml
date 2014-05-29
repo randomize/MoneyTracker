@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MoneyTracker</string>
+
+
+    <!--  old shit -->
+    <string name="hello_world">Hello world!</string>
+    <string name="hello">Hello World, Todo!</string>
+    <string name="no_todos">Currently there are no Todo items maintained</string>
+    <string name="menu_insert">Add Item</string>
+    <string name="menu_delete">Delete Todo</string>
+    <string name="todo_summary">Summary</string>
+    <string name="todo_description">Delete Todo</string>
+    <string name="todo_edit_summary">Summary</string>
+    <string name="todo_edit_description">Description</string>
+    <string name="todo_edit_confirm">Confirm</string>
+    <color name="listcolor">#FFE87C</color>
+    <color name="black">#000000</color>
+
+    <color name="errorous">#FFAAAA</color>
+    <color name="income">#00EE00</color>
+    <color name="outcome">#BB0000</color>
+    <color name="account_comment">#BBBBBB</color>
+
+    <!-- Main menu buttons -->
+    <string name="status">Status</string>
+    <string name="accounts">Accounts</string>
+    <string name="events_and_tasks">Events and Tasks</string>
+    <string name="debts">Debts</string>
+    <string name="accumumations">Accumulations</string>
+    <string name="budget">Budget</string>
+
+    <!--  Settings activity -->
+    <string name="pref_sync">Checkbox</string>
+    <string name="pref_sync_summ">Checkbox is here</string>
+
+    <!--  Main context menu -->
+    <string name="action_settings">Settings</string>
+    <string name="action_exit">Exit</string>
+    <string name="action_about">About</string>
+
+    <!-- Accounts list activity -->
+    <string name="account_new">New</string>
+    <string name="account_delete">Delete</string>
+    <string name="account_edit">Edit</string>
+    
+    <!-- New transaction activity  -->
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="amount">Amount</string>
+    <string name="new_trans_desc">Enter comment or description</string>
+    
+    <!-- New account activity  -->
+    <string name="type">Account Type</string>
+    <string name="currency">Currency</string>
+    <string name="comment">Comment</string>
+    <string name="new_curr">New currency...</string>
+    
+    <string name="income">Income</string>
+    <string name="outcome">Outcome</string>
+
+    <!--  Money account types -->
+    <string name="type_cash">Cash</string>
+    <string name="type_cards">Cards</string>
+    <string name="type_bank_accounts">Accounts</string>
+    <string name="account_name">Name</string>
+
+    <!-- Status activity menu -->
+    <string name="transaction_new">New Transaction</string>
+    <string name="change_currency">Currency...</string>
+    
+</resources>
