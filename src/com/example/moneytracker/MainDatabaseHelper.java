@@ -69,10 +69,16 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
    		"select sum(amount) as amount, account from transactions "+
    		" where category in (select _id from transaction_category where type = 0) " + 
    		" group by account ;" +
+
    		"create view accounts_income as " +
    		"select sum(amount) as amount, account from transactions "+
    		" where category in (select _id from transaction_category where type = 1) " + 
    		" group by account ;"+
+   		
+        "create view trans_summary as select sum(amount) as amount, type, category, name from transactions " +
+        "inner join transaction_category on transactions.category = transaction_category._id " +
+        "group by type, category " +
+        "order by type ; " +
    		     
    		// Base values
    		" insert into currency (name, rate) " + 

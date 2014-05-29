@@ -27,8 +27,8 @@ public class TransactionCategoryExpandableListAdapter extends BaseExpandableList
 	public LayoutInflater inflater;
 	public Activity activity;
 	
-	public float rate;
-	public String suffix;
+	public float rate = 1.0f;
+	public String suffix = "";
 	
 	private static final Map<String, Integer> group_names;
     static
@@ -118,19 +118,19 @@ public class TransactionCategoryExpandableListAdapter extends BaseExpandableList
 		TransactionCategoryGroup group = (TransactionCategoryGroup) getGroup(groupPosition);
 		
 		String s;
-		if (group_names.containsKey(group.Name)) {
-			s = activity.getString(group_names.get(group.Name));
+		if (group_names.containsKey(group.name)) {
+			s = activity.getString(group_names.get(group.name));
 		} else {
-			s = group.Name;
+			s = group.name;
 		}
 
 		TextView amount = (TextView) convertView.findViewById(R.id.TextViewTransCategoryAmount);
-		if (group.Type == GroupType.INCOME) {
+		if (group.type == GroupType.INCOME) {
 			amount.setTextColor(activity.getResources().getColor(R.color.income));
 		} else {
 			amount.setTextColor(activity.getResources().getColor(R.color.outcome));
 		}
-		amount.setText(String.format("%.2f", group.Amount * rate));
+		amount.setText(String.format("%.2f", group.amount / rate));
 
 		CheckedTextView groupTextView = (CheckedTextView) convertView.findViewById(R.id.TextViewTransCategoryName);
 		//convertView.set

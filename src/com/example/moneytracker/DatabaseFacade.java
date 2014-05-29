@@ -21,6 +21,7 @@ public class DatabaseFacade {
 	private static final String DATABASE_TABLE_TRANSACTIONS = "transactions";
 	private static final String DATABASE_VIEW_INCOME_SUMS = "accounts_income";
 	private static final String DATABASE_VIEW_OUTCOME_SUMS = "accounts_outcome";
+	private static final String DATABASE_VIEW_TRANS_SUMMARY = "trans_summary";
 
 
 	private Context context;
@@ -73,38 +74,57 @@ public class DatabaseFacade {
 	public void NewCurrency(String name, float rate) {
 	}
 	
-	public String GetCurrencyByID(int id) {
+	public Currency GetCurrencyByID(int id) {
 
-		String result = "";
-		String[] columns = new String[]{"name"};
+		Currency result = new Currency();
+		result.id  = id;
+		String[] columns = new String[]{"name", "rate"};
 		String[] id_value = new String[]{String.valueOf(id)};
 		Cursor c = database.query(DATABASE_TABLE_CURRENCY, columns, "_id=?", id_value, null, null, null);
 		if (c.moveToFirst()) {
-			int nameColIndex = c.getColumnIndex("name");
-			result = c.getString(nameColIndex);
+			/*int nameColIndex = c.getColumnIndex("name");
+			int nameColIndex = c.getColumnIndex("rate");*/
+			result.name = c.getString(0);
+			result.rate = c.getFloat(1);
+		} else {
+			result = null;
 		}
 		c.close();
 		return result;
 	}
 
-	public TransactionCategoryGroup GetIncome() {
+	public ArrayList<TransactionCategoryGroup> GetIncomeAndOutcome() {
+		
+		ArrayList<TransactionCategoryGroup> result = new ArrayList<TransactionCategoryGroup>(2);
 
-		TransactionCategoryGroup result = new TransactionCategoryGroup("Income", TransactionCategoryGroup.GroupType.INCOME);
-		/*cards.children = 
-		groups.add(cards);
-		groups.add(acc);*/
+		TransactionCategoryGroup in = new TransactionCategoryGroup("Income", TransactionCategoryGroup.GroupType.INCOME);
+		TransactionCategoryGroup out = new TransactionCategoryGroup("Outcome", TransactionCategoryGroup.GroupType.OUTCOME);
 
-		return result;
+		Cursor c = database.query(DATABASE_VIEW_TRANS_SUMMARY, null, null, null , null, null, null);
 
-	}
+		if (c.moveToFirst()) {
 
-	public TransactionCategoryGroup GetOutcome() {
+			do {
+				TransactionCatagoryItem s = new TransactionCatagoryItem();
+				s.summ = c.getFloat(0);
+				int type = c.getInt(1);
+				s.id = c.getInt(2);
+				s.name = c.getString(3);
+				
+				if (type == 0) {
+					out.AddChild(s);
+				} else {
+					in.AddChild(s);
+				}
 
-		TransactionCategoryGroup result = new TransactionCategoryGroup("Outcome", TransactionCategoryGroup.GroupType.OUTCOME);
+			} while (c.moveToNext());
 
-		/*cards.children = 
-		groups.add(cards);
-		groups.add(acc);*/
+		}
+
+		c.close();
+		
+		if (in.isEmpty() == false) result.add(in);
+		if (out.isEmpty() == false) result.add(out);
 
 		return result;
 
@@ -137,7 +157,7 @@ public class DatabaseFacade {
 		}
 		c.close();
 		
-		return 0;
+		return result;
 		
 	}
 	
@@ -185,7 +205,9 @@ public class DatabaseFacade {
 					s.id = c.getInt(idColIndex);
 					s.name = c.getString(nameColIndex);
 					s.currencyId = c.getInt(currencyColIndex);
-					s.currencyName = GetCurrencyByID(s.currencyId);
+					Currency cur = GetCurrencyByID(s.currencyId);
+					s.currencyName = cur.name;
+					s.currencyRate = cur.rate;
 					s.typeName = group.name;
 					s.typeId = i;
 

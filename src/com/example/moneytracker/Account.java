@@ -23,6 +23,9 @@ public class Account {
 	
 	// Total of money on this account item
 	public float totalAmount;
+	
+	// Rate of currenct
+	public float currencyRate;
 
 	// Name of currency
 	public String currencyName;

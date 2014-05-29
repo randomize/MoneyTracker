@@ -28,15 +28,25 @@ public class TransactionCategoryGroup {
 		}
 	}
 
-	public GroupType Type;
-	public String Name;
-	public float Amount;
+	public GroupType type;
+	public String name;
+	public float amount;
 
 	public final List<TransactionCatagoryItem> children = new ArrayList<TransactionCatagoryItem>();
 	
 	public TransactionCategoryGroup(String name, GroupType type) {
-		this.Name = name;
-		this.Type = type;
+		this.name = name;
+		this.type = type;
+	}
+
+	// Auto calculate child
+	public void AddChild(TransactionCatagoryItem child) {
+		children.add(child);
+		amount+=child.summ;
+	}
+
+	public boolean isEmpty() {
+		return children.isEmpty();
 	}
 
 }

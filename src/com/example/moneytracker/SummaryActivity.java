@@ -20,8 +20,8 @@ public class SummaryActivity extends Activity {
 	private float[] cur_rates = null;
 	private int[] cur_ids = null;
 	
-	private TransactionCategoryExpandableListAdapter main_adapber;
-	private	ExpandableListView listView;
+	private TransactionCategoryExpandableListAdapter main_adapter;
+	private	ExpandableListView mainList;
 
 	private ArrayList<TransactionCategoryGroup> groups = new ArrayList<TransactionCategoryGroup>();
 
@@ -30,12 +30,13 @@ public class SummaryActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_status);
 
-		listView = (ExpandableListView) findViewById(R.id.trans_categories_listview);
+		mainList = (ExpandableListView) findViewById(R.id.trans_categories_listview);
 		
 		db = new DatabaseFacade(this);
 		
 		LoadCurrency();
 		CreateAdapter();
+		//LoadActualData();
 
 	}
 	
@@ -43,9 +44,9 @@ public class SummaryActivity extends Activity {
 	private void CreateAdapter() {
 		
 		TransactionCategoryExpandableListAdapter adapter = new TransactionCategoryExpandableListAdapter(this, groups);
-		main_adapber = adapter;
+		main_adapter = adapter;
 		SwitchTo(0); // Default use main currency
-		listView.setAdapter(adapter);
+		mainList.setAdapter(adapter);
 	}
 
 	// Load currency list and rates
@@ -68,7 +69,7 @@ public class SummaryActivity extends Activity {
 		super.onResume();
 		
 		// Load data from db
-		CreateTreeData();
+		LoadActualData();
 	}
 	
 
@@ -96,8 +97,6 @@ public class SummaryActivity extends Activity {
 
 	private void PopupCurrencySelector() {
 
-
-		// display chooser
 		new AlertDialog.Builder(this)
 		.setTitle(R.string.currency)
 		.setCancelable(false)
@@ -111,26 +110,29 @@ public class SummaryActivity extends Activity {
 	}
 	
 	private void SwitchTo(int i) {
-		main_adapber.rate = cur_rates[i];
-		main_adapber.suffix = cur_names[i];
-
-		main_adapber.notifyDataSetChanged();
-		//listView.invalidateViews();
-
+		main_adapter.rate = cur_rates[i];
+		main_adapter.suffix = cur_names[i];
+		main_adapter.notifyDataSetChanged();
 	}
 
 	private void OpenNewTransactionActivity() {
-		// TODO Auto-generated method stub
 		Intent intent = new Intent(this, TransactionAddActivity.class);
 		startActivity(intent);
-		
 	}
 
-	public void CreateTreeData() {
-		db.open();
+	private void LoadActualData() {
 		groups.clear();
-		groups.add(db.GetIncome());
-		groups.add(db.GetOutcome());
+		db.open();
+		groups.addAll(db.GetIncomeAndOutcome());
 		db.close();
+
+		main_adapter.notifyDataSetChanged();
+		mainList.invalidateViews();
+
+		int count = main_adapter.getGroupCount();
+		for (int position = 1; position <= count; position++){
+			mainList.collapseGroup(position - 1);
+			mainList.expandGroup(position - 1);
+		}
 	}
 }

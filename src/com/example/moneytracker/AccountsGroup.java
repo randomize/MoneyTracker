@@ -57,5 +57,9 @@ public class AccountsGroup {
 		children.add(child);
 		amount+=child.totalAmount;
 	}
+	
+	public boolean isEmpty() {
+		return children.isEmpty();
+	}
 
 } 
