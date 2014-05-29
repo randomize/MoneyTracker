@@ -19,6 +19,9 @@ public class Transaction {
 
 	// Category
 	public int categoryID;
+
+	// Category
+	public int memberID;
 	
 	///// Aggregated values
 	

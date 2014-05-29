@@ -56,7 +56,9 @@
     <string name="new_trans_desc">Enter comment or description</string>
     <string name="new_trans">New transaction</string>
     <string name="new_trans_no_account">Please create at least one account first</string>
+    <string name="new_trans_no_category">Please create at least one transaction category first</string>
     <string name="error">Error</string>
+    <string name="myself">Myself</string>
     
     <!-- New account activity  -->
     <string name="type">Account Type</string>

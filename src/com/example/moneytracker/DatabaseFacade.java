@@ -93,6 +93,7 @@ public class DatabaseFacade {
 		return result;
 	}
 
+	// Only used ones are returned(empty are dismissed)
 	public ArrayList<TransactionCategoryGroup> GetIncomeAndOutcome() {
 		
 		ArrayList<TransactionCategoryGroup> result = new ArrayList<TransactionCategoryGroup>(2);
@@ -107,11 +108,11 @@ public class DatabaseFacade {
 			do {
 				TransactionCatagory s = new TransactionCatagory();
 				s.amount = c.getFloat(0);
-				int type = c.getInt(1);
+				s.type = c.getInt(1);
 				s.id = c.getInt(2);
 				s.name = c.getString(3);
 				
-				if (type == 0) {
+				if (s.type == 0) {
 					out.AddChild(s);
 					s.parent = out;
 				} else {
@@ -306,5 +307,72 @@ public class DatabaseFacade {
 
 		c.close();
 		return result;
+	}
+
+	public ArrayList<TransactionCatagory> GetCategories() {
+		ArrayList<TransactionCatagory> result = new ArrayList<TransactionCatagory>();
+		
+		Cursor c = database.query(DATABASE_TABLE_TRANS_CATEGORY, null, null, null, null, null, null);
+
+		if (c.moveToFirst()) {
+
+			int idColIndex = c.getColumnIndex("_id");
+			int nameColIndex = c.getColumnIndex("name");
+			int typeColIndex = c.getColumnIndex("type");
+
+			do {
+				TransactionCatagory s = new TransactionCatagory();
+				s.id = c.getInt(idColIndex);
+				s.name = c.getString(nameColIndex);
+				s.type = c.getInt(typeColIndex);
+
+				result.add(s);
+			} while (c.moveToNext());
+
+		}
+
+		c.close();
+		return result;
+		
+	}
+
+	public ArrayList<Member> GetMembers() {
+
+		ArrayList<Member> result = new ArrayList<Member>();
+		Cursor c = database.query(DATABASE_TABLE_MEMBERS, null, null, null, null, null, null);
+
+		if (c.moveToFirst()) {
+			int idColIndex = c.getColumnIndex("_id");
+			int nameColIndex = c.getColumnIndex("name");
+			do {
+				Member s = new Member();
+				s.id = c.getInt(idColIndex);
+				s.name = c.getString(nameColIndex);
+				result.add(s);
+			} while (c.moveToNext());
+		}
+
+		c.close();
+		return result;
+		
+	}
+
+	public void AddNewTransaction(Transaction newman) {
+
+		ContentValues cv = new ContentValues();
+
+		cv.put("amount", newman.amount);
+		cv.put("category", newman.categoryID);
+		cv.put("date", newman.date);
+		cv.put("account", newman.accountID);
+		cv.put("member", newman.memberID);
+
+		if (newman.desc != null) {
+			cv.put("desc", newman.desc);
+		} else {
+			cv.putNull("desc");
+		}
+		
+		database.insert(DATABASE_TABLE_TRANSACTIONS, null, cv);
 	}
 }

@@ -38,16 +38,16 @@ public class Account {
 	// Name of type
 	public String typeName;
 
-	private static final Map<String, Integer> category_names;
+	private static final Map<String, Integer> account_hardcoded_names;
     static
     {
-        category_names = new HashMap<String, Integer>();
-        category_names.put("Cash", R.string.type_cash);
+        account_hardcoded_names = new HashMap<String, Integer>();
+        account_hardcoded_names.put("Cash", R.string.type_cash);
     }
     
     public static String GetLocalized(Context context, String key) {
-		if (category_names.containsKey(key)) {
-			return context.getString(category_names.get(key));
+		if (account_hardcoded_names.containsKey(key)) {
+			return context.getString(account_hardcoded_names.get(key));
 		} else {
 			return key;
 		}

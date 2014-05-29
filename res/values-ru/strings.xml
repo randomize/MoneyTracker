@@ -26,6 +26,7 @@
     <string name="error">Ошибка</string>
     <string name="cancel">Отмена</string>
     <string name="save">Сохранить</string>
+    <string name="myself">Я</string>
 
     <!-- Accounts list activity -->
     <string name="account_new">Новый</string>

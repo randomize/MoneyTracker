@@ -14,6 +14,8 @@ public class TransactionCatagory {
 	public float amount;
 	
 	public TransactionCategoryGroup parent;
+	
+	public int type;
 
 	private static final Map<String, Integer> category_names;
     static

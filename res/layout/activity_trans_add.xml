@@ -4,10 +4,28 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <Spinner
-        android:id="@+id/SpinnerTransType"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:entries="@array/transaction_types"
+        android:layout_height="wrap_content" >
+
+        <Spinner
+            android:id="@+id/SpinnerTransType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:entries="@array/transaction_types" />
+
+        <Spinner
+            android:id="@+id/SpinnerTransCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/SpinnerTransAccount"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <LinearLayout
@@ -44,12 +62,7 @@
     </LinearLayout>
 
     <Spinner
-        android:id="@+id/SpinnerTransCategory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Spinner
-        android:id="@+id/SpinnerTransAccount"
+        android:id="@+id/SpinnerMember"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
