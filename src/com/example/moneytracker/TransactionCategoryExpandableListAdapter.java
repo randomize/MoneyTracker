@@ -30,13 +30,6 @@ public class TransactionCategoryExpandableListAdapter extends BaseExpandableList
 	public float rate = 1.0f;
 	public String suffix = "";
 	
-	private static final Map<String, Integer> group_names;
-    static
-    {
-        group_names = new HashMap<String, Integer>();
-        group_names.put("Income", R.string.income);
-        group_names.put("Outcome", R.string.outcome);
-    }
 
 	public TransactionCategoryExpandableListAdapter(Activity act, ArrayList<TransactionCategoryGroup> groups) {
 		activity = act;
@@ -59,7 +52,7 @@ public class TransactionCategoryExpandableListAdapter extends BaseExpandableList
 			boolean isLastChild, View convertView, ViewGroup parent) 
 	{
 		TransactionCatagoryItem child = ((TransactionCatagoryItem) getChild(groupPosition, childPosition));
-		final String ch_text = child.name;
+		final String ch_text = TransactionCatagoryItem.GetLocalizedCategory(activity, child.name);
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.transrow_details, null);
 		}
@@ -126,12 +119,7 @@ public class TransactionCategoryExpandableListAdapter extends BaseExpandableList
 		}
 		TransactionCategoryGroup group = (TransactionCategoryGroup) getGroup(groupPosition);
 		
-		String s;
-		if (group_names.containsKey(group.name)) {
-			s = activity.getString(group_names.get(group.name));
-		} else {
-			s = group.name;
-		}
+		String title = TransactionCategoryGroup.GetLocalizedCategory(activity, group.name);
 
 		TextView amount = (TextView) convertView.findViewById(R.id.TextViewTransCategoryAmount);
 		if (group.type == GroupType.INCOME) {
@@ -143,7 +131,7 @@ public class TransactionCategoryExpandableListAdapter extends BaseExpandableList
 
 		CheckedTextView groupTextView = (CheckedTextView) convertView.findViewById(R.id.TextViewTransCategoryName);
 		//convertView.set
-		groupTextView.setText(s + " ("+suffix+")");
+		groupTextView.setText(title + " ("+suffix+")");
 		groupTextView.setChecked(isExpanded);
 		return convertView;
 	}

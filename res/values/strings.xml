@@ -51,8 +51,12 @@
     <!-- New transaction activity  -->
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+    <string name="ok">OK</string>
     <string name="amount">Amount</string>
     <string name="new_trans_desc">Enter comment or description</string>
+    <string name="new_trans">New transaction</string>
+    <string name="new_trans_no_account">Please create at least one account first</string>
+    <string name="error">Error</string>
     
     <!-- New account activity  -->
     <string name="type">Account Type</string>
@@ -69,9 +73,16 @@
     <string name="type_bank_accounts">Accounts</string>
     <string name="account_name">Name</string>
 
-    <!-- Status activity menu -->
-    <string name="transaction_new">New Transaction</string>
+    <!-- Summary activity menu -->
+    <string name="new_transaction">New Transaction</string>
+    <string name="new_category">New Category</string>
     <string name="change_currency">Currency...</string><color name="summary_header">#d5e5ff</color>
     
+    <!-- Default categories -->
+    <string name="category_salary">Salary</string>
+    <string name="category_interests">Deposit interests</string>
+    <string name="category_food">Foodstuff</string>
+    <string name="category_services">Services</string>
+    <string name="category_car">Car</string>
     
 </resources>

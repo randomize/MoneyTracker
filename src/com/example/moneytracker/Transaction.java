@@ -3,16 +3,22 @@ package com.example.moneytracker;
 public class Transaction {
 	
 	// Id in database
-	public int ID;
+	public int id;
 	
 	// Description
-	public String Desc;
+	public String desc;
 	
 	// Amount in parrots
-	public float Amount;
+	public float amount;
 	
 	// DateTime string
 	public String date;
+
+	// Account
+	public int accountID;
+
+	// Category
+	public int categoryID;
 	
 	///// Aggregated values
 	

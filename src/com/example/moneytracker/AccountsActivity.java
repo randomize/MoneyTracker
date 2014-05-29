@@ -158,6 +158,8 @@ public class AccountsActivity extends Activity {
 
 	public void PopupActionsMenu(final int accountID) {
 
+		/*if (accountID == 1)  // never edit or delete default one
+			return;*/
 
 		String[] cur_names = getResources().getStringArray(R.array.account_actions);
 

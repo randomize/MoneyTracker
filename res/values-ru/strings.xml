@@ -16,6 +16,14 @@
     
     <string name="income">Доходы</string>
     <string name="outcome">Расходы</string>
+
+    <!-- New transaction activity  -->
+    <string name="ok">Хорошо</string>
+    <string name="amount">Сумма</string>
+    <string name="new_trans_desc">Примечание</string>
+    <string name="new_trans">Новая транзакция</string>
+    <string name="new_trans_no_account">Пожалуйста, создайте хотябы один аккаунт</string>
+    <string name="error">Ошибка</string>
     <string name="cancel">Отмена</string>
     <string name="save">Сохранить</string>
 
@@ -31,4 +39,11 @@
     <string name="type_cards">Карта</string>
     <string name="type_bank_accounts">Банковский счет</string>
     <string name="account_name">Имя счета</string>
+
+    <!-- Default categories -->
+    <string name="category_salary">Зарплата</string>
+    <string name="category_interests">Проценты</string>
+    <string name="category_food">Продукты питания</string>
+    <string name="category_services">Услуги</string>
+    <string name="category_car">Машина</string>
 </resources>

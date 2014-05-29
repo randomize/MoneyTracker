@@ -45,7 +45,7 @@ public class AccountExpandableListAdapter extends BaseExpandableListAdapter  {
 			boolean isLastChild, View convertView, ViewGroup parent) 
 	{
 		final Account acc = ((Account) getChild(groupPosition, childPosition));
-		final String ch_text = acc.name + " (" + acc.currencyName + ")";
+		final String ch_text = Account.GetLocalized(activity, acc.name) + " (" + acc.currencyName + ")";
 		TextView text = null;
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.accountrow_details, null);
@@ -53,7 +53,7 @@ public class AccountExpandableListAdapter extends BaseExpandableListAdapter  {
 		text = (TextView) convertView.findViewById(R.id.TextViewAccountName);
 		text.setText(ch_text);
 
-		text = (TextView) convertView.findViewById(R.id.TextViewComment);
+		text = (TextView) convertView.findViewById(R.id.TextViewCurrency);
 		if (acc.comment != null) {
 			text.setText(acc.comment);
 		} else {

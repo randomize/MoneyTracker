@@ -119,7 +119,7 @@ public class AccountAddActivity extends Activity {
 
 	public void CommitAccountAdd( View button ) {
 
-		final EditText nameField = (EditText) findViewById(R.id.EditTextAccountName);
+		final EditText nameField = (EditText) findViewById(R.id.EditTextTransactionAmount);
 		String name = nameField.getText().toString();
 		if (name.isEmpty())
 		{

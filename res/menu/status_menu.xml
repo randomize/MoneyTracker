@@ -5,12 +5,18 @@
         android:id="@+id/action_tranaction_new"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/transaction_new"/>
+        android:title="@string/new_transaction"/>
 
     <item
         android:id="@+id/action_change_currency"
         android:orderInCategory="101"
         android:showAsAction="never"
         android:title="@string/change_currency"/>
+
+    <item
+        android:id="@+id/action_category_new"
+        android:orderInCategory="102"
+        android:showAsAction="never"
+        android:title="@string/new_category"/>
 
 </menu>

@@ -90,7 +90,7 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
    		" insert into members (name) " + 
    		" values ('Myself'); " + 
    		" insert into accounts (currency,name,type) " + 
-   		" values (1,'MDL',0); " + 
+   		" values (1,'Cash',0); " + 
    		" insert into transaction_category (type, name) " + 
    		" values (1,'Salary'); " + 
    		" insert into transaction_category (type, name) " + 

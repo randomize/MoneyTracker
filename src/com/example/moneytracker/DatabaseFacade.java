@@ -270,4 +270,41 @@ public class DatabaseFacade {
 		
 	}
 
+	// Not typeName and cat name
+	public ArrayList<Account> GetAccounts() {
+
+		ArrayList<Account> result = new ArrayList<Account>(10);
+
+		Cursor c = database.query(DATABASE_TABLE_ACCOUNTS, null, null, null, null, null, null);
+
+		if (c.moveToFirst()) {
+
+			int idColIndex = c.getColumnIndex("_id");
+			int nameColIndex = c.getColumnIndex("name");
+			int currencyColIndex = c.getColumnIndex("currency");
+			int typeColIndex = c.getColumnIndex("type");
+			int commentColIndex = c.getColumnIndex("comment");
+
+			do {
+				Account s = new Account();
+				s.id = c.getInt(idColIndex);
+				s.name = c.getString(nameColIndex);
+				s.currencyId = c.getInt(currencyColIndex);
+				Currency cur = GetCurrencyByID(s.currencyId);
+				s.currencyName = cur.name;
+				s.currencyRate = cur.rate;
+				s.typeId = c.getInt(typeColIndex);
+
+				if (c.isNull(commentColIndex) == false) {
+					s.comment = c.getString(commentColIndex);
+				}
+
+				result.add(s);
+			} while (c.moveToNext());
+
+		}
+
+		c.close();
+		return result;
+	}
 }

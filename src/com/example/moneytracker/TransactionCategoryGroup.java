@@ -1,7 +1,11 @@
 package com.example.moneytracker;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import android.content.Context;
 
 public class TransactionCategoryGroup {
 	
@@ -27,6 +31,22 @@ public class TransactionCategoryGroup {
 			this.value = val;
 		}
 	}
+
+	private static final Map<String, Integer> group_names;
+    static
+    {
+        group_names = new HashMap<String, Integer>();
+        group_names.put("Income", R.string.income);
+        group_names.put("Outcome", R.string.outcome);
+    }
+
+    public static String GetLocalizedCategory(Context context, String key) {
+		if (group_names.containsKey(key)) {
+			return context.getString(group_names.get(key));
+		} else {
+			return key;
+		}
+    }
 
 	public GroupType type;
 	public String name;
