@@ -63,7 +63,7 @@ public class AccountExpandableListAdapter extends BaseExpandableListAdapter  {
 		text = (TextView) convertView.findViewById(R.id.TextViewAmount);
 		text.setText(String.valueOf(acc.totalAmount));
 
-	/*	convertView.setOnLongClickListener(
+		convertView.setOnLongClickListener(
 				new OnLongClickListener() {
 					
 					@Override
@@ -72,7 +72,7 @@ public class AccountExpandableListAdapter extends BaseExpandableListAdapter  {
 						return false;
 					}
 				}
-				);*/
+				);
 		
 		convertView.setLongClickable(true);
 			

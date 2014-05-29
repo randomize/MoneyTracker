@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.test.ActivityUnitTestCase;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.ActionMode;
@@ -32,7 +33,7 @@ public class AccountsActivity extends Activity {
 
 	// groups of accounts to display in activity
 	private ArrayList<AccountsGroup> accountGroups = new ArrayList<AccountsGroup>();
-	
+
 	// Expandable list root view and its adapter
 	ExpandableListView mainList;
 	AccountExpandableListAdapter main_adapter;
@@ -52,143 +53,41 @@ public class AccountsActivity extends Activity {
 		mainList = (ExpandableListView) findViewById(R.id.accounts_list_view);
 		main_adapter = new AccountExpandableListAdapter(this, accountGroups);
 
-				
+
 		mainList.setAdapter(main_adapter);
-		/*mainList.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-				if (mActionMode != null) {
-					return false;
-				}
-				selectedItem = position;
-
-				// start the CAB using the ActionMode.Callback defined above
-				mActionMode = AccountsActivity.this.startActionMode(mActionModeCallback);
-				view.setSelected(true);
-				return true;
-				//return false;
-			}
-		});*/
-
-
-		registerForContextMenu(mainList);
 
 
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
+
 		LoadData();
-		
-		int count = main_adapter.getGroupCount();
-		for (int position = 1; position <= count; position++)
-			mainList.expandGroup(position - 1);
-		
+
 	}
-
-	@ Override
-	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)             
-	{
-		super.onCreateContextMenu(menu, v, menuInfo);
-
-		ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) menuInfo;
-
-		int type = ExpandableListView.getPackedPositionType(info.packedPosition);
-		int group = ExpandableListView.getPackedPositionGroup(info.packedPosition);
-		int child = ExpandableListView.getPackedPositionChild(info.packedPosition);
-
-		// Only create a context menu for child items
-		if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) 
-		{
-			// Array created earlier when we built the expandable list
-			String page = accountGroups.get(group).children.get(child).name;
-			int id = accountGroups.get(group).children.get(child).id;
-
-			menu.setHeaderTitle(page);
-			menu.add(1, id, 0, getString(R.string.account_delete));
-			menu.add(0, id, 0, getString(R.string.account_edit));
-		}
-	}
-	
-	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-		ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo)item.getMenuInfo();
-
-		if(item.getGroupId()==0)
-		{
-			DeleteAccount(item.getItemId());
-			
-		} else 
-		if(item.getGroupId()==1)
-		{
-			EditAccount(item.getItemId());
-		}
-		return super.onContextItemSelected(item);
-	}
-	
-	/*
-	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
-
-		// called when the action mode is created; startActionMode() was called
-		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-			// Inflate a menu resource providing context menu items
-			MenuInflater inflater = mode.getMenuInflater();
-			// assumes that you have "contexual.xml" menu resources
-			inflater.inflate(R.menu.accounts_contextmenu, menu);
-			return true;
-		}
-
-		// the following method is called each time 
-		// the action mode is shown. Always called after
-		// onCreateActionMode, but
-		// may be called multiple times if the mode is invalidated.
-		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-			return false; // Return false if nothing is done
-		}
-
-		// called when the user selects a contextual menu item
-		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-			switch (item.getItemId()) {
-			case R.id.accounts_context_delete:
-				show();
-				// the Action was executed, close the CAB
-				mode.finish();
-				return true;
-			default:
-				return false;
-			}
-		}
-
-		// called when the user exits the action mode
-		public void onDestroyActionMode(ActionMode mode) {
-			mActionMode = null;
-			selectedItem = -1;
-		}
-
-	};
-
-	private void show() {
-		Toast.makeText(AccountsActivity.this, String.valueOf(selectedItem), Toast.LENGTH_LONG).show();
-	}*/
 
 
 	public void LoadData() {
 
 		accountGroups.clear();
-		
+
 		ArrayList<AccountsGroup> gotGroups;
 
 		db.open();
 		gotGroups = db.GetGroupsWithTotalsAndAccounts();
 		db.close();
-		
+
 		accountGroups.addAll(gotGroups);
-		
+
 		main_adapter.notifyDataSetChanged();
+		mainList.invalidateViews();
+
+		int count = main_adapter.getGroupCount();
+		for (int position = 1; position <= count; position++){
+			mainList.collapseGroup(position - 1);
+			mainList.expandGroup(position - 1);
+		}
 
 	}
 
@@ -206,14 +105,14 @@ public class AccountsActivity extends Activity {
 		case R.id.accounts_menu_new:
 			CreateNewAccount();
 			return true;
-		/*case R.id.action_exit:
+			/*case R.id.action_exit:
 			//Application();
 			return true;*/
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
+
 	private void CreateNewAccount() {
 		Intent intent = new Intent(this, AccountAddActivity.class);
 		startActivity(intent);
@@ -221,34 +120,62 @@ public class AccountsActivity extends Activity {
 
 	private void EditAccount(int accountID) {
 		Log.w("ggg", "Editing " + accountID);
-		/*Intent intent = new Intent(this, AccountAddActivity.class);
-		startActivity(intent);*/
+		Intent intent = new Intent(this, AccountAddActivity.class);
+		intent.putExtra("EditIndex", (int)accountID);
+		//myIntent.putExtra("LongValue", (int)-80142777);
+		startActivity(intent);
 	}
 
-	private void DeleteAccount(int accountID) {
-		Log.w("ggg", "Editing " + accountID);
+	private void DeleteAccount(final int accountID) {
+		Log.w("ggg", "deleting " + accountID);
 		/*Intent intent = new Intent(this, AccountAddActivity.class);
 		startActivity(intent);*/
+		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch (which){
+				case DialogInterface.BUTTON_POSITIVE:
+					
+					db.open();
+					db.DeleteAccount(accountID);
+					db.close();
+					//Yes button clicked
+					
+					LoadData();
+					break;
+
+				case DialogInterface.BUTTON_NEGATIVE:
+					//No button clicked
+					break;
+				}
+			}
+		};
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(getString(R.string.status)).setPositiveButton(getString(R.string.yes), dialogClickListener)
+		.setNegativeButton(getString(R.string.no), dialogClickListener).show();
 	}
 
-	/*
 	public void PopupActionsMenu(final int accountID) {
 
 
-	
 		String[] cur_names = getResources().getStringArray(R.array.account_actions);
 
 		// display chooser
 		new AlertDialog.Builder(this)
 		.setTitle(R.string.currency)
-		.setCancelable(false)
+		.setCancelable(true)
 		.setItems(cur_names,
-				new DialogInterface.OnClickListener() {
+			new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialoginterface, int i) {
-				EditAccount(accountID);
+				if (i == 0) {
+					DeleteAccount(accountID);
+				} else if (i == 1) {
+					EditAccount(accountID);
+				}
 			}
 		})
 		.show();
-	}*/
+	}
 
 }

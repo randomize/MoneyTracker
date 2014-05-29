@@ -44,6 +44,9 @@
     <string name="account_new">New</string>
     <string name="account_delete">Delete</string>
     <string name="account_edit">Edit</string>
+    <string name="sure">Are you sure?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     
     <!-- New transaction activity  -->
     <string name="cancel">Cancel</string>

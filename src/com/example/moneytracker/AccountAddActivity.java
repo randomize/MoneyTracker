@@ -25,13 +25,26 @@ public class AccountAddActivity extends Activity {
 	private int currency_spinner_ids[] = null;                        // index => id mapping
 	private String currency_spinner_lables[] = null;                  // index => label (like USD)
 	private int currency_spinner_add_index = 0;
-
+	
+	private enum Mode {
+		NEW,
+		EDIT
+	}
+	
+	private Mode mode = Mode.NEW;
+	private int editableIndex = -1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_account_add);
+		
+		Bundle extras = getIntent().getExtras();
+		if (extras != null && extras.containsKey("EditIndex")) { // if passed => edit mode
+			mode = Mode.EDIT;
+			editableIndex = extras.getInt("EditIndex");
+		}
 
 		db = new DatabaseFacade(this);
 		db.open();
@@ -73,13 +86,22 @@ public class AccountAddActivity extends Activity {
 				// your code here
 			}
 
-
 			@Override
 			public void onNothingSelected(AdapterView<?> parentView) {
 				// your code here
 			}
 
 		});
+		
+		if (mode == Mode.EDIT) {
+			LoadCurrentValues();
+		}
+	}
+
+	private void LoadCurrentValues() {
+		
+		// TODO: load from db
+		
 	}
 
 	private void ShowNewCurrencyDialog() {
@@ -127,10 +149,14 @@ public class AccountAddActivity extends Activity {
 		}
 		
 		db.open();
-		db.AddNewAccount(newman);
+		if (mode == Mode.NEW) {
+			db.AddNewAccount(newman);
+			Log.i("debug", "Adding account " + indx_type + " (" + accountType + ") + name="+name+ " comm="+comment);
+		} else {
+			db.UpdateAccount(newman);
+		}
 		db.close();
 
-		Log.i("debug", "Adding account " + indx_type + " (" + accountType + ") + name="+name+ " comm="+comment);
 		finish();
 	}
 

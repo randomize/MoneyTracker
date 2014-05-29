@@ -23,6 +23,8 @@
     <string name="account_new">Новый</string>
     <string name="account_delete">Удалить</string>
     <string name="account_edit">Редактировать</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
 
     <!--  Money account types -->
     <string name="type_cash">Наличные</string>

@@ -36,13 +36,12 @@
         </activity>
 
  		<activity
-            android:name="com.example.moneytracker.AccountsActivity"
-            android:label="@string/accounts"
+            android:name="com.example.moneytracker.AccountAddActivity"
 			android:windowSoftInputMode="stateHidden" >
         </activity>
 
  		<activity
-            android:name="com.example.moneytracker.AccountAddActivity"
+            android:name="com.example.moneytracker.AccountEditActivity"
 			android:windowSoftInputMode="stateHidden" >
         </activity>
 

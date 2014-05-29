@@ -19,6 +19,8 @@ public class DatabaseFacade {
 	private static final String DATABASE_TABLE_ACCOUNTS = "accounts";
 	private static final String DATABASE_TABLE_MEMBERS = "members";
 	private static final String DATABASE_TABLE_TRANSACTIONS = "transactions";
+	private static final String DATABASE_VIEW_INCOME_SUMS = "accounts_income";
+	private static final String DATABASE_VIEW_OUTCOME_SUMS = "accounts_outcome";
 
 
 	private Context context;
@@ -107,9 +109,40 @@ public class DatabaseFacade {
 		return result;
 
 	}
+
+	public float GetTotalIncomeOn(int accountId) {
+		
+		float result = 0;
+		String[] columns = new String[]{"amount"};
+		String[] id_value = new String[]{String.valueOf(accountId)};
+		Cursor c = database.query(DATABASE_VIEW_INCOME_SUMS, columns, "account=?", id_value, null, null, null);
+		if (c.moveToFirst()) {
+			int amountIndex = c.getColumnIndex("amount");
+			result = c.getFloat(amountIndex);
+		}
+		c.close();
+		
+		return result;
+		
+	}
+	public float GetTotalOutcomeOn(int accountId) {
+		
+		float result = 0;
+		String[] columns = new String[]{"amount"};
+		String[] id_value = new String[]{String.valueOf(accountId)};
+		Cursor c = database.query(DATABASE_VIEW_OUTCOME_SUMS, columns, "account=?", id_value, null, null, null);
+		if (c.moveToFirst()) {
+			int amountIndex = c.getColumnIndex("amount");
+			result = c.getFloat(amountIndex);
+		}
+		c.close();
+		
+		return 0;
+		
+	}
 	
 	public float GetCurrentBalance(int accountId) {
-		return 42;
+		return GetTotalIncomeOn(accountId) - GetTotalOutcomeOn(accountId);
 	}
 
 	public ArrayList<AccountsGroup> GetGroupsWithTotalsAndAccounts() {
@@ -194,10 +227,22 @@ public class DatabaseFacade {
 	}
 	
 	public void DeleteAccount(int id) {
-		
+		database.delete(DATABASE_TABLE_ACCOUNTS, "_id = ?", new String[] { String.valueOf(id)});
 	}
 
 	public void UpdateAccount(Account replacer) {
+		
+		ContentValues cv = new ContentValues();
+		cv.put("currency", replacer.currencyId);
+		cv.put("name", replacer.name);
+		cv.put("type", replacer.typeId);
+		if (replacer.comment != null) {
+			cv.put("comment", replacer.comment);
+		} else {
+			cv.putNull("comment");
+		}
+		
+		database.update(DATABASE_TABLE_ACCOUNTS, cv, "_id = ?", new String[] {String.valueOf(replacer.id)});
 		
 	}
 

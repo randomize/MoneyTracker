@@ -56,12 +56,23 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
    		// Transactions
    		"create table transactions (" + 
    		     "_id integer primary key autoincrement, " + 
+   		     "amount real not null, " + 
    		     "category integer not null references transaction_category(_id) on delete cascade," + // Category id FK
    		     "date text not null," +
-   		     "account integer not null," + // Account id FK
+   		     "account integer not null references accounts(_id) on delete cascade," + // Account id FK
    		     "desc text," +
-   		     "member integer not null" + // Member id FK
+   		     "member integer not null references members(_id) on delete cascade" + // Member id FK
    		");" +
+   		     
+   		// Views
+   		"create view accounts_outcome as " +
+   		"select sum(amount) as amount, account from transactions "+
+   		" where category in (select _id from transaction_category where type = 0) " + 
+   		" group by account ;" +
+   		"create view accounts_income as " +
+   		"select sum(amount) as amount, account from transactions "+
+   		" where category in (select _id from transaction_category where type = 1) " + 
+   		" group by account ;"+
    		     
    		// Base values
    		" insert into currency (name, rate) " + 
@@ -85,20 +96,28 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
    		" insert into transaction_category (type, name) " + 
    		" values (0,'Car') ";
 
+	private static final String DATABASE_FILL_WITH_CRAP = 
+			"";
 
 	public MainDatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+	}
+	
+	private void SuperExecSQL(SQLiteDatabase database, String s) {
+
+		String[] queries = s.split(";");
+		for(String query : queries){
+			Log.i(MainDatabaseHelper.class.getName(), "Executing :" + query );
+			database.execSQL(query);
+		}
+		
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase database) {
 		Log.i(MainDatabaseHelper.class.getName(), "Creating DB" );
-		//database.execSQL(DATABASE_CREATE);
-		String[] queries = DATABASE_CREATE.split(";");
-		for(String query : queries){
-			Log.i(MainDatabaseHelper.class.getName(), "Executing :" + query );
-			database.execSQL(query);
-		}
+		SuperExecSQL(database, DATABASE_CREATE);
+		SuperExecSQL(database, DATABASE_FILL_WITH_CRAP);
 	}
 
 	@Override
