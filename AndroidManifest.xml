@@ -57,6 +57,11 @@
         </activity>
 
  		<activity
+            android:name="com.example.moneytracker.DebtsListActivity"
+			android:windowSoftInputMode="stateHidden" >
+        </activity>
+
+ 		<activity
             android:name="com.example.moneytracker.TransactionAddActivity"
 			android:windowSoftInputMode="stateHidden" >
         </activity>

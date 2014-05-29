@@ -42,7 +42,7 @@ public class TransactionListActivity extends ListActivity {
 				Transaction t = trans.get(i);
 				list[i] = " [" +t.date + "] : " + String.format("%.2f", t.amount / t.cur_rate) + " "
 				         + t.cur_name + " : " + Account.GetLocalized(this, t.account);
-				desc[i] = (t.desc == null ? " " : t.desc ) + "\n"  + Member.GetLocalized(this, t.member);
+				desc[i] = (t.desc == null ? " " : t.desc ) + "\n" + getString(R.string.member) + " : " + Member.GetLocalized(this, t.member);
 			}
 
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,  android.R.layout.simple_list_item_1, list);

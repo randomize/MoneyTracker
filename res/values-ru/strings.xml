@@ -27,6 +27,7 @@
     <string name="cancel">Отмена</string>
     <string name="save">Сохранить</string>
     <string name="myself">Я</string>
+    <string name="member">Член семьи</string>
 
     <!-- Accounts list activity -->
     <string name="account_new">Новый</string>
