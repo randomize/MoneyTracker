@@ -52,7 +52,7 @@ public class TransactionCategoryGroup {
 	public String name;
 	public float amount;
 
-	public final List<TransactionCatagoryItem> children = new ArrayList<TransactionCatagoryItem>();
+	public final List<TransactionCatagory> children = new ArrayList<TransactionCatagory>();
 	
 	public TransactionCategoryGroup(String name, GroupType type) {
 		this.name = name;
@@ -60,7 +60,7 @@ public class TransactionCategoryGroup {
 	}
 
 	// Auto calculate child
-	public void AddChild(TransactionCatagoryItem child) {
+	public void AddChild(TransactionCatagory child) {
 		children.add(child);
 		amount+=child.amount;
 	}

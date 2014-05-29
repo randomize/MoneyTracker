@@ -5,7 +5,7 @@ import java.util.Map;
 
 import android.content.Context;
 
-public class TransactionCatagoryItem {
+public class TransactionCatagory {
 	
 	public String name;
 	

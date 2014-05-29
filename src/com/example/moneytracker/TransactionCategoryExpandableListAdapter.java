@@ -51,8 +51,8 @@ public class TransactionCategoryExpandableListAdapter extends BaseExpandableList
 	public View getChildView(int groupPosition, final int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) 
 	{
-		TransactionCatagoryItem child = ((TransactionCatagoryItem) getChild(groupPosition, childPosition));
-		final String ch_text = TransactionCatagoryItem.GetLocalizedCategory(activity, child.name);
+		TransactionCatagory child = ((TransactionCatagory) getChild(groupPosition, childPosition));
+		final String ch_text = TransactionCatagory.GetLocalizedCategory(activity, child.name);
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.transrow_details, null);
 		}

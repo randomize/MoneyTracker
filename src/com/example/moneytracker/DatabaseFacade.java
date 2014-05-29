@@ -105,7 +105,7 @@ public class DatabaseFacade {
 		if (c.moveToFirst()) {
 
 			do {
-				TransactionCatagoryItem s = new TransactionCatagoryItem();
+				TransactionCatagory s = new TransactionCatagory();
 				s.amount = c.getFloat(0);
 				int type = c.getInt(1);
 				s.id = c.getInt(2);
