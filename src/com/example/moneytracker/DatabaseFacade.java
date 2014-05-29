@@ -22,6 +22,7 @@ public class DatabaseFacade {
 	private static final String DATABASE_VIEW_INCOME_SUMS = "accounts_income";
 	private static final String DATABASE_VIEW_OUTCOME_SUMS = "accounts_outcome";
 	private static final String DATABASE_VIEW_TRANS_SUMMARY = "trans_summary";
+	private static final String DATABASE_VIEW_TRANS_DETAILS = "trans_details";
 
 
 	private Context context;
@@ -374,5 +375,51 @@ public class DatabaseFacade {
 		}
 		
 		database.insert(DATABASE_TABLE_TRANSACTIONS, null, cv);
+	}
+
+	public ArrayList<Transaction> GetTransactionsInCategory(int categID) {
+
+		ArrayList<Transaction> result = new ArrayList<Transaction>();
+		
+		Cursor c = database.query(DATABASE_VIEW_TRANS_DETAILS, null, "category = ?", new String[] { String.valueOf(categID)}, null, null, null);
+
+		if (c.moveToFirst()) {
+
+			int idColIndex = c.getColumnIndex("_id");
+			int amColIndex = c.getColumnIndex("amount");
+			int dateColIndex = c.getColumnIndex("date");
+			int accIdColIndex = c.getColumnIndex("account");
+			int descColIndex = c.getColumnIndex("desc");
+			//int currIdColIndex = c.getColumnIndex("currency");
+			int accNameColIndex = c.getColumnIndex("account_name");
+			int accTypeColIndex = c.getColumnIndex("accounts_type");
+			int catTypeColIndex = c.getColumnIndex("cat_type");
+			int memNemeColIndex = c.getColumnIndex("member_name");
+			int curNameColIndex = c.getColumnIndex("cur_name");
+			int curRateColIndex = c.getColumnIndex("cur_rate");
+
+			do {
+				Transaction s = new Transaction();
+				s.categoryID = categID;
+
+				s.id = c.getInt(idColIndex);
+				s.amount = c.getFloat(amColIndex);
+				s.date = c.getString(dateColIndex);
+				s.accountID = c.getInt(accIdColIndex);
+				s.desc = c.isNull(descColIndex) == false ? c.getString(descColIndex) : null;
+				s.account = c.getString(accNameColIndex);
+				s.accType = c.getInt(accTypeColIndex);
+				s.type = c.getInt(catTypeColIndex);
+				s.cur_name = c.getString(curNameColIndex);
+				s.cur_rate = c.getFloat(curRateColIndex);
+				s.member = c.getString(memNemeColIndex);
+				result.add(s);
+			} while (c.moveToNext());
+
+		}
+
+		c.close();
+		return result;
+		
 	}
 }

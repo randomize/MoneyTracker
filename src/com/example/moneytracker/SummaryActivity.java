@@ -40,6 +40,15 @@ public class SummaryActivity extends Activity {
 
 	}
 	
+	public void OpenDetailedCategory(int catId, String name) {
+
+		Intent intent = new Intent(this, TransactionListActivity.class);
+		intent.putExtra("Title", name);
+		intent.putExtra("CategoryID", catId);
+		startActivity(intent);
+		
+	}
+	
 	// Create adapter for transaction groups
 	private void CreateAdapter() {
 		

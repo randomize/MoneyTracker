@@ -3,7 +3,6 @@ package com.example.moneytracker;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.ContactsContract.DataUsageFeedback;
 import android.util.Log;
 
 public class MainDatabaseHelper extends SQLiteOpenHelper {
@@ -79,6 +78,15 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
         "inner join transaction_category on transactions.category = transaction_category._id " +
         "group by type, category " +
         "order by type ; " +
+        
+        "create view trans_details as select  transactions._id as _id, amount, category, date, account, desc, currency, accounts.name as account_name, " +
+        "accounts.type as accounts_type,  transaction_category.type as cat_type,  transaction_category.name as cat_name, " +
+        "member, members.name as member_name, currency as cur,  currency.name as cur_name, rate as cur_rate " +
+        "from transactions   " +
+        "inner join accounts on transactions.account = accounts._id " +
+        "inner join transaction_category on transactions.category = transaction_category._id " +
+        "inner join members on transactions.member = members._id " +
+        "inner join currency on accounts.currency = currency._id ; " +
    		     
    		// Base values
    		" insert into currency (name, rate) " + 
@@ -105,6 +113,8 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
 	private static final String DATABASE_FILL_WITH_CRAP = 
    		" insert into accounts (currency,name,type) " + 
    		" values (2,'VISA',1); " + 
+   		" insert into accounts (currency,name,type) " + 
+   		" values (3,'MASTERCARD',1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
    		" values (1010,1,'2012-01-19', 1, 'test_1', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 

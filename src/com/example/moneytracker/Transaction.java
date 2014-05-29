@@ -20,7 +20,7 @@ public class Transaction {
 	// Category
 	public int categoryID;
 
-	// Category
+	// Member
 	public int memberID;
 	
 	///// Aggregated values
@@ -30,5 +30,17 @@ public class Transaction {
 	
 	// Target account name
 	public String account;
+	
+	// It is income/outcome
+	public int type;
+
+	// It is income/outcome
+	public int accType;
+	
+	// Currency rate
+	public float cur_rate;
+
+	// Currency name
+	public String cur_name;
 
 }

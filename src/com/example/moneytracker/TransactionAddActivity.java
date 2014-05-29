@@ -1,6 +1,8 @@
 package com.example.moneytracker;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -280,8 +282,7 @@ public class TransactionAddActivity extends Activity {
 		newman.desc = comment.isEmpty() ? null : comment;
 
 		final DatePicker dp = (DatePicker) findViewById(R.id.datePicker1);
-		String date = dp.toString();
-		newman.date = date;
+		newman.date = DateFormat.getDateInstance().format(dp.getCalendarView().getDate());
 		
 		db.open();
 		db.AddNewTransaction(newman);
