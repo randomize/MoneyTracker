@@ -32,6 +32,7 @@
 
  		<activity
             android:name="com.example.moneytracker.AccountsActivity"
+            android:label="@string/accounts"
 			android:windowSoftInputMode="stateHidden" >
         </activity>
 
@@ -58,6 +59,7 @@
 
  		<activity
             android:name="com.example.moneytracker.DebtsListActivity"
+            android:label="@string/debts"
 			android:windowSoftInputMode="stateHidden" >
         </activity>
 
