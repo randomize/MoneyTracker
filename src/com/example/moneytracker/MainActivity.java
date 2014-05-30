@@ -80,6 +80,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		    case R.id.ButtonDebts: {
                 Intent intent = new Intent(this, DebtsListActivity.class);
                 startActivity(intent);
+                break;
 		    }
     
 		   /* case R.id.clickButton2: {

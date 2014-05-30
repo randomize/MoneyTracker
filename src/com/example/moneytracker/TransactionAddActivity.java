@@ -218,7 +218,7 @@ public class TransactionAddActivity extends Activity {
 		ArrayList<TransactionCatagory> cats = db.GetCategories();
 		db.close();
 		
-		if (cats.size() == 0) {
+		if (cats.size() <= 2) {
 			AlertDialog.Builder dlgAlert = new AlertDialog.Builder(this);
 
 			dlgAlert.setMessage(getString(R.string.new_trans_no_category));
@@ -241,6 +241,7 @@ public class TransactionAddActivity extends Activity {
 		ArrayList<TransactionCatagory> out = new ArrayList<TransactionCatagory>();
 		
 		for (TransactionCatagory cat : cats) {
+			if (cat.id == 1 || cat.id == 2) continue; // skipping debts default categs
 			if (cat.type == 0) {
 				out.add(cat);
 			} else {

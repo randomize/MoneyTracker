@@ -14,6 +14,7 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
@@ -72,14 +73,11 @@ public class DebtsCategoriesExpandableListAdapter extends BaseExpandableListAdap
 			amount.setText(String.format("%.2f", child.amount_end / rate));
 		}
 		
-		long date_cur =  System.currentTimeMillis() / 1000L;
-		java.util.Date endDate=new java.util.Date((long)child.date_end*1000);
-		java.util.Date curDate=new java.util.Date((long)date_cur*1000);
+		long date_cur =  System.currentTimeMillis();
 		
-		int diffInDays = (int)( (curDate.getTime() - endDate.getTime()) 
-                 / (1000 * 60 * 60 * 24) );
+		int diffInDays = (int)( (child.category_end - date_cur) / (1000 * 60 * 60 * 24) );
 
-		if (child.date_end < date_cur) { // Outdated
+		if (diffInDays <= 0) { // Outdated
 			convertView.setBackgroundColor(activity.getResources().getColor(R.color.errorous));
 			ch_text += (activity.getString(R.string.expired) + " " + String.valueOf(-diffInDays)
 					+ " " + activity.getString(R.string.ago) );
@@ -90,16 +88,19 @@ public class DebtsCategoriesExpandableListAdapter extends BaseExpandableListAdap
 		TextView text = (TextView) convertView.findViewById(R.id.TextViewCategoryItemName);
 		text.setText(ch_text);
 
-		/*
-		convertView.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//((SummaryActivity)activity).OpenDetailedCategory(child.id, ch_text);
-				//Toast.makeText(activity, ch_text, Toast.LENGTH_SHORT).show();
-			}
-		});*/
-		convertView.setLongClickable(true);
 		
+		convertView.setOnLongClickListener(
+				new OnLongClickListener() {
+					
+					@Override
+					public boolean onLongClick(View v) {
+						((DebtsListActivity) activity).PopupActionsMenu(child.id);
+						return false;
+					}
+				}
+				);
+		
+		convertView.setLongClickable(true);
 			
 		return convertView;
 	}

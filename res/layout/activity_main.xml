@@ -33,16 +33,16 @@
             android:text="@string/accounts" />
 
         <Button
-            android:id="@+id/ButtonEventsTasks"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/events_and_tasks" />
-
-        <Button
             android:id="@+id/ButtonDebts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/debts" />
+
+        <Button
+            android:id="@+id/ButtonEventsTasks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/events_and_tasks" />
 
         <Button
             android:id="@+id/ButtonAccumulations"

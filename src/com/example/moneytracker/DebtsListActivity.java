@@ -149,5 +149,37 @@ public class DebtsListActivity extends Activity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
+	private void CommitDebt(int debtId) {
+
+		db.open();
+		db.RemoveDebt(debtId);
+		db.close();
+		
+		LoadActualData();
+		
+	}
+
+	public void PopupActionsMenu(final int debtId) {
+
+		/*if (accountID == 1)  // never edit or delete default one
+			return;*/
+
+		String[] cur_names = getResources().getStringArray(R.array.debt_actions);
+
+		// display chooser
+		new AlertDialog.Builder(this)
+		.setTitle(R.string.currency)
+		.setCancelable(true)
+		.setItems(cur_names,
+			new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialoginterface, int i) {
+				if (i == 0) {
+					CommitDebt(debtId);
+				} 
+			}
+		})
+		.show();
+	}
 
 }

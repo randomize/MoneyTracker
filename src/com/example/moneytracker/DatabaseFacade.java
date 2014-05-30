@@ -531,6 +531,38 @@ public class DatabaseFacade {
 	}
 
 	public Debt GetDebt(int id) {
+
+
+		Cursor c = database.query(DATABASE_TABLE_DEBTS, null, "_id = ?", new String[] { String.valueOf(id)} , null, null, null);
+
+		if (c.moveToFirst()) {
+
+				Debt s = new Debt();
+				s.id = c.getInt(0);
+				s.desc = c.getString(1);
+				s.type = c.getInt(2);
+				s.amount_start = c.getFloat(3);
+				s.amount_end = c.getFloat(4);
+				s.category_start = c.getInt(5);
+				s.category_end = c.getInt(6);
+				s.date_start = c.getLong(7);
+				s.date_end = c.getLong(8);
+				s.accountID = c.getInt(9);
+				s.memberID = c.getInt(10);
+				
+				Account ac = GetAcccountByID(s.accountID);
+
+				s.currencyName = ac.currencyName;
+				s.currencyRate = ac.currencyRate;
+				s.currencyID = ac.currencyId;
+				
+				c.close();
+				
+				return s;
+
+		}
+		c.close();
+
 		return null;
 	}
 
@@ -548,7 +580,7 @@ public class DatabaseFacade {
 		cv.put("date_end", newman.date_end);
 		cv.put("account", newman.accountID);
 		cv.put("member", newman.memberID);
-		int s = (int) database.insert(DATABASE_TABLE_TRANS_CATEGORY, null, cv);
+		int s = (int) database.insert(DATABASE_TABLE_DEBTS, null, cv);
 		
 		
 		String desk = newman.type == 0 ? 
@@ -561,7 +593,7 @@ public class DatabaseFacade {
 		tr.memberID = newman.memberID;
 		tr.categoryID = newman.category_start;
 		tr.date = newman.date_start;
-		tr.desc = desk;
+		tr.desc = desk + "(" + newman.desc + ")";
 		
 		AddNewTransaction(tr);
 		
@@ -572,11 +604,23 @@ public class DatabaseFacade {
 
 	public void RemoveDebt(int id) {
 		
-		Debt d = GetDebt(id);
+		Debt newman = GetDebt(id);
 		
-		// TODO: Make trans
+		String desk = newman.type == 0 ? 
+				context.getString(R.string.they_returned_debt) :
+				context.getString(R.string.i_returned_debt);
 		
-		database.delete(DATABASE_TABLE_TRANSACTIONS, "_id = ?", new String[] { String.valueOf(id)});
+		Transaction tr = new Transaction();
+		tr.accountID = newman.accountID;
+		tr.amount = newman.amount_end;
+		tr.memberID = newman.memberID;
+		tr.categoryID = newman.category_end;
+		tr.date = System.currentTimeMillis() / 1000L;
+		tr.desc = desk + "(" + newman.desc + ")";
+		
+		AddNewTransaction(tr);
+		
+		database.delete(DATABASE_TABLE_DEBTS, "_id = ?", new String[] { String.valueOf(id)});
 
 	}
 }

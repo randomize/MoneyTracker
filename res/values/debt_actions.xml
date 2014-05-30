@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="debt_actions">
+        <item>@string/accepted</item>
+    </string-array>
+</resources>

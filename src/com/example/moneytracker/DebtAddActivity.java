@@ -323,12 +323,25 @@ public class DebtAddActivity extends Activity {
 		
 		Debt newman = new Debt();
 		newman.desc = desc;
+		newman.type = type;
+		if (type == 0) { // end is outcome 
+			newman.category_end = category_outcome_debt_id;
+			newman.category_start = category_income_debt_id;
+		} else {
+			newman.category_end = category_income_debt_id;
+			newman.category_start = category_outcome_debt_id;
+		}
+
 		newman.accountID = account_spinner_ids[accountSpinner.getSelectedItemPosition()];
 		newman.amount_start = amount_start_val * selected_currency_rate;
 		newman.amount_end = amount_end_val * selected_currency_rate;
-		newman.date_start =  System.currentTimeMillis() / 1000L;
+		newman.date_start =  System.currentTimeMillis(); // / 1000L;
 		newman.date_end = dater_end.getCalendarView().getDate();
-
+		newman.memberID = member_ids[mem_index];
+		
+		db.open();
+		db.AddDebt(newman);
+		db.close();
 
 		finish();
 		
