@@ -53,7 +53,7 @@ public class AccountExpandableListAdapter extends BaseExpandableListAdapter  {
 		text = (TextView) convertView.findViewById(R.id.TextViewAccountName);
 		text.setText(ch_text);
 
-		text = (TextView) convertView.findViewById(R.id.TextViewCurrency);
+		text = (TextView) convertView.findViewById(R.id.TextViewCurrency1);
 		if (acc.comment != null) {
 			text.setText(acc.comment);
 		} else {

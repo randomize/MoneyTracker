@@ -115,9 +115,9 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
    		" values ('Myself'); " + 
    		" insert into accounts (currency,name,type) " + 
    		" values (1,'Cash',0); " + 
-   		" insert into transaction_category (_id, type, name) " + 
+   		" insert into transaction_category (_id, type, name) " + // Mandatory category for incoming debt pays - id = 1
    		" values (1,1,'Debts'); " + 
-   		" insert into transaction_category (_id, type, name) " + 
+   		" insert into transaction_category (_id, type, name) " +  // Mandatory category for outcomming debt pays - id = 2
    		" values (2,0,'Debts'); " + 
    		" insert into transaction_category (type, name) " + 
    		" values (1,'Salary'); " + 

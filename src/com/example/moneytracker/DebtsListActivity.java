@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -117,6 +118,10 @@ public class DebtsListActivity extends Activity {
 	}
 	
 	private void CreateNewDebt(int type) {
+		
+		Intent intent = new Intent(this, DebtAddActivity.class);
+		intent.putExtra("Type", (int)type);
+		startActivity(intent);
 		
 	}
 

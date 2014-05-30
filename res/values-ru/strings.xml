@@ -93,4 +93,9 @@
     <string name="trans_delete">Удалить транзакцию</string>
     <string name="desc">Описание</string>
     <string name="account">Счет</string>
+    <string name="debt_description">Описание долга</string>
+    <string name="amount_to_pay">К выплате</string>
+    <string name="expired">Истёк</string>
+    <string name="ago">назад</string>
+    <string name="left">осталось</string>
 </resources>

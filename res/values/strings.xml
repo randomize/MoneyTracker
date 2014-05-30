@@ -114,5 +114,10 @@
     <string name="trans_delete">Delete</string>
     <string name="desc">Delete</string>
     <string name="account">Account</string>
+    <string name="debt_description">Debt description</string>
+    <string name="amount_to_pay">To pay</string>
+    <string name="expired">Expired</string>
+    <string name="ago">ago</string>
+    <string name="left">left</string>
     
 </resources>

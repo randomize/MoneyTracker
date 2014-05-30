@@ -4,24 +4,15 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/EditTextDescriptio"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/debt_description" >
 
-        <Spinner
-            android:id="@+id/SpinnerTransType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:entries="@array/transaction_types" />
-
-        <Spinner
-            android:id="@+id/SpinnerTransCategory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-    </LinearLayout>
+        <requestFocus />
+    </EditText>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,7 +29,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <Spinner
-            android:id="@+id/SpinnerTransAccount"
+            android:id="@+id/SpinnerDebtAccount"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
@@ -61,7 +52,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <EditText
-            android:id="@+id/EditTextTransactionAmount"
+            android:id="@+id/EditTextAmountStart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -71,13 +62,47 @@
             android:text="0.0" />
 
         <TextView
-            android:id="@+id/TextViewCurrency"
+            android:id="@+id/TextViewCurrency1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingRight="20dp"
             android:text="MLD"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/TextView04"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/amount_to_pay"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <EditText
+            android:id="@+id/EditTextAmountEnd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:gravity="right|center_vertical"
+            android:inputType="numberDecimal"
+            android:text="0.0" />
+
+        <TextView
+            android:id="@+id/TextViewCurrency2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="20dp"
+            android:text="MLD"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
     <LinearLayout
@@ -104,20 +129,11 @@
     </LinearLayout>
 
     <DatePicker
-        android:id="@+id/datePicker1"
-        android:layout_width="match_parent"
+        android:id="@+id/date_end"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:calendarViewShown="false" />
-
-    <EditText
-        android:id="@+id/EditTextTransactionComment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.17"
-        android:ems="10"
-        android:gravity="top|left"
-        android:hint="@string/new_trans_desc"
-        android:inputType="textMultiLine" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -129,7 +145,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="CancelTransAdd"
+            android:onClick="CancelDebtAdd"
             android:text="@string/cancel" />
 
         <Button
@@ -138,7 +154,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:layout_weight="1"
-            android:onClick="CommitTransAdd"
+            android:onClick="CommitDebtAdd"
             android:text="@string/save" />
     </LinearLayout>
 

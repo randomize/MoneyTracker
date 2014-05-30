@@ -53,14 +53,12 @@ public class DebtsCategoriesExpandableListAdapter extends BaseExpandableListAdap
 			boolean isLastChild, View convertView, ViewGroup parent) 
 	{
 		final Debt child = ((Debt) getChild(groupPosition, childPosition));
-		final String ch_text = child.desc +  " " +  ( relevant ? ("(" + child.currencyName + ")") : "" );
+		String ch_text = child.desc +  " " +  ( relevant ? ("(" + child.currencyName + ")") : "" );
 
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.transrow_details, null);
 		}
 
-		TextView text = (TextView) convertView.findViewById(R.id.TextViewCategoryItemName);
-		text.setText(ch_text);
 
 		TextView amount = (TextView) convertView.findViewById(R.id.TextViewCategortItemAmount);
 		if (child.type == 1) {
@@ -73,6 +71,24 @@ public class DebtsCategoriesExpandableListAdapter extends BaseExpandableListAdap
 		} else {
 			amount.setText(String.format("%.2f", child.amount_end / rate));
 		}
+		
+		long date_cur =  System.currentTimeMillis() / 1000L;
+		java.util.Date endDate=new java.util.Date((long)child.date_end*1000);
+		java.util.Date curDate=new java.util.Date((long)date_cur*1000);
+		
+		int diffInDays = (int)( (curDate.getTime() - endDate.getTime()) 
+                 / (1000 * 60 * 60 * 24) );
+
+		if (child.date_end < date_cur) { // Outdated
+			convertView.setBackgroundColor(activity.getResources().getColor(R.color.errorous));
+			ch_text += (activity.getString(R.string.expired) + " " + String.valueOf(-diffInDays)
+					+ " " + activity.getString(R.string.ago) );
+		} else {
+			ch_text += (String.valueOf(diffInDays) + " " + activity.getString(R.string.left));
+		}
+
+		TextView text = (TextView) convertView.findViewById(R.id.TextViewCategoryItemName);
+		text.setText(ch_text);
 
 		/*
 		convertView.setOnClickListener(new OnClickListener() {

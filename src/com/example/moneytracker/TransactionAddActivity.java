@@ -73,9 +73,9 @@ public class TransactionAddActivity extends Activity {
 		
 		typeSpinner = (Spinner) findViewById(R.id.SpinnerTransType);
 		categorySpinner = (Spinner) findViewById(R.id.SpinnerTransCategory);
-		accountSpinner = (Spinner) findViewById(R.id.SpinnerTransAccount);
+		accountSpinner = (Spinner) findViewById(R.id.SpinnerDebtAccount);
 		memberSpinner = (NDSpinner) findViewById(R.id.SpinnerMember);
-		currencyLabel = (TextView) findViewById(R.id.TextViewCurrency);
+		currencyLabel = (TextView) findViewById(R.id.TextViewCurrency1);
 		
 		SetupAccountSpinner();
 		SetupCategorySpinner();
@@ -366,7 +366,7 @@ public class TransactionAddActivity extends Activity {
 
 		boolean valida = true;
 		
-		transactionAmount = (EditText) findViewById(R.id.EditTextTransactionAmount);
+		transactionAmount = (EditText) findViewById(R.id.EditTextAmountStart);
 		float amount = Float.valueOf(transactionAmount.getText().toString());
 		if (amount <= 0) {
 			transactionAmount.setBackgroundColor(getResources().getColor(R.color.errorous));
@@ -402,7 +402,7 @@ public class TransactionAddActivity extends Activity {
 		String comment = commentField.getText().toString();
 		newman.desc = comment.isEmpty() ? null : comment;
 
-		final DatePicker dp = (DatePicker) findViewById(R.id.datePicker1);
+		final DatePicker dp = (DatePicker) findViewById(R.id.date_end);
 		newman.date = dp.getCalendarView().getDate();
 		
 		db.open();
