@@ -359,7 +359,7 @@ public class DatabaseFacade {
 		
 	}
 
-	public void AddNewTransaction(Transaction newman) {
+	public int AddNewTransaction(Transaction newman) {
 
 		ContentValues cv = new ContentValues();
 
@@ -375,7 +375,7 @@ public class DatabaseFacade {
 			cv.putNull("desc");
 		}
 		
-		database.insert(DATABASE_TABLE_TRANSACTIONS, null, cv);
+		return (int) database.insert(DATABASE_TABLE_TRANSACTIONS, null, cv);
 	}
 
 	public ArrayList<Transaction> GetTransactionsInCategory(int categID) {
@@ -428,16 +428,16 @@ public class DatabaseFacade {
 		database.delete(DATABASE_TABLE_TRANSACTIONS, "_id = ?", new String[] { String.valueOf(id)});
 	}
 
-	public void AddNewCategory(TransactionCatagory newman) {
+	public int AddNewCategory(TransactionCatagory newman) {
 		ContentValues cv = new ContentValues();
 		cv.put("name", newman.name);
 		cv.put("type", newman.type);
-		database.insert(DATABASE_TABLE_TRANS_CATEGORY, null, cv);
+		return (int) database.insert(DATABASE_TABLE_TRANS_CATEGORY, null, cv);
 	}
 
-	public void AddNewMember(Member newman) {
+	public int AddNewMember(Member newman) {
 		ContentValues cv = new ContentValues();
 		cv.put("name", newman.name);
-		database.insert(DATABASE_TABLE_MEMBERS, null, cv);
+		return (int) database.insert(DATABASE_TABLE_MEMBERS, null, cv);
 	}
 }

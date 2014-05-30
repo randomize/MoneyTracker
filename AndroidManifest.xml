@@ -71,7 +71,7 @@
 
  		<activity
             android:name="com.example.moneytracker.TransactionAddActivity"
-			android:windowSoftInputMode="stateHidden" >
+			>
         </activity>
 
     </application>

@@ -3,6 +3,7 @@ package com.example.moneytracker;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -42,6 +43,8 @@ public class TransactionAddActivity extends Activity {
 	private int member_ids[] = null;
 	private String member_labels[] = null;
 	private int add_member_index = -1;
+	private int member_newman_id = -1; // To handle cool selection of last added member
+	private HashMap<Integer, Integer> member_map = new HashMap<Integer, Integer>();
 
 	private int account_spinner_ids[] = null;              // index => id mapping
 	private String account_spinner_lables[] = null;        // index => label (like Cash)
@@ -87,6 +90,7 @@ public class TransactionAddActivity extends Activity {
 				if (position == add_member_index) {
 					// Show dialog
 					ShowNewMemberDialog();
+					parentView.setSelection(0);
 				}
 				
 			}
@@ -123,6 +127,7 @@ public class TransactionAddActivity extends Activity {
 			Member m = mems.get(i);
 			member_ids[i] = m.id;
 			member_labels[i] = Member.GetLocalized(this, m.name);
+			member_map.put(m.id, i);
 		}
 		member_labels[mems.size()] = getString(R.string.member_new);
 		add_member_index = mems.size();
@@ -130,6 +135,16 @@ public class TransactionAddActivity extends Activity {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, member_labels);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		memberSpinner.setAdapter(adapter);
+		
+		if (member_newman_id >= 0 ) {
+			Integer id = member_map.get(member_newman_id);
+			if (id != null) {
+				member_newman_id = id;
+				if (member_newman_id >= 0 && member_newman_id < mems.size()) {
+					memberSpinner.setSelection(member_newman_id, true);
+				}
+			}
+		}
 		
 	}
 	
@@ -155,8 +170,11 @@ public class TransactionAddActivity extends Activity {
 					newman.name = m_Text;
 					
 					db.open();
-					db.AddNewMember(newman);
+					member_newman_id = db.AddNewMember(newman);
 					db.close();
+					
+					Log.i("ggg", "ggg id = " + member_newman_id);
+					
 					
 					LoadMembers();
 
