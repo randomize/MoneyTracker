@@ -7,8 +7,11 @@ import java.util.HashMap;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -52,6 +55,8 @@ public class TransactionAddActivity extends Activity {
 	private String account_spinner_lables[] = null;        // index => label (like Cash)
 	private Currency account_spinner_currencies[] = null;  // index => label (like USD)
 	private float selected_currency_rate = 1.0f;
+	private float selected_account_limit = 0;
+	private float account_limits[] = null;
 	
 	// Views
 	
@@ -330,8 +335,12 @@ public class TransactionAddActivity extends Activity {
 		ArrayList<TransactionCatagory> in = new ArrayList<TransactionCatagory>();
 		ArrayList<TransactionCatagory> out = new ArrayList<TransactionCatagory>();
 		
+		//SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+		boolean alow_debts_man = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("allow_debts_manual", false) ;
 		for (TransactionCatagory cat : cats) {
-			if (cat.id == 1 || cat.id == 2) continue; // skipping debts default categs
+			if (alow_debts_man == false) {
+				if (cat.id == 1 || cat.id == 2) continue; // skipping debts default categs
+			}
 			if (cat.type == 0) {
 				out.add(cat);
 			} else {
@@ -416,17 +425,24 @@ public class TransactionAddActivity extends Activity {
 		account_spinner_ids = new int[acs.size()];
 		account_spinner_lables = new String[acs.size()];
 		account_spinner_currencies = new Currency[acs.size()];
+		account_limits = new float[acs.size()];
 
+		db.open();
 		for (int i = 0; i < acs.size(); i++) {
 			Account ac = acs.get(i);
 			account_spinner_ids[i] = ac.id;
-			account_spinner_lables[i] = Account.GetLocalized(this,ac.name) + " (" + ac.currencyName + ")";
 			account_spinner_currencies[i] = new Currency();
 			account_spinner_currencies[i].id = ac.currencyId;
 			account_spinner_currencies[i].name = ac.currencyName;
 			account_spinner_currencies[i].rate = ac.currencyRate;
 			
+			float max = db.GetCurrentBalance(ac.id) / ac.currencyRate;
+			account_limits[i] = max;
+
+			account_spinner_lables[i] = Account.GetLocalized(this,ac.name) + " = "+ String.format("%.2f",max) +" (" + ac.currencyName + ")";
+			
 		}
+		db.close();
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, account_spinner_lables);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -495,6 +511,20 @@ public class TransactionAddActivity extends Activity {
 				valida = false;
 			} else {
 				categorySpinner.setBackgroundColor(0);
+			}
+		}
+
+		boolean alow_neg_balan = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("allow_negative", false) ;
+		//SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+		if ( alow_neg_balan == false) {
+			if (typeSpinner.getSelectedItemPosition() == 0) // outcome 
+			{
+				if (amount > account_limits[accountSpinner.getSelectedItemPosition()]) {
+					transactionAmount.setBackgroundColor(getResources().getColor(R.color.errorous));
+					valida = false;
+				} else {
+					transactionAmount.setBackgroundColor(0);
+				}
 			}
 		}
 		

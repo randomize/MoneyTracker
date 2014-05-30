@@ -33,8 +33,8 @@
     <string name="budget">Budget</string>
 
     <!--  Settings activity -->
-    <string name="pref_sync">Checkbox</string>
-    <string name="pref_sync_summ">Checkbox is here</string>
+    <string name="pref_sync">Allow negative balace</string>
+    <string name="pref_sync_summ">allow to have negative balance on accounts</string>
 
     <!--  Main context menu -->
     <string name="action_settings">Settings</string>
@@ -119,5 +119,7 @@
     <string name="expired">Expired</string>
     <string name="ago">ago</string>
     <string name="left">days left</string>
+    <string name="allow_manual_debts_categories">Allow manual debts categories</string>
+    <string name="when_enabled_you_can_manually_create_debts_transactions">When enabled you can manually create debts transactions</string>
     
 </resources>
