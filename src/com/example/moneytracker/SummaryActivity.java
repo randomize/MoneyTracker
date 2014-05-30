@@ -7,9 +7,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 
 public class SummaryActivity extends Activity {
@@ -24,6 +28,7 @@ public class SummaryActivity extends Activity {
 	private	ExpandableListView mainList;
 
 	private ArrayList<TransactionCategoryGroup> groups = new ArrayList<TransactionCategoryGroup>();
+	private String m_Text = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,7 @@ public class SummaryActivity extends Activity {
 		setContentView(R.layout.activity_status);
 
 		mainList = (ExpandableListView) findViewById(R.id.trans_categories_listview);
+		mainList.setEmptyView(findViewById(R.id.trans_cat_list_empter));
 		
 		db = new DatabaseFacade(this);
 		
@@ -99,6 +105,12 @@ public class SummaryActivity extends Activity {
 		case R.id.action_change_currency:
 			PopupCurrencySelector();
 			return true;
+		case R.id.action_category_new_outcome:
+			CreateNewCategory(0);
+			return true;
+		case R.id.action_category_new_income:
+			CreateNewCategory(1);
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -143,5 +155,69 @@ public class SummaryActivity extends Activity {
 			mainList.collapseGroup(position - 1);
 			mainList.expandGroup(position - 1);
 		}
+	}
+	
+	private void CreateNewCategory(final int type) {
+
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		if (type == 0) 
+			builder.setTitle(getString(R.string.new_category_outcome));
+		else 
+			builder.setTitle(getString(R.string.new_category_income));
+
+		// Set up the input
+		final EditText input = new EditText(this);
+		// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+		//input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+		input.setInputType(InputType.TYPE_CLASS_TEXT);
+		builder.setView(input);
+
+		// Set up the buttons
+		builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() { 
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				m_Text = input.getText().toString();
+				if (m_Text.isEmpty() == false) {
+					TransactionCatagory newman = new TransactionCatagory();
+					newman.type = type;
+					newman.name = m_Text;
+					
+					db.open();
+					db.AddNewCategory(newman);
+					db.close();
+				 
+
+				}
+			}
+		});
+
+
+		builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.cancel();
+			}
+		});
+		
+		final AlertDialog dialog = builder.create();
+
+       // The TextWatcher will look for changes to the Dialogs field.
+        input.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence c, int i, int i2, int i3) {}
+            @Override public void onTextChanged(CharSequence c, int i, int i2, int i3) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Will be called AFTER text has been changed.
+                if (editable.toString().length() == 0){
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                } else {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                }
+            }
+        });
+
+		dialog.show();
+		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 	}
 }

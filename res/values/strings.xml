@@ -47,6 +47,7 @@
     <string name="sure">Are you sure?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="empty_account_list">You have no accounts\n create one with new button</string>
     
     <!-- New transaction activity  -->
     <string name="cancel">Cancel</string>
@@ -62,7 +63,7 @@
     <string name="member">Member</string>
     
     <!-- New account activity  -->
-    <string name="type">Account Type</string>
+    <string name="type">Account type</string>
     <string name="currency">Currency</string>
     <string name="comment">Comment</string>
     <string name="new_curr">New currency...</string>
@@ -77,9 +78,17 @@
     <string name="account_name">Name</string>
 
     <!-- Summary activity menu -->
-    <string name="new_transaction">New Transaction</string>
-    <string name="new_category">New Category</string>
-    <string name="change_currency">Currency...</string><color name="summary_header">#d5e5ff</color>
+    <string name="new_transaction">New transaction</string>
+    <string name="new_category_income">New income category</string>
+    <string name="new_category_outcome">New outcome category</string>
+    <string name="change_currency">Change currency</string><color name="summary_header">#d5e5ff</color>
+    <string name="empty_trans_list">You have no transactios,\n create some using "New transaction"</string>
+    
+    <!-- Debts activity -->
+    <string name="new_debt">New debt</string>
+    <string name="accepted">Accept debt</string>
+
+    <!-- New Debt activity -->
     
     <!-- Default categories -->
     <string name="category_salary">Salary</string>
@@ -87,5 +96,12 @@
     <string name="category_food">Foodstuff</string>
     <string name="category_services">Services</string>
     <string name="category_car">Car</string>
+    <string name="category_debts_income">Income debts</string>
+    <string name="category_debts_outcome">Outcome debts</string>
+
+    <!-- Transaction list activity -->
+    <string name="trans_delete">Delete</string>
+    <string name="desc">Delete</string>
+    <string name="account">Account</string>
     
 </resources>

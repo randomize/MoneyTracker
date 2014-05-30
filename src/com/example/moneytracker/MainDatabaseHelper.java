@@ -57,9 +57,24 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
    		     "_id integer primary key autoincrement, " + 
    		     "amount real not null, " + 
    		     "category integer not null references transaction_category(_id) on delete cascade," + // Category id FK
-   		     "date text," +
+   		     "date integer not null," +
    		     "account integer not null references accounts(_id) on delete cascade," + // Account id FK
    		     "desc text," +
+   		     "member integer not null references members(_id) on delete cascade" + // Member id FK
+   		");" +
+
+   		// Debts
+   		"create table debts (" + 
+   		     "_id integer primary key autoincrement, " + 
+   		     "desc text not null," +
+   		     "type integer not null," +      // 0 - outcome and 1 - income
+   		     "amount_start real not null, " + 
+   		     "amount_end real not null, " + 
+   		     "category_start integer not null references transaction_category(_id) on delete cascade," + // Category id FK
+   		     "category_end integer not null references transaction_category(_id) on delete cascade," + // Category id FK
+   		     "date_start integer not null," +
+   		     "date_end integer not null," +
+   		     "account integer not null references accounts(_id) on delete cascade," + // Account id FK
    		     "member integer not null references members(_id) on delete cascade" + // Member id FK
    		");" +
    		     
@@ -79,14 +94,15 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
         "group by type, category " +
         "order by type ; " +
         
-        "create view trans_details as select  transactions._id as _id, amount, category, date, account, desc, currency, accounts.name as account_name, " +
+        "create view trans_details as select  transactions._id as _id, amount, category, date, account, desc, accounts.name as account_name, " +
         "accounts.type as accounts_type,  transaction_category.type as cat_type,  transaction_category.name as cat_name, " +
         "member, members.name as member_name, currency as cur,  currency.name as cur_name, rate as cur_rate " +
         "from transactions   " +
         "inner join accounts on transactions.account = accounts._id " +
         "inner join transaction_category on transactions.category = transaction_category._id " +
         "inner join members on transactions.member = members._id " +
-        "inner join currency on accounts.currency = currency._id ; " +
+        "inner join currency on accounts.currency = currency._id " +
+        "order by date ; " +
    		     
    		// Base values
    		" insert into currency (name, rate) " + 
@@ -116,29 +132,29 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
    		" insert into accounts (currency,name,type) " + 
    		" values (3,'MASTERCARD',1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (1010,1,'2012-01-19', 1, 'test_1', 1); " + 
+   		" values (1010,1,3112233, 1, 'test_1', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (1020,1,'2012-02-19', 2, 'test_2', 1); " + 
+   		" values (1020,1,4132233, 2, 'test_2', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (120,2,'2012-02-19', 1, 'test_3', 1); " + 
+   		" values (120,2,5122233, 1, 'test_3', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (200,2,'2012-01-19', 2, 'test_4', 1); " + 
+   		" values (200,2,6112223, 2, 'test_4', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (200,3,'2012-02-19', 1, 'test_1', 1); " + 
+   		" values (200,3,7112233, 1, 'test_1', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (110,3,'2012-02-29', 2, 'test_4', 1); " + 
+   		" values (110,3,8162233, 2, 'test_4', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (110,4,'2012-01-29', 1, 'test_4', 1); " + 
+   		" values (110,4,9132233, 1, 'test_4', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (120,4,'2012-01-19', 2, 'test_4', 1); " + 
+   		" values (120,4,10112333, 2, 'test_4', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (120,1,'2012-05-15', 1, 'test_1', 1); " + 
+   		" values (120,1,11112233, 1, 'test_1', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (122,1,'2012-01-15', 2, 'test_3', 1); " + 
+   		" values (122,1,12112233, 2, 'test_3', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (100,2,'2012-01-13', 2, null, 1); " + 
+   		" values (100,2,13112223, 2, null, 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (100,2,'2012-03-19', 2, null, 1) ";
+   		" values (100,2,14112223, 2, null, 1) ";
 
 	public MainDatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);

@@ -282,7 +282,7 @@ public class TransactionAddActivity extends Activity {
 		newman.desc = comment.isEmpty() ? null : comment;
 
 		final DatePicker dp = (DatePicker) findViewById(R.id.datePicker1);
-		newman.date = DateFormat.getDateInstance().format(dp.getCalendarView().getDate());
+		newman.date = dp.getCalendarView().getDate();
 		
 		db.open();
 		db.AddNewTransaction(newman);

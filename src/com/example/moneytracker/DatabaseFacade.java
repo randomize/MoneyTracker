@@ -269,6 +269,7 @@ public class DatabaseFacade {
 		}
 		
 		database.update(DATABASE_TABLE_ACCOUNTS, cv, "_id = ?", new String[] {String.valueOf(replacer.id)});
+		// TODO: also fix currency change in transactions amount field WHERE id=_id
 		
 	}
 
@@ -404,7 +405,7 @@ public class DatabaseFacade {
 
 				s.id = c.getInt(idColIndex);
 				s.amount = c.getFloat(amColIndex);
-				s.date = c.getString(dateColIndex);
+				s.date = c.getLong(dateColIndex);
 				s.accountID = c.getInt(accIdColIndex);
 				s.desc = c.isNull(descColIndex) == false ? c.getString(descColIndex) : null;
 				s.account = c.getString(accNameColIndex);
@@ -421,5 +422,16 @@ public class DatabaseFacade {
 		c.close();
 		return result;
 		
+	}
+
+	public void DeleteTransaction(int id) {
+		database.delete(DATABASE_TABLE_TRANSACTIONS, "_id = ?", new String[] { String.valueOf(id)});
+	}
+
+	public void AddNewCategory(TransactionCatagory newman) {
+		ContentValues cv = new ContentValues();
+		cv.put("name", newman.name);
+		cv.put("type", newman.type);
+		database.insert(DATABASE_TABLE_TRANS_CATEGORY, null, cv);
 	}
 }

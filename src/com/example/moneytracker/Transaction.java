@@ -11,8 +11,8 @@ public class Transaction {
 	// Amount in parrots
 	public float amount;
 	
-	// DateTime string
-	public String date;
+	// DateTime (unix format)
+	public long date;
 
 	// Account
 	public int accountID;

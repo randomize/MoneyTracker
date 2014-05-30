@@ -22,7 +22,7 @@
     <string name="amount">Сумма</string>
     <string name="new_trans_desc">Примечание</string>
     <string name="new_trans">Новая транзакция</string>
-    <string name="new_trans_no_account">Пожалуйста, создайте хотябы один аккаунт</string>
+    <string name="new_trans_no_account">Пожалуйста, создайте хотябы один счет</string>
     <string name="error">Ошибка</string>
     <string name="cancel">Отмена</string>
     <string name="save">Сохранить</string>
@@ -35,6 +35,7 @@
     <string name="account_edit">Редактировать</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
+    <string name="empty_account_list">У вас нет счетов,\n создайте их кнопкой "Новый"</string>
 
     <!--  Money account types -->
     <string name="type_cash">Наличные</string>
@@ -42,10 +43,25 @@
     <string name="type_bank_accounts">Банковский счет</string>
     <string name="account_name">Имя счета</string>
 
+    <!-- Summary activity menu -->
+    <string name="new_transaction">Новая транзакция</string>
+    <string name="new_category_income">Новая статья доходов</string>
+    <string name="new_category_outcome">Новая статья расходов</string>
+    <string name="change_currency">Валюта...</string>
+    <string name="empty_trans_list">У вас нет транзакций,\n создайте их кнопкой "Новая транзакция"</string>
+    <color name="summary_header">#d5e5ff</color>
+
     <!-- Default categories -->
     <string name="category_salary">Зарплата</string>
     <string name="category_interests">Проценты</string>
     <string name="category_food">Продукты питания</string>
     <string name="category_services">Услуги</string>
     <string name="category_car">Машина</string>
+    <string name="category_debts_income">Доход с долгов</string>
+    <string name="category_debts_outcome">Расходы на долги</string>
+
+    <!-- Transaction list activity -->
+    <string name="trans_delete">Удалить транзакцию</string>
+    <string name="desc">Описание</string>
+    <string name="account">Счет</string>
 </resources>

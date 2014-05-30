@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.MatrixCursor;
 import android.os.Bundle;
 import android.test.ActivityUnitTestCase;
 import android.util.Log;
@@ -56,6 +57,7 @@ public class AccountsActivity extends Activity {
 
 		mainList.setAdapter(main_adapter);
 
+		mainList.setEmptyView(findViewById(R.id.accounts_list_empter));
 
 	}
 

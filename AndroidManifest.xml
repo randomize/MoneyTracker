@@ -49,7 +49,7 @@
  		<activity
             android:name="com.example.moneytracker.SummaryActivity"
             android:label="@string/status"
-			android:windowSoftInputMode="stateHidden" >
+			>
         </activity>
 
  		<activity
@@ -59,6 +59,12 @@
 
  		<activity
             android:name="com.example.moneytracker.DebtsListActivity"
+            android:label="@string/debts"
+			android:windowSoftInputMode="stateHidden" >
+        </activity>
+
+ 		<activity
+            android:name="com.example.moneytracker.DebtAddActivity"
             android:label="@string/debts"
 			android:windowSoftInputMode="stateHidden" >
         </activity>
