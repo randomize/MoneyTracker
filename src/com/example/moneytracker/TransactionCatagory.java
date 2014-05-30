@@ -26,6 +26,7 @@ public class TransactionCatagory {
         category_names.put("Foodstuffs", R.string.category_food);
         category_names.put("Services", R.string.category_services);
         category_names.put("Car", R.string.category_car);
+        category_names.put("Debts", R.string.debts);
     }
     
     public static String GetLocalizedCategory(Context context, String key) {

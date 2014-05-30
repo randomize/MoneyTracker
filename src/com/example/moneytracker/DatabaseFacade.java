@@ -19,6 +19,7 @@ public class DatabaseFacade {
 	private static final String DATABASE_TABLE_ACCOUNTS = "accounts";
 	private static final String DATABASE_TABLE_MEMBERS = "members";
 	private static final String DATABASE_TABLE_TRANSACTIONS = "transactions";
+	private static final String DATABASE_TABLE_DEBTS = "debts";
 	private static final String DATABASE_VIEW_INCOME_SUMS = "accounts_income";
 	private static final String DATABASE_VIEW_OUTCOME_SUMS = "accounts_outcome";
 	private static final String DATABASE_VIEW_TRANS_SUMMARY = "trans_summary";
@@ -73,6 +74,11 @@ public class DatabaseFacade {
 	}
 
 	public void NewCurrency(String name, float rate) {
+
+		ContentValues cv = new ContentValues();
+		cv.put("name", name);
+		cv.put("rate", rate);
+		database.insert(DATABASE_TABLE_CURRENCY, null, cv);
 	}
 	
 	public Currency GetCurrencyByID(int id) {
@@ -310,6 +316,38 @@ public class DatabaseFacade {
 		c.close();
 		return result;
 	}
+	
+	public Account GetAcccountByID(int id) {
+
+		Account s = new Account();
+		s.id = id;
+
+		Cursor c = database.query(DATABASE_TABLE_ACCOUNTS, null, "_id = ?", new String[] {String.valueOf(id)}, null, null, null);
+
+		if (c.moveToFirst()) {
+
+			int nameColIndex = c.getColumnIndex("name");
+			int currencyColIndex = c.getColumnIndex("currency");
+			int typeColIndex = c.getColumnIndex("type");
+			int commentColIndex = c.getColumnIndex("comment");
+
+			s.name = c.getString(nameColIndex);
+			s.currencyId = c.getInt(currencyColIndex);
+			Currency cur = GetCurrencyByID(s.currencyId);
+			s.currencyName = cur.name;
+			s.currencyRate = cur.rate;
+			s.typeId = c.getInt(typeColIndex);
+
+			if (c.isNull(commentColIndex) == false) {
+				s.comment = c.getString(commentColIndex);
+			}
+
+		}
+
+		c.close();
+		return s;
+		
+	}
 
 	public ArrayList<TransactionCatagory> GetCategories() {
 		ArrayList<TransactionCatagory> result = new ArrayList<TransactionCatagory>();
@@ -439,5 +477,106 @@ public class DatabaseFacade {
 		ContentValues cv = new ContentValues();
 		cv.put("name", newman.name);
 		return (int) database.insert(DATABASE_TABLE_MEMBERS, null, cv);
+	}
+	
+	public ArrayList<DebtsGroup> GetDebts() {
+		// set names for grups
+		ArrayList<DebtsGroup> result = new ArrayList<DebtsGroup>(2);
+
+		DebtsGroup in = new DebtsGroup("TheyOwe", 1);
+		DebtsGroup out = new DebtsGroup("IOwe", 0);
+
+		Cursor c = database.query(DATABASE_TABLE_DEBTS, null, null, null , null, null, null);
+
+		if (c.moveToFirst()) {
+
+			do {
+				Debt s = new Debt();
+				s.id = c.getInt(0);
+				s.desc = c.getString(1);
+				s.type = c.getInt(2);
+				s.amount_start = c.getFloat(3);
+				s.amount_end = c.getFloat(4);
+				s.category_start = c.getInt(5);
+				s.category_end = c.getInt(6);
+				s.date_start = c.getLong(7);
+				s.date_end = c.getLong(8);
+				s.accountID = c.getInt(9);
+				s.memberID = c.getInt(10);
+				
+				Account ac = GetAcccountByID(s.accountID);
+
+				s.currencyName = ac.currencyName;
+				s.currencyRate = ac.currencyRate;
+				s.currencyID = ac.currencyId;
+
+				if (s.type == 0) {
+					out.AddChild(s);
+					s.parent = out;
+				} else {
+					in.AddChild(s);
+					s.parent = in;
+				}
+
+			} while (c.moveToNext());
+
+		}
+
+		c.close();
+
+		if (in.isEmpty() == false) result.add(in);
+		if (out.isEmpty() == false) result.add(out);
+
+		return result;
+	}
+
+	public Debt GetDebt(int id) {
+		return null;
+	}
+
+	
+	public int AddDebt(Debt newman) {
+		
+		ContentValues cv = new ContentValues();
+		cv.put("desc", newman.desc);
+		cv.put("type", newman.type);
+		cv.put("amount_start", newman.amount_start);
+		cv.put("amount_end", newman.amount_end);
+		cv.put("category_start", newman.category_start);
+		cv.put("category_end", newman.category_end);
+		cv.put("date_start", newman.date_start);
+		cv.put("date_end", newman.date_end);
+		cv.put("account", newman.accountID);
+		cv.put("member", newman.memberID);
+		int s = (int) database.insert(DATABASE_TABLE_TRANS_CATEGORY, null, cv);
+		
+		
+		String desk = newman.type == 0 ? 
+				context.getString(R.string.recieved_in_debt) :
+				context.getString(R.string.sent_in_debt);
+		
+		Transaction tr = new Transaction();
+		tr.accountID = newman.accountID;
+		tr.amount = newman.amount_start;
+		tr.memberID = newman.memberID;
+		tr.categoryID = newman.category_start;
+		tr.date = newman.date_start;
+		tr.desc = desk;
+		
+		AddNewTransaction(tr);
+		
+		return s;
+		
+	}
+	
+
+	public void RemoveDebt(int id) {
+		
+		Debt d = GetDebt(id);
+		
+		// TODO: Make trans
+		
+		database.delete(DATABASE_TABLE_TRANSACTIONS, "_id = ?", new String[] { String.valueOf(id)});
+
 	}
 }

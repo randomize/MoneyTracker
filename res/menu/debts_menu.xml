@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<item android:id="@+id/debts_new_income" android:title="@string/new_debt_income" android:showAsAction="always" />
+<item android:id="@+id/debts_new_outcome" android:title="@string/new_debt_outcome" android:showAsAction="always" />
+    <item
+        android:id="@+id/action_change_currency"
+        android:orderInCategory="101"
+        android:showAsAction="never"
+        android:title="@string/change_currency"/>
+</menu>

@@ -22,13 +22,13 @@
     
 
     <!-- Accounts list activity -->
-    <string name="account_new">Новый</string>
+    <string name="account_new">Новый счет</string>
     <string name="account_delete">Удалить</string>
     <string name="account_edit">Редактировать</string>
     <string name="sure">Уверены?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
-    <string name="empty_account_list">У вас нет счетов,\n создайте их кнопкой "Новый"</string>
+    <string name="empty_account_list">У вас нет счетов,\nсоздайте их кнопкой "Новый"</string>
 
     <!-- New transaction activity  -->
     <string name="cancel">Отмена</string>
@@ -63,9 +63,22 @@
     <string name="new_category_income">Новая статья доходов</string>
     <string name="new_category_outcome">Новая статья расходов</string>
     <string name="change_currency">Валюта...</string>
-    <string name="empty_trans_list">У вас нет транзакций,\n создайте их кнопкой "Новая транзакция"</string>
+    <string name="empty_trans_list">У вас нет транзакций,\nсоздайте их кнопкой "Новая транзакция"</string>
+
+    <!-- Debts activity -->
+    <string name="new_debt_outcome">Взять</string>
+    <string name="new_debt_income">Дать</string>
+    <string name="accepted">Долг отдан</string>
+    <string name="empty_debts_list">У вас пока нет долгов,\nиспользуйте меню чтобы созать парочку</string>
+    <string name="i_owe">Я должен</string>
+    <string name="i_am_owed">Мне должны</string>
+    <string name="relevant_currency">Соответствующая</string>
 
     <!-- New Debt activity -->
+    <string name="recieved_in_debt">Получено в долг</string>
+    <string name="sent_in_debt">Отдано в долг</string>
+    <string name="i_returned_debt">Оплатил долг</string>
+    <string name="they_returned_debt">Вернули долг</string>
 
     <!-- Default categories -->
     <string name="category_salary">Зарплата</string>

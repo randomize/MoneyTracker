@@ -4,7 +4,7 @@
     <item
         android:id="@+id/action_tranaction_new"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        android:showAsAction="always"
         android:title="@string/new_transaction"/>
 
     <item

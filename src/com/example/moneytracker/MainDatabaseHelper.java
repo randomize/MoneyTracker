@@ -115,6 +115,10 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
    		" values ('Myself'); " + 
    		" insert into accounts (currency,name,type) " + 
    		" values (1,'Cash',0); " + 
+   		" insert into transaction_category (_id, type, name) " + 
+   		" values (1,1,'Debts'); " + 
+   		" insert into transaction_category (_id, type, name) " + 
+   		" values (2,0,'Debts'); " + 
    		" insert into transaction_category (type, name) " + 
    		" values (1,'Salary'); " + 
    		" insert into transaction_category (type, name) " + 
@@ -131,30 +135,38 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
    		" values (2,'VISA',1); " + 
    		" insert into accounts (currency,name,type) " + 
    		" values (3,'MASTERCARD',1); " + 
+   		" insert into debts (desc, type, amount_start, amount_end, category_start, category_end, date_start, date_end, account, member) " + 
+   		" values ('vasea', 1, 10, 20, 2, 1, 23453452345, 65634646464, 2, 1 ); " + 
+   		" insert into debts (desc, type, amount_start, amount_end, category_start, category_end, date_start, date_end, account, member) " + 
+   		" values ('kolea', 0, 30, 35, 1, 2, 23453452345, 65634646464, 2, 1 ); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (1010,1,3112233, 1, 'test_1', 1); " + 
+   		" values (10,2,310012233, 2, 'given vasea', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (1020,1,4132233, 2, 'test_2', 1); " + 
+   		" values (30,1,3112233, 2, 'owe to kolea', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (120,2,5122233, 1, 'test_3', 1); " + 
+   		" values (1010,3,3112233, 1, 'test_1', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (200,2,6112223, 2, 'test_4', 1); " + 
+   		" values (1020,3,4132233, 2, 'test_2', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (200,3,7112233, 1, 'test_1', 1); " + 
+   		" values (120,4,5122233, 1, 'test_3', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (110,3,8162233, 2, 'test_4', 1); " + 
+   		" values (200,4,6112223, 2, 'test_4', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (110,4,9132233, 1, 'test_4', 1); " + 
+   		" values (200,5,7112233, 1, 'test_1', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (120,4,10112333, 2, 'test_4', 1); " + 
+   		" values (110,5,8162233, 2, 'test_4', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (120,1,11112233, 1, 'test_1', 1); " + 
+   		" values (110,6,9132233, 1, 'test_4', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (122,1,12112233, 2, 'test_3', 1); " + 
+   		" values (120,6,10112333, 2, 'test_4', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (100,2,13112223, 2, null, 1); " + 
+   		" values (120,3,11112233, 1, 'test_1', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (100,2,14112223, 2, null, 1) ";
+   		" values (122,3,12112233, 2, 'test_3', 1); " + 
+   		" insert into transactions (amount, category, date, account, desc, member) " + 
+   		" values (100,4,13112223, 2, null, 1); " + 
+   		" insert into transactions (amount, category, date, account, desc, member) " + 
+   		" values (100,4,14112223, 2, null, 1) ";
 
 	public MainDatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);

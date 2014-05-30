@@ -7,6 +7,7 @@
     <color name="income">#00BB00</color>
     <color name="outcome">#BB0000</color>
     <color name="account_comment">#BBBBBB</color>
+    <color name="summary_header">#d5e5ff</color>
 
     <string name="app_name">MoneyTracker</string>
 
@@ -82,14 +83,23 @@
     <string name="new_transaction">New transaction</string>
     <string name="new_category_income">New income category</string>
     <string name="new_category_outcome">New outcome category</string>
-    <string name="change_currency">Change currency</string><color name="summary_header">#d5e5ff</color>
+    <string name="change_currency">Change currency</string>
     <string name="empty_trans_list">You have no transactios,\n create some using "New transaction"</string>
     
     <!-- Debts activity -->
-    <string name="new_debt">New debt</string>
-    <string name="accepted">Accept debt</string>
+    <string name="new_debt_income">Give in debt</string>
+    <string name="new_debt_outcome">Take in debt</string>
+    <string name="accepted">Resolve debt</string>
+    <string name="empty_debts_list">You have no debts,\n create some using "New debt"</string>
+    <string name="i_owe">I owe</string>
+    <string name="i_am_owed">I am owed</string>
+    <string name="relevant_currency">Relevant</string>
 
     <!-- New Debt activity -->
+    <string name="recieved_in_debt">Got money in debt</string>
+    <string name="sent_in_debt">Sent money debt</string>
+    <string name="i_returned_debt">I paid my debt</string>
+    <string name="they_returned_debt">Money were retuned</string>
     
     <!-- Default categories -->
     <string name="category_salary">Salary</string>
