@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">MoneyTracker</string>
+    <color name="listcolor">#FFE87C</color>
+    <color name="black">#000000</color>
+    <color name="errorous">#FFAAAA</color>
+    <color name="income">#00BB00</color>
+    <color name="outcome">#BB0000</color>
+    <color name="account_comment">#BBBBBB</color>
 
+    <string name="app_name">MoneyTracker</string>
 
     <!--  old shit -->
     <string name="hello_world">Hello world!</string>
@@ -15,13 +21,7 @@
     <string name="todo_edit_summary">Summary</string>
     <string name="todo_edit_description">Description</string>
     <string name="todo_edit_confirm">Confirm</string>
-    <color name="listcolor">#FFE87C</color>
-    <color name="black">#000000</color>
 
-    <color name="errorous">#FFAAAA</color>
-    <color name="income">#00BB00</color>
-    <color name="outcome">#BB0000</color>
-    <color name="account_comment">#BBBBBB</color>
 
     <!-- Main menu buttons -->
     <string name="status">Status</string>
@@ -61,6 +61,7 @@
     <string name="error">Error</string>
     <string name="myself">Myself</string>
     <string name="member">Member</string>
+    <string name="member_new">New member...</string>
     
     <!-- New account activity  -->
     <string name="type">Account type</string>

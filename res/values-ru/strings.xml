@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="app_name">Денежный учет</string>
+
+    <!-- Main menu buttons -->
     <string name="status">Сводка</string>
     <string name="accounts">Счета</string>
     <string name="events_and_tasks">События и задачи</string>
@@ -8,35 +11,47 @@
     <string name="accumumations">Накопления</string>
     <string name="budget">Бюджет</string>
 
+    <!--  Settings activity -->
     <string name="pref_sync">Галочко</string>
     <string name="pref_sync_summ">Я есть галочко</string>
 
+    <!--  Main context menu -->
     <string name="action_settings">Настройки</string>
     <string name="action_exit">Выход</string>
+    <string name="action_about">О программе</string>
     
-    <string name="income">Доходы</string>
-    <string name="outcome">Расходы</string>
+
+    <!-- Accounts list activity -->
+    <string name="account_new">Новый</string>
+    <string name="account_delete">Удалить</string>
+    <string name="account_edit">Редактировать</string>
+    <string name="sure">Уверены?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="empty_account_list">У вас нет счетов,\n создайте их кнопкой "Новый"</string>
 
     <!-- New transaction activity  -->
+    <string name="cancel">Отмена</string>
+    <string name="save">Сохранить</string>
     <string name="ok">Хорошо</string>
     <string name="amount">Сумма</string>
     <string name="new_trans_desc">Примечание</string>
     <string name="new_trans">Новая транзакция</string>
     <string name="new_trans_no_account">Пожалуйста, создайте хотябы один счет</string>
     <string name="error">Ошибка</string>
-    <string name="cancel">Отмена</string>
-    <string name="save">Сохранить</string>
     <string name="myself">Я</string>
     <string name="member">Член семьи</string>
-
-    <!-- Accounts list activity -->
-    <string name="account_new">Новый</string>
-    <string name="account_delete">Удалить</string>
-    <string name="account_edit">Редактировать</string>
-    <string name="yes">Да</string>
-    <string name="no">Нет</string>
-    <string name="empty_account_list">У вас нет счетов,\n создайте их кнопкой "Новый"</string>
-
+    <string name="member_new">Новый...</string>
+    
+    <!-- New account activity  -->
+    <string name="type">Тип аккаунта</string>
+    <string name="currency">Валюта</string>
+    <string name="comment">Примечание</string>
+    <string name="new_curr">Новая валюта...</string>
+    
+    <string name="income">Доходы</string>
+    <string name="outcome">Расходы</string>
+    
     <!--  Money account types -->
     <string name="type_cash">Наличные</string>
     <string name="type_cards">Карта</string>
@@ -49,7 +64,8 @@
     <string name="new_category_outcome">Новая статья расходов</string>
     <string name="change_currency">Валюта...</string>
     <string name="empty_trans_list">У вас нет транзакций,\n создайте их кнопкой "Новая транзакция"</string>
-    <color name="summary_header">#d5e5ff</color>
+
+    <!-- New Debt activity -->
 
     <!-- Default categories -->
     <string name="category_salary">Зарплата</string>

@@ -8,9 +8,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -37,6 +41,7 @@ public class TransactionAddActivity extends Activity {
 	
 	private int member_ids[] = null;
 	private String member_labels[] = null;
+	private int add_member_index = -1;
 
 	private int account_spinner_ids[] = null;              // index => id mapping
 	private String account_spinner_lables[] = null;        // index => label (like Cash)
@@ -48,7 +53,7 @@ public class TransactionAddActivity extends Activity {
 	private Spinner typeSpinner;
 	private Spinner categorySpinner;
 	private Spinner accountSpinner;
-	private Spinner memberSpinner;
+	private NDSpinner memberSpinner;
 	private TextView currencyLabel;
 	private EditText transactionAmount;
 	private EditText commentEdit;
@@ -66,28 +71,31 @@ public class TransactionAddActivity extends Activity {
 		typeSpinner = (Spinner) findViewById(R.id.SpinnerTransType);
 		categorySpinner = (Spinner) findViewById(R.id.SpinnerTransCategory);
 		accountSpinner = (Spinner) findViewById(R.id.SpinnerTransAccount);
-		memberSpinner = (Spinner) findViewById(R.id.SpinnerMember);
+		memberSpinner = (NDSpinner) findViewById(R.id.SpinnerMember);
 		currencyLabel = (TextView) findViewById(R.id.TextViewCurrency);
 		
 		SetupAccountSpinner();
 		SetupCategorySpinner();
+		LoadMembers();
 		
-		db.open();
-		ArrayList<Member> mems = db.GetMembers();
-		db.close();
-		
-		member_ids = new int[mems.size()];
-		member_labels = new String[mems.size()];
-		
-		for (int i = 0 ; i < mems.size(); i++ ) {
-			Member m = mems.get(i);
-			member_ids[i] = m.id;
-			member_labels[i] = Member.GetLocalized(this, m.name);
-		}
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, member_labels);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		memberSpinner.setAdapter(adapter);
+		// On mmber click - handle "new member" option
+		memberSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+				if (position == add_member_index) {
+					// Show dialog
+					ShowNewMemberDialog();
+				}
+				
+			}
+			
+			@Override
+			public void onNothingSelected(AdapterView<?> parentView) {
+			}
+
+		});
 		
 		typeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
@@ -96,11 +104,94 @@ public class TransactionAddActivity extends Activity {
 			}
 
 			@Override
-			public void onNothingSelected(AdapterView<?> parentView) {
-			}
+			public void onNothingSelected(AdapterView<?> parentView) { }
 
 		});
 
+	}
+	
+	private void LoadMembers() {
+
+		db.open();
+		ArrayList<Member> mems = db.GetMembers();
+		db.close();
+		
+		member_ids = new int[mems.size()+1];
+		member_labels = new String[mems.size()+1];
+		
+		for (int i = 0 ; i < mems.size(); i++ ) {
+			Member m = mems.get(i);
+			member_ids[i] = m.id;
+			member_labels[i] = Member.GetLocalized(this, m.name);
+		}
+		member_labels[mems.size()] = getString(R.string.member_new);
+		add_member_index = mems.size();
+
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, member_labels);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		memberSpinner.setAdapter(adapter);
+		
+	}
+	
+	private void ShowNewMemberDialog() {
+		
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(getString(R.string.member_new));
+
+		// Set up the input
+		final EditText input = new EditText(this);
+		// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+		//input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+		input.setInputType(InputType.TYPE_CLASS_TEXT);
+		builder.setView(input);
+
+		// Set up the buttons
+		builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() { 
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				String m_Text = input.getText().toString();
+				if (m_Text.isEmpty() == false) {
+					Member newman = new Member();
+					newman.name = m_Text;
+					
+					db.open();
+					db.AddNewMember(newman);
+					db.close();
+					
+					LoadMembers();
+
+				}
+			}
+		});
+
+
+		builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.cancel();
+			}
+		});
+		
+		final AlertDialog dialog = builder.create();
+
+       // The TextWatcher will look for changes to the Dialogs field.
+        input.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence c, int i, int i2, int i3) {}
+            @Override public void onTextChanged(CharSequence c, int i, int i2, int i3) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Will be called AFTER text has been changed.
+                if (editable.toString().length() == 0){
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                } else {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                }
+            }
+        });
+
+		dialog.show();
+		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 	}
 	
 	private void SetupCategorySpinner() {
@@ -255,14 +346,27 @@ public class TransactionAddActivity extends Activity {
 
 	public void CommitTransAdd( View button ) {
 
+		boolean valida = true;
+		
 		transactionAmount = (EditText) findViewById(R.id.EditTextTransactionAmount);
 		float amount = Float.valueOf(transactionAmount.getText().toString());
 		if (amount <= 0) {
 			transactionAmount.setBackgroundColor(getResources().getColor(R.color.errorous));
-			return;
+			valida = false;
 		} else {
 			transactionAmount.setBackgroundColor(0);
 		}
+
+		int mem_index = memberSpinner.getSelectedItemPosition();
+		if (mem_index == add_member_index) {
+			memberSpinner.setBackgroundColor(getResources().getColor(R.color.errorous));
+			valida = false;
+		} else {
+			memberSpinner.setBackgroundColor(0);
+		}
+		
+		if (valida == false) return;
+
 		
 		Transaction newman = new Transaction();
 		newman.amount = amount * selected_currency_rate;
@@ -274,8 +378,7 @@ public class TransactionAddActivity extends Activity {
 			newman.categoryID = income_spinner_ids[categorySpinner.getSelectedItemPosition()];
 		}
 
-
-		newman.memberID = member_ids[memberSpinner.getSelectedItemPosition()];
+		newman.memberID = member_ids[mem_index];
 
 		final EditText commentField = (EditText) findViewById(R.id.EditTextTransactionComment);
 		String comment = commentField.getText().toString();

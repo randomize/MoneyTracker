@@ -434,4 +434,10 @@ public class DatabaseFacade {
 		cv.put("type", newman.type);
 		database.insert(DATABASE_TABLE_TRANS_CATEGORY, null, cv);
 	}
+
+	public void AddNewMember(Member newman) {
+		ContentValues cv = new ContentValues();
+		cv.put("name", newman.name);
+		database.insert(DATABASE_TABLE_MEMBERS, null, cv);
+	}
 }

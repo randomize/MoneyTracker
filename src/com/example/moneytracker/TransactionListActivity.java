@@ -79,7 +79,7 @@ public class TransactionListActivity extends ListActivity {
 		AlertDialog.Builder dlgAlert = new AlertDialog.Builder(this);
 
 		dlgAlert.setMessage(desc[position]);
-		dlgAlert.setTitle(getTitle());
+		dlgAlert.setTitle(list[position]);
 		dlgAlert.setPositiveButton(getString(R.string.ok), null);
 		dlgAlert.setCancelable(false);
 		dlgAlert.create().show();

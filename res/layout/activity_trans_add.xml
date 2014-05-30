@@ -61,7 +61,7 @@
 
     </LinearLayout>
 
-    <Spinner
+    <com.example.moneytracker.NDSpinner
         android:id="@+id/SpinnerMember"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
