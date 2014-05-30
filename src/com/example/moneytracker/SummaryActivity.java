@@ -27,7 +27,7 @@ public class SummaryActivity extends Activity {
 	private	ExpandableListView mainList;
 
 	private ArrayList<TransactionCategoryGroup> groups = new ArrayList<TransactionCategoryGroup>();
-	private String m_Text = "";
+	//private String m_Text = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -175,7 +175,7 @@ public class SummaryActivity extends Activity {
 		builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() { 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				m_Text = input.getText().toString();
+				String m_Text = input.getText().toString();
 				if (m_Text.isEmpty() == false) {
 					TransactionCatagory newman = new TransactionCatagory();
 					newman.type = type;

@@ -35,10 +35,12 @@ public class TransactionAddActivity extends Activity {
 	private int income_spinner_ids[] = null;         // index => id mapping
 	private String income_spinner_lables[] = null;   // index => label (like Salary)
 	private ArrayAdapter income_ad;
+	private int income_spinned_add_index = -1;
 
 	private int outcome_spinner_ids[] = null;        // index => id mapping
 	private String outcome_spinner_lables[] = null;  // index => label (like Provisions)
 	private ArrayAdapter outcome_ad;
+	private int outcom_spinned_add_index = -1;
 	
 	private int member_ids[] = null;
 	private String member_labels[] = null;
@@ -112,8 +114,96 @@ public class TransactionAddActivity extends Activity {
 
 		});
 
+		categorySpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+				int req_indx = 0;
+				int type = 0;
+				if (typeSpinner.getSelectedItemPosition() == 0) // outcome 
+				{
+					type = 0;
+					req_indx = outcom_spinned_add_index;
+				} else {
+					type = 1;
+					req_indx = income_spinned_add_index;
+				}
+				if (position == req_indx) {
+					parentView.setSelection(0);
+					CreateNewCategory(type);
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parentView) { }
+
+		});
 	}
 	
+	private void CreateNewCategory(final int type) {
+
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		if (type == 0) 
+			builder.setTitle(getString(R.string.new_category_outcome));
+		else 
+			builder.setTitle(getString(R.string.new_category_income));
+
+		// Set up the input
+		final EditText input = new EditText(this);
+		// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+		//input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+		input.setInputType(InputType.TYPE_CLASS_TEXT);
+		builder.setView(input);
+
+		// Set up the buttons
+		builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() { 
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				String m_Text = input.getText().toString();
+				if (m_Text.isEmpty() == false) {
+					TransactionCatagory newman = new TransactionCatagory();
+					newman.type = type;
+					newman.name = m_Text;
+					
+					db.open();
+					db.AddNewCategory(newman);
+					db.close();
+				 
+					SetupCategorySpinner();
+
+				}
+			}
+		});
+
+
+		builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.cancel();
+			}
+		});
+		
+		final AlertDialog dialog = builder.create();
+
+       // The TextWatcher will look for changes to the Dialogs field.
+        input.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence c, int i, int i2, int i3) {}
+            @Override public void onTextChanged(CharSequence c, int i, int i2, int i3) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Will be called AFTER text has been changed.
+                if (editable.toString().length() == 0){
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                } else {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                }
+            }
+        });
+
+		dialog.show();
+		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+	}
+
 	private void LoadMembers() {
 
 		db.open();
@@ -249,10 +339,10 @@ public class TransactionAddActivity extends Activity {
 			}
 		}
 		
-		income_spinner_ids = new int[in.size()];
-		income_spinner_lables = new String[in.size()];
-		outcome_spinner_ids = new int[out.size()];
-		outcome_spinner_lables = new String[out.size()];
+		income_spinner_ids = new int[in.size()+1];
+		income_spinner_lables = new String[in.size()+1];
+		outcome_spinner_ids = new int[out.size()+1];
+		outcome_spinner_lables = new String[out.size()+1];
 		
 		
 		for (int i = 0; i < in.size(); i++) {
@@ -265,6 +355,13 @@ public class TransactionAddActivity extends Activity {
 			outcome_spinner_ids[i] = ac.id;
 			outcome_spinner_lables[i] = TransactionCatagory.GetLocalizedCategory(this, ac.name);
 		}
+		
+		income_spinned_add_index = in.size();
+		income_spinner_ids[income_spinned_add_index] = -1;
+		income_spinner_lables[income_spinned_add_index] = getString(R.string.new_category_income);
+		outcom_spinned_add_index = out.size();
+		outcome_spinner_ids[outcom_spinned_add_index] = -1;
+		outcome_spinner_lables[outcom_spinned_add_index] = getString(R.string.new_category_outcome);
 		
 		
 		income_ad = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, income_spinner_lables);
@@ -382,6 +479,23 @@ public class TransactionAddActivity extends Activity {
 			valida = false;
 		} else {
 			memberSpinner.setBackgroundColor(0);
+		}
+
+		if (typeSpinner.getSelectedItemPosition() == 0) // outcome
+		{
+			if ( categorySpinner.getSelectedItemPosition() == outcom_spinned_add_index) {
+				categorySpinner.setBackgroundColor(getResources().getColor(R.color.errorous));
+				valida = false;
+			} else {
+				categorySpinner.setBackgroundColor(0);
+			}
+		} else {
+			if ( categorySpinner.getSelectedItemPosition() == income_spinned_add_index) {
+				categorySpinner.setBackgroundColor(getResources().getColor(R.color.errorous));
+				valida = false;
+			} else {
+				categorySpinner.setBackgroundColor(0);
+			}
 		}
 		
 		if (valida == false) return;
