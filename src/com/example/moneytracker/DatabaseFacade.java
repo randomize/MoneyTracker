@@ -615,7 +615,7 @@ public class DatabaseFacade {
 		tr.amount = newman.amount_end;
 		tr.memberID = newman.memberID;
 		tr.categoryID = newman.category_end;
-		tr.date = System.currentTimeMillis() / 1000L;
+		tr.date = System.currentTimeMillis();
 		tr.desc = desk + "(" + newman.desc + ")";
 		
 		AddNewTransaction(tr);

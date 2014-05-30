@@ -75,14 +75,16 @@ public class DebtsCategoriesExpandableListAdapter extends BaseExpandableListAdap
 		
 		long date_cur =  System.currentTimeMillis();
 		
-		int diffInDays = (int)( (child.category_end - date_cur) / (1000 * 60 * 60 * 24) );
+		//Log.w("ggg","ggg " + date_cur + "  " + ch );
+		
+		int diffInDays = (int)( (child.date_end - date_cur) / (1000 * 60 * 60 * 24) );
 
-		if (diffInDays <= 0) { // Outdated
+		if (diffInDays < 0) { // Outdated
 			convertView.setBackgroundColor(activity.getResources().getColor(R.color.errorous));
 			ch_text += (activity.getString(R.string.expired) + " " + String.valueOf(-diffInDays)
 					+ " " + activity.getString(R.string.ago) );
 		} else {
-			ch_text += (String.valueOf(diffInDays) + " " + activity.getString(R.string.left));
+			ch_text += " (" + (String.valueOf(diffInDays) + " " + activity.getString(R.string.left)) + ")";
 		}
 
 		TextView text = (TextView) convertView.findViewById(R.id.TextViewCategoryItemName);

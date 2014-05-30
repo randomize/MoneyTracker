@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -219,5 +218,10 @@ public class SummaryActivity extends Activity {
 
 		dialog.show();
 		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+	}
+
+	public void PopupActionsMenu(int id, String ch_text) {
+		// TODO Auto-generated method stub
+		
 	}
 }

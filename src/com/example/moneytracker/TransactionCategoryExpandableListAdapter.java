@@ -14,6 +14,7 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
@@ -76,6 +77,18 @@ public class TransactionCategoryExpandableListAdapter extends BaseExpandableList
 			}
 		});
 		
+		convertView.setOnLongClickListener(
+				new OnLongClickListener() {
+					
+					@Override
+					public boolean onLongClick(View v) {
+						((SummaryActivity) activity).PopupActionsMenu(child.id, ch_text);
+						return false;
+					}
+				}
+				);
+		
+		convertView.setLongClickable(true);
 			
 		return convertView;
 	}

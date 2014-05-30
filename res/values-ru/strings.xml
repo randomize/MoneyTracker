@@ -69,7 +69,7 @@
     <string name="new_debt_outcome">Взять</string>
     <string name="new_debt_income">Дать</string>
     <string name="accepted">Долг отдан</string>
-    <string name="empty_debts_list">У вас пока нет долгов,\nиспользуйте меню чтобы созать парочку</string>
+    <string name="empty_debts_list">У вас пока нет долгов,\nиспользуйте меню чтобы\nсозать парочку</string>
     <string name="i_owe">Я должен</string>
     <string name="i_am_owed">Мне должны</string>
     <string name="relevant_currency">Соответствующая</string>
@@ -97,5 +97,5 @@
     <string name="amount_to_pay">К выплате</string>
     <string name="expired">Истёк</string>
     <string name="ago">назад</string>
-    <string name="left">осталось</string>
+    <string name="left">дн. осталось</string>
 </resources>

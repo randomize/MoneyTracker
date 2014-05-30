@@ -118,6 +118,6 @@
     <string name="amount_to_pay">To pay</string>
     <string name="expired">Expired</string>
     <string name="ago">ago</string>
-    <string name="left">left</string>
+    <string name="left">days left</string>
     
 </resources>
