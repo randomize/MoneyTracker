@@ -26,7 +26,7 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
         // Transaction categories table
         "create table transaction_category (" + 
              "_id integer primary key autoincrement, " + 
-             "type integer, " +        // (0 - out) / (1 - in) -coming trans
+             "type integer, " +        // (0 - out) / (1 - in) -coming trans ;
              "name text not null " +   // Names 
         ");" + 
 
