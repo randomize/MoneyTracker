@@ -516,7 +516,7 @@ public class TransactionAddActivity extends Activity {
 
 		boolean alow_neg_balan = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("allow_negative", false) ;
 		//SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-		if ( alow_neg_balan == false) {
+		if ( alow_neg_balan == false && valida) {
 			if (typeSpinner.getSelectedItemPosition() == 0) // outcome 
 			{
 				if (amount > account_limits[accountSpinner.getSelectedItemPosition()]) {

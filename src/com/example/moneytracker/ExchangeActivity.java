@@ -75,7 +75,7 @@ public class ExchangeActivity extends Activity {
 		
 		if (selFrom == selTo) {
 			accountSpinner1.setBackgroundColor(getResources().getColor(R.color.errorous));
-			accountSpinner1.setBackgroundColor(getResources().getColor(R.color.errorous));
+			accountSpinner2.setBackgroundColor(getResources().getColor(R.color.errorous));
 			valida = false;
 		} else {
 			accountSpinner1.setBackgroundColor(0);
@@ -84,7 +84,7 @@ public class ExchangeActivity extends Activity {
 
 		boolean alow_neg_balan = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("allow_negative", false) ;
 		//SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-		if ( alow_neg_balan == false) {
+		if ( alow_neg_balan == false && valida) {
 			if (amount > account_limits[selFrom]) {
 				transactionAmount.setBackgroundColor(getResources().getColor(R.color.errorous));
 				valida = false;
@@ -95,7 +95,7 @@ public class ExchangeActivity extends Activity {
 		if (valida == false) return;
 		
 		db.open();
-		//db.PerformExchange(, tra);
+		db.PerformExchange(account_spinner_ids[selFrom], account_spinner_ids[selTo], amount);
 		db.close();
 		
 		// check self assing

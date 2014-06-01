@@ -90,13 +90,24 @@ public class AccountsActivity extends Activity {
 			mainList.collapseGroup(position - 1);
 			mainList.expandGroup(position - 1);
 		}
+		
+		invalidateOptionsMenu();
 
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.accounts_menu, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		if (accountGroups.size() >= 2 || (accountGroups.size() == 1 && accountGroups.get(0).children.size() >= 2)) {
+			menu.getItem(1).setVisible(true);
+		} else {
+			menu.getItem(1).setVisible(false);
+		}
 		return true;
 	}
 

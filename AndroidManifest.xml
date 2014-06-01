@@ -33,7 +33,7 @@
  		<activity
             android:name="com.example.moneytracker.AccountsActivity"
             android:label="@string/accounts"
-			android:windowSoftInputMode="stateHidden" >
+			>
         </activity>
 
  		<activity
@@ -77,6 +77,8 @@
  		<activity
             android:name="com.example.moneytracker.ExchangeActivity"
             android:label="@string/exchange"
+            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog"
+            android:excludeFromRecents="true"
             >
         </activity>
 
