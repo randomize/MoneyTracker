@@ -1,19 +1,28 @@
 package com.example.moneytracker;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 public class SummaryActivity extends Activity {
 	
@@ -27,7 +36,12 @@ public class SummaryActivity extends Activity {
 	private	ExpandableListView mainList;
 
 	private ArrayList<TransactionCategoryGroup> groups = new ArrayList<TransactionCategoryGroup>();
-	//private String m_Text = "";
+	final Context context = this;
+	
+	private boolean isSlices = false;
+	private long sliceFrom = 0;
+	private long sliceTo = 0;
+	private TextView slice_display;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +50,7 @@ public class SummaryActivity extends Activity {
 
 		mainList = (ExpandableListView) findViewById(R.id.trans_categories_listview);
 		mainList.setEmptyView(findViewById(R.id.trans_cat_list_empter));
+		slice_display = (TextView) findViewById(R.id.trans_slice_range);
 		
 		db = new DatabaseFacade(this);
 		
@@ -109,10 +124,52 @@ public class SummaryActivity extends Activity {
 			return true;
 		case R.id.action_category_new_income:
 			CreateNewCategory(1);
+		case R.id.action_set_interval:
+			SetInterval(null);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	public void SetInterval(View v) {
+
+		final Dialog dialog = new Dialog(context);
+		dialog.setContentView(R.layout.interval_picker);
+		dialog.setTitle(R.string.pick_a_date_slice);
+
+		if (isSlices) {
+			DatePicker dp1 = (DatePicker) dialog.findViewById(R.id.date_start);
+			DatePicker dp2 = (DatePicker) dialog.findViewById(R.id.date_end);
+			dp1.getCalendarView().setDate(sliceFrom);
+			dp2.getCalendarView().setDate(sliceTo);
+		}
+
+		Button dialogButton = (Button) dialog.findViewById(R.id.ButtonCancel);
+		dialogButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+				isSlices = false;
+				LoadActualData();
+			}
+		});
+
+		Button dialogButton2 = (Button) dialog.findViewById(R.id.ButtonSave);
+		dialogButton2.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				DatePicker dp1 = (DatePicker) dialog.findViewById(R.id.date_start);
+				sliceFrom = dp1.getCalendarView().getDate();
+				DatePicker dp2 = (DatePicker) dialog.findViewById(R.id.date_end);
+				sliceTo = dp2.getCalendarView().getDate();
+				dialog.dismiss();
+				isSlices = true;
+				LoadActualData();
+			}
+		});
+
+		dialog.show();
 	}
 
 	private void PopupCurrencySelector() {
@@ -141,9 +198,24 @@ public class SummaryActivity extends Activity {
 	}
 
 	private void LoadActualData() {
+		
+
+		if (isSlices && sliceFrom != 0 && sliceTo != 0) {
+			String dateFrom = DateFormat.getDateInstance().format(sliceFrom);
+			String dateToo = DateFormat.getDateInstance().format(sliceTo);
+			slice_display.setText(dateFrom + " -- " + dateToo);
+			slice_display.setVisibility(View.VISIBLE);
+		} else {
+			slice_display.setVisibility(View.GONE);
+		}
+
 		groups.clear();
 		db.open();
-		groups.addAll(db.GetIncomeAndOutcome());
+		if (isSlices) {
+			groups.addAll(db.GetIncomeAndOutcome(true, sliceFrom, sliceTo));
+		} else {
+			groups.addAll(db.GetIncomeAndOutcome());
+		}
 		db.close();
 
 		main_adapter.notifyDataSetChanged();

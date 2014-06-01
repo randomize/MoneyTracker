@@ -28,6 +28,9 @@ public class MainActivity extends Activity implements OnClickListener {
 		findViewById(R.id.ButtonEventsTasks).setOnClickListener(this);
 		DatabaseFacade db = new DatabaseFacade(this);
 		db.open();
+		
+		// TODO: check if debts are ok and buget also ok, set buttons
+		
 		db.close();
 	}
 

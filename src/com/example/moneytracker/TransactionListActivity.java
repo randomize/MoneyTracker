@@ -54,6 +54,11 @@ public class TransactionListActivity extends ListActivity {
 			db.open();
 			ArrayList<Transaction> trans = db.GetTransactionsInCategory(categoryId);
 			db.close();
+			
+			if (trans.size() == 0) {
+				finish();
+				return;
+			}
 
 			list = new String[trans.size()];
 			desc = new String[trans.size()];

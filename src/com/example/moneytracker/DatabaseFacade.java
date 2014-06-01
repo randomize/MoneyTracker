@@ -102,13 +102,32 @@ public class DatabaseFacade {
 
 	// Only used ones are returned(empty are dismissed)
 	public ArrayList<TransactionCategoryGroup> GetIncomeAndOutcome() {
+		return GetIncomeAndOutcome(false, 0, 0);
+	}
+
+	public ArrayList<TransactionCategoryGroup> GetIncomeAndOutcome(boolean slice, long f, long t) {
 		
 		ArrayList<TransactionCategoryGroup> result = new ArrayList<TransactionCategoryGroup>(2);
 
 		TransactionCategoryGroup in = new TransactionCategoryGroup("Income", TransactionCategoryGroup.GroupType.INCOME);
 		TransactionCategoryGroup out = new TransactionCategoryGroup("Outcome", TransactionCategoryGroup.GroupType.OUTCOME);
 
-		Cursor c = database.query(DATABASE_VIEW_TRANS_SUMMARY, null, null, null , null, null, null);
+		Cursor c;
+		
+		if (slice) {
+			String[] params = new String[] { String.valueOf(f), String.valueOf(t)};
+
+			String raw = "select sum(amount) as amount, type, category, name from transactions " +
+					"inner join transaction_category on transactions.category = transaction_category._id " +
+					"where transactions.date between " + f + " and " + t + " " +
+					"group by type, category " +
+					"order by type ; ";
+			c = database.rawQuery(raw, null);
+
+			//c = database.query(DATABASE_VIEW_TRANS_SUMMARY, null, "date between ? and ?", null , null, null, null);
+		} else {
+			c = database.query(DATABASE_VIEW_TRANS_SUMMARY, null, null, null , null, null, null);
+		}
 
 		if (c.moveToFirst()) {
 

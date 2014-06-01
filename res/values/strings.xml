@@ -121,5 +121,9 @@
     <string name="left">days left</string>
     <string name="allow_manual_debts_categories">Allow manual debts categories</string>
     <string name="when_enabled_you_can_manually_create_debts_transactions">When enabled you can manually create debts transactions</string>
+    <string name="set_interval">Set interval</string>
+    <string name="start_date">Start date</string>
+    <string name="end_date">End date</string>
+    <string name="pick_a_date_slice">Pick a date slice</string>
     
 </resources>

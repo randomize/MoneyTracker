@@ -4,6 +4,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
+    <TextView
+        android:id="@+id/trans_slice_range"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:maxHeight="35dp"
+        android:minHeight="35dp"
+        android:background="@color/errorous"
+        android:clickable="true"
+        android:gravity="center_vertical|center_horizontal"
+        android:onClick="SetInterval"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:visibility="gone" />
+    
     <ExpandableListView
         android:id="@+id/trans_categories_listview"
         android:layout_width="match_parent"
