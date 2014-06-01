@@ -125,5 +125,7 @@
     <string name="start_date">Start date</string>
     <string name="end_date">End date</string>
     <string name="pick_a_date_slice">Pick a date slice</string>
+    <string name="exchange">Exchange</string>
+    <string name="account_exchange_too_few_accounts">Please create at least two accounts</string>
     
 </resources>

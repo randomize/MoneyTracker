@@ -107,12 +107,17 @@ public class AccountsActivity extends Activity {
 		case R.id.accounts_menu_new:
 			CreateNewAccount();
 			return true;
-			/*case R.id.action_exit:
-			//Application();
-			return true;*/
+		case R.id.accounts_exchange:
+			CreateExchange();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+	
+	private void CreateExchange() {
+		Intent intent = new Intent(this, ExchangeActivity.class);
+		startActivity(intent);
 	}
 
 	private void CreateNewAccount() {

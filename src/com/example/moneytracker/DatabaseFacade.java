@@ -642,4 +642,9 @@ public class DatabaseFacade {
 		database.delete(DATABASE_TABLE_DEBTS, "_id = ?", new String[] { String.valueOf(id)});
 
 	}
+
+	public void	PerformExchange(int accForm, int accTo, float abount) {
+		
+		
+	}
 }
