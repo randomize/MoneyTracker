@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -44,8 +45,8 @@ public class ExchangeActivity extends Activity {
 		
 		db = new DatabaseFacade(this);
 		
-		accountSpinner1 = (Spinner) findViewById(R.id.SpinnerDebtAccount);
-		accountSpinner2 = (Spinner) findViewById(R.id.SpinnerDebtAccount);
+		accountSpinner1 = (Spinner) findViewById(R.id.SpinnerExFromAccount);
+		accountSpinner2 = (Spinner) findViewById(R.id.SpinnerExToAccount);
 		currencyLabel = (TextView) findViewById(R.id.TextViewExCurrency);
 		
 		SetupAccountSpinner();
@@ -68,7 +69,29 @@ public class ExchangeActivity extends Activity {
 		} else {
 			transactionAmount.setBackgroundColor(0);
 		}
+		
+		int selFrom = accountSpinner1.getSelectedItemPosition();
+		int selTo =  accountSpinner2.getSelectedItemPosition();
+		
+		if (selFrom == selTo) {
+			accountSpinner1.setBackgroundColor(getResources().getColor(R.color.errorous));
+			accountSpinner1.setBackgroundColor(getResources().getColor(R.color.errorous));
+			valida = false;
+		} else {
+			accountSpinner1.setBackgroundColor(0);
+			accountSpinner2.setBackgroundColor(0);
+		}
 
+		boolean alow_neg_balan = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("allow_negative", false) ;
+		//SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+		if ( alow_neg_balan == false) {
+			if (amount > account_limits[selFrom]) {
+				transactionAmount.setBackgroundColor(getResources().getColor(R.color.errorous));
+				valida = false;
+			} else {
+				transactionAmount.setBackgroundColor(0);
+			}
+		}
 		if (valida == false) return;
 		
 		db.open();
