@@ -127,5 +127,8 @@
     <string name="pick_a_date_slice">Pick a date slice</string>
     <string name="exchange">Exchange</string>
     <string name="account_exchange_too_few_accounts">Please create at least two accounts</string>
+    <string name="new_buget">New buget</string>
+    <string name="add_buget">Add buget</string>
+    <string name="buget_add">Buget add</string>
     
 </resources>

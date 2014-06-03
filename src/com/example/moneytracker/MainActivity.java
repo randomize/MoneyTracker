@@ -15,6 +15,9 @@ import com.example.moneytracker.R;
 
 
 public class MainActivity extends Activity implements OnClickListener {
+	
+	private View v, v2;
+	private DatabaseFacade db;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,17 +26,38 @@ public class MainActivity extends Activity implements OnClickListener {
 		findViewById(R.id.ButtonStatus).setOnClickListener(this);
 		findViewById(R.id.ButtonAccounts).setOnClickListener(this);
 		findViewById(R.id.ButtonAccumulations).setOnClickListener(this);
-		findViewById(R.id.ButtonBudget).setOnClickListener(this);
-		findViewById(R.id.ButtonDebts).setOnClickListener(this);
+
+		v = findViewById(R.id.ButtonBudget);
+		v.setOnClickListener(this);
+		v2 = findViewById(R.id.ButtonDebts);
+		v2.setOnClickListener(this);
+
 		findViewById(R.id.ButtonEventsTasks).setOnClickListener(this);
-		DatabaseFacade db = new DatabaseFacade(this);
+		db = new DatabaseFacade(this);
+		
+	
+	}
+	
+	private void SetupColors() {
+		
 		db.open();
 		
-		// TODO: check if debts are ok and buget also ok, set buttons
-		
+		if (db.ThereIsBrokenBuget()) {
+			v.setBackgroundColor(getResources().getColor(R.color.errorous));
+		}
+
+		if (db.ThereIsExpiredDebt()) {
+			v2.setBackgroundColor(getResources().getColor(R.color.errorous));
+		}
+
 		db.close();
 	}
 
+	@Override
+	protected void onResume() {
+		SetupColors();
+		super.onResume();
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,6 +106,11 @@ public class MainActivity extends Activity implements OnClickListener {
 		    
 		    case R.id.ButtonDebts: {
                 Intent intent = new Intent(this, DebtsListActivity.class);
+                startActivity(intent);
+                break;
+		    }
+		    case R.id.ButtonBudget: {
+                Intent intent = new Intent(this, BugetListActivity.class);
                 startActivity(intent);
                 break;
 		    }

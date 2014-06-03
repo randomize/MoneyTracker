@@ -79,6 +79,18 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
    		     "member integer not null references members(_id) on delete cascade" + // Member id FK
    		");" +
    		     
+   		// Bugets
+   		"create table bugets (" + 
+   		     "_id integer primary key autoincrement, " + 
+   		     "name text not null," +
+   		     "type integer not null," +      // 0 - week and 1 - month
+   		     "amount real not null, " + 
+   		     "category integer not null references transaction_category(_id) on delete cascade," + // Category id FK only outcome
+   		     "member integer not null references members(_id) on delete cascade, " + // Member id FK
+   		     "currency integer not null references currency(_id) on delete cascade," + // Currency id FK
+   		     "desc text" +
+   		");" +
+
    		// Views
    		"create view accounts_outcome as " +
    		"select sum(amount) as amount, account from transactions "+

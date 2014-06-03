@@ -27,19 +27,12 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
-public class TransactionAddActivity extends Activity {
+public class BugetAddActivity extends Activity {
 
 	// Easy access to database
 	private DatabaseFacade db;
 	
 	
-	// Datas
-	
-	private int income_spinner_ids[] = null;         // index => id mapping
-	private String income_spinner_lables[] = null;   // index => label (like Salary)
-	private ArrayAdapter income_ad;
-	private int income_spinned_add_index = -1;
-
 	private int outcome_spinner_ids[] = null;        // index => id mapping
 	private String outcome_spinner_lables[] = null;  // index => label (like Provisions)
 	private ArrayAdapter outcome_ad;
@@ -51,41 +44,48 @@ public class TransactionAddActivity extends Activity {
 	private int member_newman_id = -1; // To handle cool selection of last added member
 	private HashMap<Integer, Integer> member_map = new HashMap<Integer, Integer>();
 
-	private int account_spinner_ids[] = null;              // index => id mapping
-	private String account_spinner_lables[] = null;        // index => label (like Cash)
-	private Currency account_spinner_currencies[] = null;  // index => label (like USD)
-	private float selected_currency_rate = 1.0f;
-	private float selected_account_limit = 0;
-	private float account_limits[] = null;
-	
 	// Views
 	
-	private Spinner typeSpinner;
-	private Spinner categorySpinner;
-	private Spinner accountSpinner;
-	private NDSpinner memberSpinner;
+	private Spinner typeSpinner;        // 0 - week, 1 - month
+	private Spinner categorySpinner;    // only outcome
+
+	private Spinner currencySpinner;
 	private TextView currencyLabel;
-	private EditText transactionAmount;
+	// Currency spinner helpers
+	private int currency_spinner_ids[] = null;                        // index => id mapping
+	private String currency_spinner_lables[] = null;                  // index => label (like USD)
+	private float currency_spinner_rates[] = null;                  // index => rate (like USD)
+	private int currency_spinner_add_index = 0;
+	
+	private NDSpinner memberSpinner;
+
+	private EditText bugetName;
+	private EditText bugetAmount;
 	private EditText commentEdit;
-	private DatePicker dater;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_trans_add);
-		setTitle(getString(R.string.new_trans));
+		setContentView(R.layout.activity_buget_add);
+		setTitle(getString(R.string.new_buget));
 		
 		db = new DatabaseFacade(this);
 		
-		typeSpinner = (Spinner) findViewById(R.id.SpinnerTransType);
-		categorySpinner = (Spinner) findViewById(R.id.SpinnerTransCategory);
-		accountSpinner = (Spinner) findViewById(R.id.SpinnerDebtAccount);
-		memberSpinner = (NDSpinner) findViewById(R.id.SpinnerMember);
-		currencyLabel = (TextView) findViewById(R.id.TextViewCurrency1);
+		typeSpinner = (Spinner) findViewById(R.id.SpinnerBugetType);
+		categorySpinner = (Spinner) findViewById(R.id.SpinnerBugetCategory);
+
+		currencySpinner = (Spinner) findViewById(R.id.SpinnerBugetCurrency);
+		currencyLabel = (TextView) findViewById(R.id.TextViewBugetCurrency);
+
+		memberSpinner = (NDSpinner) findViewById(R.id.SpinnerBugetMember);
 		
-		SetupAccountSpinner();
+		bugetName = (EditText) findViewById(R.id.EditTextBugetName);
+		bugetAmount = (EditText) findViewById(R.id.EditTextBugetAmount);
+		commentEdit = (EditText) findViewById(R.id.EditTextBugetComment);
+		
 		SetupCategorySpinner();
+		SetupCurrencySpinner();
 		LoadMembers();
 		
 
@@ -108,33 +108,12 @@ public class TransactionAddActivity extends Activity {
 
 		});
 		
-		typeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-				SetAdapterForCategory();
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parentView) { }
-
-		});
-
 		categorySpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-				int req_indx = 0;
-				int type = 0;
-				if (typeSpinner.getSelectedItemPosition() == 0) // outcome 
-				{
-					type = 0;
-					req_indx = outcom_spinned_add_index;
-				} else {
-					type = 1;
-					req_indx = income_spinned_add_index;
-				}
-				if (position == req_indx) {
+				if (position == outcom_spinned_add_index) {
 					parentView.setSelection(0);
-					CreateNewCategory(type);
+					CreateNewCategory(0); // create outcome
 				}
 			}
 
@@ -142,8 +121,62 @@ public class TransactionAddActivity extends Activity {
 			public void onNothingSelected(AdapterView<?> parentView) { }
 
 		});
+		
+		// Set handler
+		currencySpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+				
+				// If user clicked "New ..." item
+				if (position == currency_spinner_add_index) {
+					ShowNewCurrencyDialog();
+				} else {
+					currencyLabel.setText(currency_spinner_lables[position]);
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parentView) {
+			}
+
+		});
+		
 	}
 	
+	private void SetupCurrencySpinner() {
+		
+		db.open();
+		ArrayList<Currency> currency_map = db.GetCurrencyList();
+		db.close();
+
+		currency_spinner_ids = new int[currency_map.size()+1]; // Reservin one for "new..."
+		currency_spinner_lables = new String[currency_map.size()+1];
+		currency_spinner_rates = new float[currency_map.size()+1];
+
+		for (int i = 0; i < currency_map.size(); i++) {
+			Currency c = currency_map.get(i);
+			currency_spinner_ids[i] = c.id;
+			currency_spinner_lables[i] = c.name;
+			currency_spinner_rates[i] = c.rate;
+		}
+
+		// Always add custom new currency item option
+		currency_spinner_add_index = currency_map.size();
+		currency_spinner_lables[currency_spinner_add_index] = getString(R.string.new_curr);
+		currency_spinner_ids[currency_spinner_add_index] = -1; // JIC
+		currency_spinner_rates[currency_spinner_add_index] = 0;
+
+		// Set spinner items(using adapter)
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, currency_spinner_lables);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		currencySpinner.setAdapter(adapter);
+
+	}
+	
+	private void ShowNewCurrencyDialog() {
+
+	}
+
 	private void CreateNewCategory(final int type) {
 
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -313,7 +346,17 @@ public class TransactionAddActivity extends Activity {
 		ArrayList<TransactionCategory> cats = db.GetCategories();
 		db.close();
 		
-		if (cats.size() <= 2) {
+		ArrayList<TransactionCategory> out = new ArrayList<TransactionCategory>();
+		
+		boolean alow_debts_man = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("allow_debts_manual", false) ;
+		for (TransactionCategory cat : cats) {
+			if (alow_debts_man == false && cat.id <= 4) continue; // skipping debts default hidden catags
+			if (cat.type == 0) {
+				out.add(cat);
+			}
+		}
+		
+		if (out.size() == 0) { // error if no categs for outcome
 			AlertDialog.Builder dlgAlert = new AlertDialog.Builder(this);
 
 			dlgAlert.setMessage(getString(R.string.new_trans_no_category));
@@ -332,161 +375,44 @@ public class TransactionAddActivity extends Activity {
 			return;
 		}
 		
-		ArrayList<TransactionCategory> in = new ArrayList<TransactionCategory>();
-		ArrayList<TransactionCategory> out = new ArrayList<TransactionCategory>();
-		
-		//SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-		boolean alow_debts_man = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("allow_debts_manual", false) ;
-		for (TransactionCategory cat : cats) {
-			if (alow_debts_man == false) {
-				if (cat.id <= 4) continue; // skipping debts default categs
-			}
-			if (cat.type == 0) {
-				out.add(cat);
-			} else {
-				in.add(cat);
-			}
-		}
-		
-		income_spinner_ids = new int[in.size()+1];
-		income_spinner_lables = new String[in.size()+1];
 		outcome_spinner_ids = new int[out.size()+1];
 		outcome_spinner_lables = new String[out.size()+1];
 		
 		
-		for (int i = 0; i < in.size(); i++) {
-			TransactionCategory ac = in.get(i);
-			income_spinner_ids[i] = ac.id;
-			income_spinner_lables[i] = TransactionCategory.GetLocalizedCategory(this, ac.name);
-		}
 		for (int i = 0; i < out.size(); i++) {
 			TransactionCategory ac = out.get(i);
 			outcome_spinner_ids[i] = ac.id;
 			outcome_spinner_lables[i] = TransactionCategory.GetLocalizedCategory(this, ac.name);
 		}
 		
-		income_spinned_add_index = in.size();
-		income_spinner_ids[income_spinned_add_index] = -1;
-		income_spinner_lables[income_spinned_add_index] = getString(R.string.new_category_income);
 		outcom_spinned_add_index = out.size();
 		outcome_spinner_ids[outcom_spinned_add_index] = -1;
 		outcome_spinner_lables[outcom_spinned_add_index] = getString(R.string.new_category_outcome);
 		
 		
-		income_ad = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, income_spinner_lables);
-		income_ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		outcome_ad = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, outcome_spinner_lables);
 		outcome_ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		categorySpinner.setAdapter(outcome_ad);
 		
-		SetAdapterForCategory();
-		
-		
-	}
-	
-	private void SetAdapterForCategory() {
-
-		if (typeSpinner.getSelectedItemPosition() == 0) // outcome
-		{
-			categorySpinner.setAdapter(outcome_ad);
-		} else {
-			categorySpinner.setAdapter(income_ad);
-		}
-		//categorySpinner.invalidate();
 		
 	}
 	
-	private void SetupAccountSpinner() {
-
-		db.open();
-		ArrayList<Account> acs = db.GetAccounts();
-		db.close();
-		
-		if (acs.size() == 0) {
-			AlertDialog.Builder dlgAlert = new AlertDialog.Builder(this);
-
-			dlgAlert.setMessage(getString(R.string.new_trans_no_account));
-			dlgAlert.setTitle(getString(R.string.error));
-			dlgAlert.setPositiveButton(getString(R.string.ok),
-					
-			new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					finish();
-				}
-			}
-			);
-
-			dlgAlert.setCancelable(false);
-			dlgAlert.create().show();
-			
-			return;
-			
-		}
-		
-		account_spinner_ids = new int[acs.size()];
-		account_spinner_lables = new String[acs.size()];
-		account_spinner_currencies = new Currency[acs.size()];
-		account_limits = new float[acs.size()];
-
-		db.open();
-		for (int i = 0; i < acs.size(); i++) {
-			Account ac = acs.get(i);
-			account_spinner_ids[i] = ac.id;
-			account_spinner_currencies[i] = new Currency();
-			account_spinner_currencies[i].id = ac.currencyId;
-			account_spinner_currencies[i].name = ac.currencyName;
-			account_spinner_currencies[i].rate = ac.currencyRate;
-			
-			float max = db.GetCurrentBalance(ac.id) / ac.currencyRate;
-			account_limits[i] = max;
-
-			account_spinner_lables[i] = Account.GetLocalized(this,ac.name) + " = "+ String.format("%.2f",max) +" (" + ac.currencyName + ")";
-			
-		}
-		db.close();
-
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, account_spinner_lables);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		accountSpinner.setAdapter(adapter);
-
-		// Set handler
-		accountSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-				OnSelectedAccount(position);
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parentView) {
-				OnSelectedAccount(0); //assume default is always there
-			}
-
-		});
-		
-		OnSelectedAccount(0); // assume there is at least one
-		
-	}
-	
-	private void OnSelectedAccount(int index) {
-		selected_currency_rate = account_spinner_currencies[index].rate;
-		currencyLabel.setText(account_spinner_currencies[index].name);
-	}
 
 	// On button cancel
-	public void CancelTransAdd( View button ) {
+	public void CancelBugetAdd( View button ) {
 		finish();
 	}
 
-	public void CommitTransAdd( View button ) {
+	public void CommitBugetAdd( View button ) {
 
 		boolean valida = true;
 		
-		transactionAmount = (EditText) findViewById(R.id.EditTextAmountStart);
-		float amount = Float.valueOf(transactionAmount.getText().toString());
+		float amount = Float.valueOf(bugetAmount.getText().toString());
 		if (amount <= 0) {
-			transactionAmount.setBackgroundColor(getResources().getColor(R.color.errorous));
+			bugetAmount.setBackgroundColor(getResources().getColor(R.color.errorous));
 			valida = false;
 		} else {
-			transactionAmount.setBackgroundColor(0);
+			bugetAmount.setBackgroundColor(0);
 		}
 
 		int mem_index = memberSpinner.getSelectedItemPosition();
@@ -497,61 +423,43 @@ public class TransactionAddActivity extends Activity {
 			memberSpinner.setBackgroundColor(0);
 		}
 
-		if (typeSpinner.getSelectedItemPosition() == 0) // outcome
-		{
-			if ( categorySpinner.getSelectedItemPosition() == outcom_spinned_add_index) {
-				categorySpinner.setBackgroundColor(getResources().getColor(R.color.errorous));
-				valida = false;
-			} else {
-				categorySpinner.setBackgroundColor(0);
-			}
+		String name = bugetName.getText().toString();
+		if (name.isEmpty()) {
+			bugetName.setBackgroundColor(getResources().getColor(R.color.errorous));
 		} else {
-			if ( categorySpinner.getSelectedItemPosition() == income_spinned_add_index) {
-				categorySpinner.setBackgroundColor(getResources().getColor(R.color.errorous));
-				valida = false;
-			} else {
-				categorySpinner.setBackgroundColor(0);
-			}
+			bugetName.setBackgroundColor(0);
 		}
 
-		boolean alow_neg_balan = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("allow_negative", false) ;
-		//SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-		if ( alow_neg_balan == false && valida) {
-			if (typeSpinner.getSelectedItemPosition() == 0) // outcome 
-			{
-				if (amount > account_limits[accountSpinner.getSelectedItemPosition()]) {
-					transactionAmount.setBackgroundColor(getResources().getColor(R.color.errorous));
-					valida = false;
-				} else {
-					transactionAmount.setBackgroundColor(0);
-				}
-			}
-		}
-		
 		if (valida == false) return;
 
 		
-		Transaction newman = new Transaction();
-		newman.amount = amount * selected_currency_rate;
-		newman.accountID = account_spinner_ids[accountSpinner.getSelectedItemPosition()];
-		if (typeSpinner.getSelectedItemPosition() == 0) // outcome
-		{
-			newman.categoryID = outcome_spinner_ids[categorySpinner.getSelectedItemPosition()];
-		} else {
-			newman.categoryID = income_spinner_ids[categorySpinner.getSelectedItemPosition()];
+		// TODO:
+		Buget newman = new Buget();
+		
+		int cur_pos = currencySpinner.getSelectedItemPosition();
+		newman.amount = amount / currency_spinner_rates[cur_pos];
+		newman.currencyID = currency_spinner_ids[cur_pos];
+		
+		int cat_pos = categorySpinner.getSelectedItemPosition();
+		newman.categoryID = outcome_spinner_ids[cat_pos];
+		
+		int mem_pos = memberSpinner.getSelectedItemPosition();
+		newman.memberID = member_ids[mem_pos];
+		
+		int mem_type = typeSpinner.getSelectedItemPosition();
+		newman.type = mem_type;
+		
+		newman.name = name;
+		
+		
+		
+		String s = commentEdit.getText().toString();
+		if (s.isEmpty() == false) {
+			newman.desc = s;
 		}
-
-		newman.memberID = member_ids[mem_index];
-
-		final EditText commentField = (EditText) findViewById(R.id.EditTextTransactionComment);
-		String comment = commentField.getText().toString();
-		newman.desc = comment.isEmpty() ? null : comment;
-
-		final DatePicker dp = (DatePicker) findViewById(R.id.date_end);
-		newman.date = dp.getCalendarView().getDate();
 		
 		db.open();
-		db.AddNewTransaction(newman);
+		db.AddNewBuget(newman);
 		db.close();
 		
 		finish();

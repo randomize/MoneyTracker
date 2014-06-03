@@ -1,6 +1,7 @@
 package com.example.moneytracker;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import android.content.ContentValues;
@@ -20,6 +21,7 @@ public class DatabaseFacade {
 	private static final String DATABASE_TABLE_MEMBERS = "members";
 	private static final String DATABASE_TABLE_TRANSACTIONS = "transactions";
 	private static final String DATABASE_TABLE_DEBTS = "debts";
+	private static final String DATABASE_TABLE_BUGET = "bugets";
 	private static final String DATABASE_VIEW_INCOME_SUMS = "accounts_income";
 	private static final String DATABASE_VIEW_OUTCOME_SUMS = "accounts_outcome";
 	private static final String DATABASE_VIEW_TRANS_SUMMARY = "trans_summary";
@@ -669,4 +671,124 @@ public class DatabaseFacade {
 		AddNewTransaction(tr2);
 		
 	}
+	
+	public boolean ThereIsBrokenBuget() {
+		return false; // TODO: check
+	}
+
+	public boolean ThereIsExpiredDebt() {
+		return false; // TODO: check
+	}
+
+	public int AddNewBuget(Buget newman) {
+
+		ContentValues cv = new ContentValues();
+		cv.put("name", newman.name);
+		cv.put("type", newman.type);
+		cv.put("amount", newman.amount);
+		cv.put("category", newman.categoryID);
+		cv.put("member", newman.memberID);
+		cv.put("currency", newman.currencyID);
+		
+		if (newman.desc != null) {
+			cv.put("desc", newman.desc);
+		} else {
+			cv.putNull("desc");
+		}
+
+		return (int) database.insert(DATABASE_TABLE_BUGET, null, cv);
+	}
+
+	public ArrayList<Buget> GetBugetsList() {
+
+		ArrayList<Buget> result = new ArrayList<Buget>();
+
+		Cursor c = database.query(DATABASE_TABLE_BUGET, null, null, null , null, null, null);
+
+		if (c.moveToFirst()) {
+
+			do {
+				Buget s = new Buget();
+				s.id = c.getInt(0);
+				s.name = c.getString(1);
+				s.type = c.getInt(2);
+				s.amount = c.getFloat(3);
+				s.categoryID = c.getInt(4);
+				s.memberID = c.getInt(5);
+				s.currencyID = c.getInt(6);
+				s.desc = c.getString(7);
+
+				Currency ac = GetCurrencyByID(s.currencyID);
+				s.currencyName = ac.name;
+				s.currencyRate = ac.rate;
+				
+				// TODO: get amount current
+				if (s.type == Buget.TYPE_MONTH) {
+					s.currentAmount = GetCategoryAmountWithSlice(s.categoryID,
+							GetThisMonthStart(), 
+							System.currentTimeMillis());
+				} else if (s.type == Buget.TYPE_WEEK) {
+					s.currentAmount = GetCategoryAmountWithSlice(s.categoryID,
+							GetThisWeekStart(), 
+							System.currentTimeMillis());
+				}
+
+				result.add(s);
+
+			} while (c.moveToNext());
+
+		}
+
+		c.close();
+
+		return result;
+	}
+	
+	public float GetCategoryAmountWithSlice(int cagetoryId, long from, long to) {
+		String raw = "select sum(amount) as amount, type, category, name from transactions " +
+				"inner join transaction_category on transactions.category = transaction_category._id " +
+				"where category=" + cagetoryId + " and transactions.date between " + from + " and " + to + " " +
+				"group by type, category " +
+				"order by type ; ";
+		Cursor c = database.rawQuery(raw, null);
+		if (c.moveToFirst())
+		{
+			return c.getFloat(0);
+		}
+		else {
+			return 0;
+		}
+	}
+	
+	public long GetThisMonthStart() {
+		
+		// get today and clear time of day
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.HOUR_OF_DAY, 0); // ! clear would not reset the hour of day !
+		cal.clear(Calendar.MINUTE);
+		cal.clear(Calendar.SECOND);
+		cal.clear(Calendar.MILLISECOND);
+
+		// get start of the month
+		cal.set(Calendar.DAY_OF_MONTH, 1);
+	    
+	    return cal.getTime().getTime();
+	}
+	
+	public long GetThisWeekStart() {
+
+		// get today and clear time of day
+	    Calendar cal = Calendar.getInstance();
+	    cal.set(Calendar.HOUR_OF_DAY, 0); // ! clear would not reset the hour of day !
+	    cal.clear(Calendar.MINUTE);
+	    cal.clear(Calendar.SECOND);
+	    cal.clear(Calendar.MILLISECOND);
+
+	    // get start of this week in milliseconds
+	    cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+	    
+	    return cal.getTime().getTime();
+	}
+	
+	
 }
