@@ -25,6 +25,7 @@ public class AccountAddActivity extends Activity {
 	private int currency_spinner_ids[] = null;                        // index => id mapping
 	private String currency_spinner_lables[] = null;                  // index => label (like USD)
 	private int currency_spinner_add_index = 0;
+	private int currency_id;
 	
 	private enum Mode {
 		NEW,
@@ -63,6 +64,12 @@ public class AccountAddActivity extends Activity {
 		currency_spinner_add_index = currency_map.size();
 		currency_spinner_lables[currency_spinner_add_index] = getString(R.string.new_curr);
 		currency_spinner_ids[currency_spinner_add_index] = -1; // JIC
+		
+		if (mode == Mode.EDIT) {
+			Spinner currSpinner = (Spinner) findViewById(R.id.SpinnerCurrency);
+			currSpinner.setEnabled(false);
+			currSpinner.setVisibility(View.GONE);
+		}
 
 		/*final Spinner currSpinner = (Spinner) findViewById(R.id.SpinnerCurrency);
 		ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(activity, R.layout.simple_spinner_item);
@@ -101,6 +108,21 @@ public class AccountAddActivity extends Activity {
 	private void LoadCurrentValues() {
 		
 		// TODO: load from db
+		db.open();
+		Account s = db.GetAcccountByID(editableIndex);
+		db.close();
+		currency_id = s.currencyId;
+		
+		final EditText nameField = (EditText) findViewById(R.id.EditTextAmountStart);
+		nameField.setText(s.name);
+
+		final EditText commentField = (EditText) findViewById(R.id.EditTextAccountComment);
+		if (s.comment != null) {
+			commentField.setText(s.comment);
+		}
+
+		final Spinner typeSpinner = (Spinner) findViewById(R.id.SpinnerAccountType);
+		typeSpinner.setSelection(s.typeId);
 		
 	}
 
@@ -140,7 +162,7 @@ public class AccountAddActivity extends Activity {
 		
 		Account newman = new Account();
 		newman.name = name;
-		newman.currencyId = currency_spinner_ids[indx_cur];
+		newman.currencyId = mode == Mode.NEW ? currency_spinner_ids[indx_cur] : currency_id;
 		newman.typeId = indx_type;
 		if (comment.isEmpty()) {
 			newman.comment = null;
@@ -153,6 +175,7 @@ public class AccountAddActivity extends Activity {
 			db.AddNewAccount(newman);
 			Log.i("debug", "Adding account " + indx_type + " (" + accountType + ") + name="+name+ " comm="+comment);
 		} else {
+			newman.id = editableIndex;
 			db.UpdateAccount(newman);
 		}
 		db.close();

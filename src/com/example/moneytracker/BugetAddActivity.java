@@ -425,6 +425,7 @@ public class BugetAddActivity extends Activity {
 
 		String name = bugetName.getText().toString();
 		if (name.isEmpty()) {
+			valida = false;
 			bugetName.setBackgroundColor(getResources().getColor(R.color.errorous));
 		} else {
 			bugetName.setBackgroundColor(0);

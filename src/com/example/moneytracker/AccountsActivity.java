@@ -183,7 +183,6 @@ public class AccountsActivity extends Activity {
 
 		// display chooser
 		new AlertDialog.Builder(this)
-		.setTitle(R.string.currency)
 		.setCancelable(true)
 		.setItems(cur_names,
 			new DialogInterface.OnClickListener() {
