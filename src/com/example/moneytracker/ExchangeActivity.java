@@ -95,7 +95,7 @@ public class ExchangeActivity extends Activity {
 		if (valida == false) return;
 		
 		db.open();
-		db.PerformExchange(account_spinner_ids[selFrom], account_spinner_ids[selTo], amount);
+		db.PerformExchange(account_spinner_ids[selFrom], account_spinner_ids[selTo], amount * selected_currency_rate);
 		db.close();
 		
 		// check self assing
@@ -155,6 +155,7 @@ public class ExchangeActivity extends Activity {
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		accountSpinner1.setAdapter(adapter);
 		accountSpinner2.setAdapter(adapter);
+		accountSpinner2.setSelection(1);
 
 		// Set handler
 		accountSpinner1.setOnItemSelectedListener(new OnItemSelectedListener() {

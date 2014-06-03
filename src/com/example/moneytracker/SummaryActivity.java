@@ -249,7 +249,7 @@ public class SummaryActivity extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				String m_Text = input.getText().toString();
 				if (m_Text.isEmpty() == false) {
-					TransactionCatagory newman = new TransactionCatagory();
+					TransactionCategory newman = new TransactionCategory();
 					newman.type = type;
 					newman.name = m_Text;
 					

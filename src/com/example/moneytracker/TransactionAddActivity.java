@@ -165,7 +165,7 @@ public class TransactionAddActivity extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				String m_Text = input.getText().toString();
 				if (m_Text.isEmpty() == false) {
-					TransactionCatagory newman = new TransactionCatagory();
+					TransactionCategory newman = new TransactionCategory();
 					newman.type = type;
 					newman.name = m_Text;
 					
@@ -310,7 +310,7 @@ public class TransactionAddActivity extends Activity {
 	private void SetupCategorySpinner() {
 		
 		db.open();
-		ArrayList<TransactionCatagory> cats = db.GetCategories();
+		ArrayList<TransactionCategory> cats = db.GetCategories();
 		db.close();
 		
 		if (cats.size() <= 2) {
@@ -332,12 +332,12 @@ public class TransactionAddActivity extends Activity {
 			return;
 		}
 		
-		ArrayList<TransactionCatagory> in = new ArrayList<TransactionCatagory>();
-		ArrayList<TransactionCatagory> out = new ArrayList<TransactionCatagory>();
+		ArrayList<TransactionCategory> in = new ArrayList<TransactionCategory>();
+		ArrayList<TransactionCategory> out = new ArrayList<TransactionCategory>();
 		
 		//SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
 		boolean alow_debts_man = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("allow_debts_manual", false) ;
-		for (TransactionCatagory cat : cats) {
+		for (TransactionCategory cat : cats) {
 			if (alow_debts_man == false) {
 				if (cat.id == 1 || cat.id == 2) continue; // skipping debts default categs
 			}
@@ -355,14 +355,14 @@ public class TransactionAddActivity extends Activity {
 		
 		
 		for (int i = 0; i < in.size(); i++) {
-			TransactionCatagory ac = in.get(i);
+			TransactionCategory ac = in.get(i);
 			income_spinner_ids[i] = ac.id;
-			income_spinner_lables[i] = TransactionCatagory.GetLocalizedCategory(this, ac.name);
+			income_spinner_lables[i] = TransactionCategory.GetLocalizedCategory(this, ac.name);
 		}
 		for (int i = 0; i < out.size(); i++) {
-			TransactionCatagory ac = out.get(i);
+			TransactionCategory ac = out.get(i);
 			outcome_spinner_ids[i] = ac.id;
-			outcome_spinner_lables[i] = TransactionCatagory.GetLocalizedCategory(this, ac.name);
+			outcome_spinner_lables[i] = TransactionCategory.GetLocalizedCategory(this, ac.name);
 		}
 		
 		income_spinned_add_index = in.size();

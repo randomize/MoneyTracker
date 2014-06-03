@@ -132,7 +132,11 @@ public class DatabaseFacade {
 		if (c.moveToFirst()) {
 
 			do {
-				TransactionCatagory s = new TransactionCatagory();
+				if (c.getInt(2) <= 2) // if transaction cat is exchange
+				{
+					continue; // skip to next
+				}
+				TransactionCategory s = new TransactionCategory();
 				s.amount = c.getFloat(0);
 				s.type = c.getInt(1);
 				s.id = c.getInt(2);
@@ -368,8 +372,8 @@ public class DatabaseFacade {
 		
 	}
 
-	public ArrayList<TransactionCatagory> GetCategories() {
-		ArrayList<TransactionCatagory> result = new ArrayList<TransactionCatagory>();
+	public ArrayList<TransactionCategory> GetCategories() {
+		ArrayList<TransactionCategory> result = new ArrayList<TransactionCategory>();
 		
 		Cursor c = database.query(DATABASE_TABLE_TRANS_CATEGORY, null, null, null, null, null, null);
 
@@ -380,7 +384,7 @@ public class DatabaseFacade {
 			int typeColIndex = c.getColumnIndex("type");
 
 			do {
-				TransactionCatagory s = new TransactionCatagory();
+				TransactionCategory s = new TransactionCategory();
 				s.id = c.getInt(idColIndex);
 				s.name = c.getString(nameColIndex);
 				s.type = c.getInt(typeColIndex);
@@ -485,7 +489,7 @@ public class DatabaseFacade {
 		database.delete(DATABASE_TABLE_TRANSACTIONS, "_id = ?", new String[] { String.valueOf(id)});
 	}
 
-	public int AddNewCategory(TransactionCatagory newman) {
+	public int AddNewCategory(TransactionCategory newman) {
 		ContentValues cv = new ContentValues();
 		cv.put("name", newman.name);
 		cv.put("type", newman.type);
@@ -643,8 +647,26 @@ public class DatabaseFacade {
 
 	}
 
-	public void	PerformExchange(int accForm, int accTo, float abount) {
+	public void	PerformExchange(int accForm, int accTo, float amount) {
 		
+		Transaction tr = new Transaction();
+		tr.accountID = accForm;
+		tr.amount = amount;
+		tr.memberID = 1;
+		tr.categoryID = 2;
+		tr.date = System.currentTimeMillis();
+		tr.desc = "exchange";
+		AddNewTransaction(tr);
+
+		Transaction tr2 = new Transaction();
+		tr2.accountID = accTo;
+		tr2.amount = amount;
+		tr2.memberID = 1;
+		tr2.categoryID = 1;
+		tr2.date = System.currentTimeMillis();
+		tr2.desc = "exchange";
+		
+		AddNewTransaction(tr2);
 		
 	}
 }

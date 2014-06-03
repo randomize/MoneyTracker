@@ -34,7 +34,8 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
         "create table currency (" + 
              "_id integer primary key autoincrement, " + 
              "name text not null, " + // 3 letter code (EUR/MLD)
-             "rate real " + 
+             "rate real, " + 
+             "active integer not null " + 
         ");" + 
 
         // Accounts table
@@ -105,20 +106,27 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
         "order by date ; " +
    		     
    		// Base values
-   		" insert into currency (name, rate) " + 
-   		" values ('MLD', 1.0); " + 
-   		" insert into currency (name, rate) " + 
-   		" values ('USD', 13.8); " + 
-   		" insert into currency (name, rate) " + 
-   		" values ('EUR', 18.8); " + 
+   		" insert into currency (name, rate, active) " + 
+   		" values ('MLD', 1.0, 1); " + 
+   		" insert into currency (name, rate, active) " + 
+   		" values ('USD', 13.8, 1); " + 
+   		" insert into currency (name, rate, active) " + 
+   		" values ('EUR', 18.8, 1); " + 
    		" insert into members (name) " + 
    		" values ('Myself'); " + 
    		" insert into accounts (currency,name,type) " + 
    		" values (1,'Cash',0); " + 
-   		" insert into transaction_category (_id, type, name) " + // Mandatory category for incoming debt pays - id = 1
-   		" values (1,1,'Debts'); " + 
-   		" insert into transaction_category (_id, type, name) " +  // Mandatory category for outcomming debt pays - id = 2
-   		" values (2,0,'Debts'); " + 
+
+   		" insert into transaction_category (_id, type, name) " + // Mandatory category for incoming exchange - id = 1
+   		" values (1,1,'Exchange in'); " + 
+   		" insert into transaction_category (_id, type, name) " +  // Mandatory category for outgoing exchange - id = 2
+   		" values (2,0,'Exchange out'); " + 
+
+   		" insert into transaction_category (_id, type, name) " +  // Mandatory category for incoming debt pays - id = 3
+   		" values (3,1,'Debts'); " + 
+   		" insert into transaction_category (_id, type, name) " +  // Mandatory category for outgoing debt pays - id = 4
+   		" values (4,0,'Debts'); " + 
+
    		" insert into transaction_category (type, name) " + 
    		" values (1,'Salary'); " + 
    		" insert into transaction_category (type, name) " + 
@@ -140,33 +148,33 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
    		" insert into debts (desc, type, amount_start, amount_end, category_start, category_end, date_start, date_end, account, member) " + 
    		" values ('kolea', 0, 30, 35, 1, 2, 1401388315064, 1401561050207, 2, 1 ); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (10,2,310012233, 2, 'given vasea', 1); " + 
+   		" values (10,4,310012233, 2, 'given vasea', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (30,1,3112233, 2, 'owe to kolea', 1); " + 
+   		" values (30,3,3112233, 2, 'owe to kolea', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (1010,3,3112233, 1, 'test_1', 1); " + 
+   		" values (1010,5,3112233, 1, 'test_1', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (1020,3,4132233, 2, 'test_2', 1); " + 
+   		" values (1020,5,4132233, 2, 'test_2', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (120,4,5122233, 1, 'test_3', 1); " + 
+   		" values (120,6,5122233, 1, 'test_3', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (200,4,6112223, 2, 'test_4', 1); " + 
+   		" values (200,6,6112223, 2, 'test_4', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (200,5,7112233, 1, 'test_1', 1); " + 
+   		" values (200,7,7112233, 1, 'test_1', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (110,5,8162233, 2, 'test_4', 1); " + 
+   		" values (110,7,8162233, 2, 'test_4', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (110,6,9132233, 1, 'test_4', 1); " + 
+   		" values (110,8,9132233, 1, 'test_4', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (120,6,10112333, 2, 'test_4', 1); " + 
+   		" values (120,8,10112333, 2, 'test_4', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (120,3,11112233, 1, 'test_1', 1); " + 
+   		" values (120,5,11112233, 1, 'test_1', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (122,3,12112233, 2, 'test_3', 1); " + 
+   		" values (122,5,12112233, 2, 'test_3', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (100,4,13112223, 2, null, 1); " + 
+   		" values (100,6,13112223, 2, null, 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
-   		" values (100,4,14112223, 2, null, 1) ";
+   		" values (100,6,14112223, 2, null, 1) ";
 
 	public MainDatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
