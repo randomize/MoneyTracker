@@ -4,18 +4,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-    <ExpandableListView
-        android:id="@+id/debts_categories_listview"
+    <ListView
+        android:id="@+id/bugets_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-    </ExpandableListView>
+    </ListView>
 
 <TextView
-    android:id="@+id/debts_category_empter"
+    android:id="@+id/bugets_empter"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical|center_horizontal"
     android:textAppearance="?android:attr/textAppearanceMedium"
-    android:text="@string/empty_debts_list" />
+    android:text="@string/buget_list_ampty" />
+
 
 </LinearLayout>

@@ -1,5 +1,7 @@
 package com.example.moneytracker;
 
+import android.content.Context;
+
 public class Buget {
 	
 	public int id;
@@ -24,5 +26,17 @@ public class Buget {
 	public String currencyName;
 	public float currencyRate;
 	public float currentAmount; // week or month
+	public String categoryName;
+	public String memberName;
+	
+	public static String LocalizeType(Context context, int type) {
+		
+		if (type == 0) {
+			return context.getString(R.string.weekly);
+		} else 
+			return context.getString(R.string.monthly);
+		
+		
+	}
 
 }

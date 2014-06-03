@@ -130,5 +130,10 @@
     <string name="new_buget">New buget</string>
     <string name="add_buget">Add buget</string>
     <string name="buget_add">Buget add</string>
+    <string name="delete_buget">Delete buget</string>
+    <string name="buget_name">Buget name</string>
+    <string name="buget_list_ampty">Your buget list is empty,\nadd new with \'Add Buget\' button</string>
+    <string name="monthly">Monthly</string>
+    <string name="weekly">Weekly</string>
     
 </resources>

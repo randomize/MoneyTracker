@@ -437,7 +437,7 @@ public class BugetAddActivity extends Activity {
 		Buget newman = new Buget();
 		
 		int cur_pos = currencySpinner.getSelectedItemPosition();
-		newman.amount = amount / currency_spinner_rates[cur_pos];
+		newman.amount = amount * currency_spinner_rates[cur_pos];
 		newman.currencyID = currency_spinner_ids[cur_pos];
 		
 		int cat_pos = categorySpinner.getSelectedItemPosition();

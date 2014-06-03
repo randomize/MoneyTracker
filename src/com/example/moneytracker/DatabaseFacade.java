@@ -9,6 +9,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.SparseArray;
 
 // Each activity will have such facade to DB
 public class DatabaseFacade {
@@ -701,6 +702,21 @@ public class DatabaseFacade {
 
 	public ArrayList<Buget> GetBugetsList() {
 
+		ArrayList<TransactionCategory> cats = GetCategories();
+		SparseArray<TransactionCategory> map = new SparseArray<TransactionCategory>();
+		
+		for (TransactionCategory c : cats) {
+			map.put(c.id, c);
+		}
+
+		ArrayList<Member> members = GetMembers();
+		SparseArray<Member> mmap = new SparseArray<Member>();
+		
+		for (Member m : members) {
+			mmap.put(m.id, m);
+		}
+		
+		
 		ArrayList<Buget> result = new ArrayList<Buget>();
 
 		Cursor c = database.query(DATABASE_TABLE_BUGET, null, null, null , null, null, null);
@@ -722,7 +738,6 @@ public class DatabaseFacade {
 				s.currencyName = ac.name;
 				s.currencyRate = ac.rate;
 				
-				// TODO: get amount current
 				if (s.type == Buget.TYPE_MONTH) {
 					s.currentAmount = GetCategoryAmountWithSlice(s.categoryID,
 							GetThisMonthStart(), 
@@ -732,6 +747,10 @@ public class DatabaseFacade {
 							GetThisWeekStart(), 
 							System.currentTimeMillis());
 				}
+				
+				TransactionCategory cat = map.get(s.categoryID);
+				s.categoryName = cat.name;
+				s.memberName = mmap.get(s.memberID).name;
 
 				result.add(s);
 
@@ -744,6 +763,10 @@ public class DatabaseFacade {
 		return result;
 	}
 	
+	public void RemoveBuget(int id) {
+		database.delete(DATABASE_TABLE_BUGET, "_id = ?", new String[] { String.valueOf(id)});
+	}
+
 	public float GetCategoryAmountWithSlice(int cagetoryId, long from, long to) {
 		String raw = "select sum(amount) as amount, type, category, name from transactions " +
 				"inner join transaction_category on transactions.category = transaction_category._id " +

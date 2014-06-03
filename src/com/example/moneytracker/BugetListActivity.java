@@ -3,6 +3,7 @@ package com.example.moneytracker;
 import java.text.DateFormat;
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
@@ -21,13 +22,14 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
-
-
-public class BugetListActivity extends ListActivity {
+public class BugetListActivity extends Activity {
 
 	private DatabaseFacade db;
+	private int ids[];
+	ListView lv ;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,13 @@ public class BugetListActivity extends ListActivity {
 
 		db = new DatabaseFacade(this);
 		
-		registerForContextMenu(getListView());
+		setContentView(R.layout.activity_bugets);
+		
+		lv = (ListView) findViewById(R.id.bugets_view);
+
+		registerForContextMenu(lv);
+		
+		lv.setEmptyView(findViewById(R.id.bugets_empter));
 
 	}
 	
@@ -48,12 +56,17 @@ public class BugetListActivity extends ListActivity {
 	
 	private void LoadData() {
 		
-			db.open();
-			ArrayList<Buget> bug = db.GetBugetsList();
-			db.close();
+       db.open();
+       ArrayList<Buget> bug = db.GetBugetsList();
+       db.close();
+       
+       ids = new int[bug.size()];
+       for (int i = 0; i < bug.size(); i++) {
+    	   ids[i] = bug.get(i).id;
+       }
 
-			ArrayAdapter<Buget> adapter = new BugetLustAdapter(this, bug);
-			setListAdapter(adapter);
+       ArrayAdapter<Buget> adapter = new BugetListAdapter(this, bug);
+       lv.setAdapter(adapter);
 			
 	}
 	
@@ -72,18 +85,16 @@ public class BugetListActivity extends ListActivity {
 	}*/
 
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-		//AdapterContextMenuInfo info = (AdapterContextMenuInfo)menuInfo;
+
 		AdapterView.AdapterContextMenuInfo info;
 		try {
 			info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 		} catch (ClassCastException e) {
 			return;
 		}
-		int pos = info.position;
-		//long id = getListAdapter().getItemId(info.position);
 		
-		//menu.setHeaderTitle(list[(int) pos]);   
-		menu.add(0, 142, 0, getString(R.string.trans_delete));
+		menu.add(0, 142, 0, getString(R.string.delete_buget));
+
 	};
 
 	private void DeleteTransaction(final int id) 
@@ -94,12 +105,9 @@ public class BugetListActivity extends ListActivity {
 				switch (which){
 				case DialogInterface.BUTTON_POSITIVE:
 					
-					Log.e("ggg", "ggg deleting " + id);
-					
 					db.open();
-					db.DeleteTransaction(id);
+					db.RemoveBuget(id);
 					db.close();
-					//Yes button clicked
 					
 					LoadData();
 					break;
@@ -122,9 +130,8 @@ public class BugetListActivity extends ListActivity {
 		if(item.getItemId() == 142)
 		{
 			AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-			/*long id = this.listView.getItemIdAtPosition(info.position);
-			Log.d(TAG, "Item ID at POSITION:"+id);*/
-			//DeleteTransaction(item_ids[info.position]);
+			//long id = this.listView.getItemIdAtPosition(info.position);
+			DeleteTransaction(ids[info.position]);
 		}
 		else
 		{
