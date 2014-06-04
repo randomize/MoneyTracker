@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 public class DebtsListActivity extends Activity {
 	
@@ -151,8 +152,23 @@ public class DebtsListActivity extends Activity {
 	}
 	
 	private void CommitDebt(int debtId) {
+		
 
 		db.open();
+		
+		Debt d = db.GetDebt(debtId);
+		
+		if (d.type == 0) // ends with outcome 
+		{
+			float current_amount = db.GetCurrentBalance(d.accountID);
+			if (current_amount < d.amount_end) {
+				
+				Toast toast = Toast.makeText(this, "Sorry but you cant pay " + d.amount_end + "\n you only got " + current_amount, Toast.LENGTH_SHORT); toast.show(); 
+				
+				return;
+			}
+		}
+		
 		db.RemoveDebt(debtId);
 		db.close();
 		

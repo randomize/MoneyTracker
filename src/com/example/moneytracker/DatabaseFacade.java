@@ -786,7 +786,12 @@ public class DatabaseFacade {
 	}
 	
 	public void UpdateBugetAmount(int id, float amount ) {
-		
+		//String raw = "update bugets set amount=" + amount + " where _id=" + id + " ;";
+		//database.rawQuery(raw, null);
+
+		ContentValues cv = new ContentValues();
+		cv.put("amount", amount);
+		database.update(DATABASE_TABLE_BUGET, cv, "_id=?", new String[] {String.valueOf(id)} );
 	}
 
 	public float GetCategoryAmountWithSlice(int cagetoryId, long from, long to) {

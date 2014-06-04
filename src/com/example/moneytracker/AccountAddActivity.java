@@ -129,7 +129,7 @@ public class AccountAddActivity extends Activity {
 		currency_id = s.currencyId;
 		
 		final EditText nameField = (EditText) findViewById(R.id.EditTextAmountStart);
-		nameField.setText(s.name);
+		nameField.setText(Account.GetLocalized(this, s.name));
 
 		final EditText commentField = (EditText) findViewById(R.id.EditTextAccountComment);
 		if (s.comment != null) {

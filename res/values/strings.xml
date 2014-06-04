@@ -144,5 +144,6 @@
     <string name="member_delete">Delete</string>
     <string name="edit_amount">Edit amount</string>
     <string name="enter_new_amount">Enter new amount</string>
+    <string name="nodesc">" no desc "</string>
     
 </resources>

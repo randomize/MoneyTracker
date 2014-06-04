@@ -69,7 +69,7 @@ public class TransactionListActivity extends ListActivity {
 				String date = DateFormat.getDateInstance().format(t.date);
 				list[i] = " [" +date + "] : " + String.format("%.2f", t.amount / t.cur_rate) + " "
 						+ t.cur_name + "\n " + getString(R.string.account) + " : " + Account.GetLocalized(this, t.account);
-				desc[i] = getString(R.string.desc) + " : "+ (t.desc == null ? " нет " : t.desc ) + "\n" + getString(R.string.member) + " : " + Member.GetLocalized(this, t.member);
+				desc[i] = getString(R.string.desc) + " :\n"+ (t.desc == null ? getString(R.string.nodesc) : t.desc ) + "\n" + getString(R.string.member) + " : " + Member.GetLocalized(this, t.member);
 				item_ids[i] = t.id;
 			}
 
@@ -86,7 +86,7 @@ public class TransactionListActivity extends ListActivity {
 		dlgAlert.setMessage(desc[position]);
 		dlgAlert.setTitle(list[position]);
 		dlgAlert.setPositiveButton(getString(R.string.ok), null);
-		dlgAlert.setCancelable(false);
+		dlgAlert.setCancelable(true);
 		dlgAlert.create().show();
 	}
 

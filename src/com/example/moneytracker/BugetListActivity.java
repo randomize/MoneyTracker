@@ -36,6 +36,7 @@ public class BugetListActivity extends Activity {
 	private int ids[];
 	private float amounts[];
 	private String names[];
+	private float rates[];
 	ListView lv ;
 
 	@Override
@@ -70,12 +71,15 @@ public class BugetListActivity extends Activity {
        ids = new int[bug.size()];
        names = new String[bug.size()];
        amounts = new float[bug.size()];
+       rates = new float[bug.size()];
 
        for (int i = 0; i < bug.size(); i++) {
 
-    	   ids[i] = bug.get(i).id;
-    	   names[i] = bug.get(i).name;
-    	   amounts[i] = bug.get(i).amount;
+    	   Buget b = bug.get(i);
+    	   ids[i] = b.id;
+    	   names[i] = b.name;
+    	   amounts[i] = b.amount;
+    	   rates[i] = b.currencyRate;
 
        }
 
@@ -166,7 +170,9 @@ public class BugetListActivity extends Activity {
 
 		final EditText input = new EditText(this);
 		input.setInputType(InputType.TYPE_CLASS_NUMBER);
-		input.setText(String.format("%.2f", amounts[pos] ));
+		float cur_val = amounts[pos] / rates[pos];
+		input.setText(String.valueOf(cur_val));
+		//input.setText(String.format("%.2f", amounts[pos] ));
 		builder.setView(input);
 
 		// Set up the buttons
@@ -175,8 +181,10 @@ public class BugetListActivity extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				String m_Text = input.getText().toString();
 				if (m_Text.isEmpty() == false) {
+
+					float amount= Float.parseFloat(m_Text);
 					db.open();
-					db.UpdateBugetAmount(ids[pos], Float.parseFloat(m_Text));
+					db.UpdateBugetAmount(ids[pos], amount * rates[pos]);
 					db.close();
 					LoadData();
 				}

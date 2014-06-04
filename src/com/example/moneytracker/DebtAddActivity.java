@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -42,6 +43,8 @@ public class DebtAddActivity extends Activity {
 	private String account_spinner_lables[] = null;        // index => label (like Cash)
 	private Currency account_spinner_currencies[] = null;  // index => label (like USD)
 	private float selected_currency_rate = 1.0f;
+	private float selected_account_limit = 0;
+	private float account_limits[] = null;
 	
 	// Views
 	
@@ -236,17 +239,27 @@ public class DebtAddActivity extends Activity {
 		account_spinner_ids = new int[acs.size()];
 		account_spinner_lables = new String[acs.size()];
 		account_spinner_currencies = new Currency[acs.size()];
+		account_limits = new float[acs.size()];
 
+		db.open();
 		for (int i = 0; i < acs.size(); i++) {
 			Account ac = acs.get(i);
 			account_spinner_ids[i] = ac.id;
-			account_spinner_lables[i] = Account.GetLocalized(this,ac.name) + " (" + ac.currencyName + ")";
 			account_spinner_currencies[i] = new Currency();
 			account_spinner_currencies[i].id = ac.currencyId;
 			account_spinner_currencies[i].name = ac.currencyName;
 			account_spinner_currencies[i].rate = ac.currencyRate;
 			
+			float max = db.GetCurrentBalance(ac.id) / ac.currencyRate;
+			account_limits[i] = max;
+
+			if (type == 1) {
+				account_spinner_lables[i] = Account.GetLocalized(this,ac.name) + " = "+ String.format("%.2f",max) +" (" + ac.currencyName + ")";
+			} else {
+				account_spinner_lables[i] = Account.GetLocalized(this,ac.name) + " (" + ac.currencyName + ")";
+			}
 		}
+		db.close();
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, account_spinner_lables);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -287,13 +300,38 @@ public class DebtAddActivity extends Activity {
 
 		boolean valida = true;
 		
-		float amount_start_val = Float.valueOf(amount_start.getText().toString());
-		if (amount_start_val <= 0) {
-			amount_start.setBackgroundColor(getResources().getColor(R.color.errorous));
+		String tx = amount_start.getText().toString();
+		float amount_start_val = 0;
+		if (tx == null || tx.isEmpty()) {
 			valida = false;
+			amount_start.setBackgroundColor(getResources().getColor(R.color.errorous));
 		} else {
-			amount_start.setBackgroundColor(0);
+
+			try {
+				amount_start_val = Float.valueOf(tx);
+			} catch (NumberFormatException e) {
+				amount_start_val = 0;
+			}
+
+			if (amount_start_val <= 0) {
+				amount_start.setBackgroundColor(getResources().getColor(R.color.errorous));
+				valida = false;
+			} else {
+				
+				boolean alow_neg_balan = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("allow_negative", false) ;
+				if ( alow_neg_balan == false && type == 1 ) {
+					if (amount_start_val > account_limits[accountSpinner.getSelectedItemPosition()]) {
+						amount_start.setBackgroundColor(getResources().getColor(R.color.errorous));
+						valida = false;
+					} else {
+						amount_start.setBackgroundColor(0);
+					}
+				} else {
+					amount_start.setBackgroundColor(0);
+				}
+			}
 		}
+		
 
 		float amount_end_val = Float.valueOf(amount_end.getText().toString());
 		if (amount_end_val <= 0) {

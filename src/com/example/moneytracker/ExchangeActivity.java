@@ -61,17 +61,42 @@ public class ExchangeActivity extends Activity {
 
 		boolean valida = true;
 
+		int selFrom = accountSpinner1.getSelectedItemPosition();
+		int selTo =  accountSpinner2.getSelectedItemPosition();
 		transactionAmount = (EditText) findViewById(R.id.EditTextExAmount);
-		float amount = Float.valueOf(transactionAmount.getText().toString());
-		if (amount <= 0) {
+
+		String amount_str = transactionAmount.getText().toString();
+
+		float amount = 0;
+		if (amount_str == null || amount_str.isEmpty()) {
 			transactionAmount.setBackgroundColor(getResources().getColor(R.color.errorous));
 			valida = false;
 		} else {
-			transactionAmount.setBackgroundColor(0);
+
+			try {
+				amount = Float.valueOf(amount_str);
+			}  catch(NumberFormatException e) {
+				amount = 0;
+			}
+
+			if (amount <= 0) {
+				transactionAmount.setBackgroundColor(getResources().getColor(R.color.errorous));
+				valida = false;
+			} else {
+
+				boolean alow_neg_balan = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("allow_negative", false) ;
+
+				if ( alow_neg_balan == false && amount > account_limits[selFrom]) {
+					transactionAmount.setBackgroundColor(getResources().getColor(R.color.errorous));
+					valida = false;
+				} else {
+					transactionAmount.setBackgroundColor(0);
+				}
+			}
 		}
+
+
 		
-		int selFrom = accountSpinner1.getSelectedItemPosition();
-		int selTo =  accountSpinner2.getSelectedItemPosition();
 		
 		if (selFrom == selTo) {
 			accountSpinner1.setBackgroundColor(getResources().getColor(R.color.errorous));
@@ -82,16 +107,6 @@ public class ExchangeActivity extends Activity {
 			accountSpinner2.setBackgroundColor(0);
 		}
 
-		boolean alow_neg_balan = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("allow_negative", false) ;
-		//SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-		if ( alow_neg_balan == false && valida) {
-			if (amount > account_limits[selFrom]) {
-				transactionAmount.setBackgroundColor(getResources().getColor(R.color.errorous));
-				valida = false;
-			} else {
-				transactionAmount.setBackgroundColor(0);
-			}
-		}
 		if (valida == false) return;
 		
 		db.open();
