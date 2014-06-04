@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.AudioRecord.OnRecordPositionUpdateListener;
 import android.os.Bundle;
 import android.provider.ContactsContract.Data;
 import android.text.Editable;
@@ -43,6 +44,12 @@ public class MembersListActivity extends ListActivity {
 
 	}
 	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		LoadData();
+	}
+	
 	private void LoadData() {
 		
 			db.open();
@@ -59,7 +66,7 @@ public class MembersListActivity extends ListActivity {
 
 			for (int i = 0; i < mems.size(); i++) {
 				Member t = mems.get(i);
-				list[i] = t.name;
+				list[i] = Member.GetLocalized(this, t.name);
 				item_ids[i] = t.id;
 			}
 
@@ -99,6 +106,9 @@ public class MembersListActivity extends ListActivity {
 		}
 		int pos = info.position;
 		//long id = getListAdapter().getItemId(info.position);
+		if (item_ids[pos] == 1) {
+			return;
+		}
 		
 		menu.setHeaderTitle(list[(int) pos]);   
 		menu.add(0, 142, 0, getString(R.string.member_delete));

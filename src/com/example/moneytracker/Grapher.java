@@ -28,6 +28,7 @@ public class Grapher extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_graph);
+		OpenChart();
 	}
 
 	private void OpenChart()
@@ -76,11 +77,15 @@ public class Grapher extends Activity {
 		mRenderer.setYTitle("Y Values");
 		mRenderer.setZoomButtonsVisible(true);
 		mRenderer.setXLabels(0);
-		mRenderer.setPanEnabled(false);
-
+		mRenderer.setPanEnabled(true);
 		mRenderer.setShowGrid(true);
-
 		mRenderer.setClickEnabled(true);
+		mRenderer.setBackgroundColor(Color.BLACK);
+		mRenderer.setFitLegend(true);
+		mRenderer.setLabelsTextSize(25); // Text size
+		//mRenderer.setScale(3);
+		
+		
 
 		for(int i=0;i<z.length;i++)
 		{

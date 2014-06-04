@@ -28,8 +28,6 @@
         android:id="@+id/check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="4px"
-        android:layout_marginRight="10px"
         android:layout_weight="0.5"
         android:gravity="center_vertical|center_horizontal"
          >

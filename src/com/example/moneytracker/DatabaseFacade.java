@@ -834,8 +834,7 @@ public class DatabaseFacade {
 	}
 
 	public void DeleteMember(int id) {
-		// TODO Auto-generated method stub
-		
+		database.delete(DATABASE_TABLE_MEMBERS, "_id = ?", new String[] { String.valueOf(id)});
 	}
 	
 	
