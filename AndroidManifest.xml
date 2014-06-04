@@ -71,6 +71,7 @@
         </activity>
 
  		<activity android:name="com.example.moneytracker.TransactionAddActivity" />
+ 		<activity android:name="com.example.moneytracker.Grapher" />
 
  		<activity android:name="com.example.moneytracker.BugetListActivity" 
             android:label="@string/budget"
@@ -79,6 +80,12 @@
  		<activity
             android:name="com.example.moneytracker.BugetAddActivity"
             android:label="@string/buget_add"
+            >
+        </activity>
+
+ 		<activity
+            android:name="com.example.moneytracker.MembersListActivity"
+            android:label="@string/members_list"
             >
         </activity>
 

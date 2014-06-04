@@ -832,6 +832,11 @@ public class DatabaseFacade {
 	    
 	    return cal.getTime().getTime();
 	}
+
+	public void DeleteMember(int id) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }

@@ -79,13 +79,13 @@ public class MainActivity extends Activity implements OnClickListener {
 			OpenPreferences();
 			return true;
 		case R.id.action_members_list:
-			finish();
+			OpenMembersList();
 			return true;
 		case R.id.action_currency_list:
 			OpenCurrencyList();
 			return true;
 		case R.id.action_about:
-			finish();
+			OpenAbout();
 			return true;
 		case R.id.action_exit:
 			finish();
@@ -95,6 +95,17 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 	}
 
+
+	private void OpenAbout() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void OpenMembersList() {
+		Intent intent = new Intent(this, MembersListActivity.class);
+		startActivity(intent);
+		
+	}
 
 	private void OpenCurrencyList() {
 		Intent intent = new Intent(this, CurrencyListActivity.class);

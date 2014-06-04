@@ -141,5 +141,6 @@
     <string name="inactive">Inactive</string>
     <string name="delete_debt">Remove debt</string>
     <string name="at_least_one_currency_is_mandatory">At least one currency is mandatory</string>
+    <string name="member_delete">Delete</string>
     
 </resources>
