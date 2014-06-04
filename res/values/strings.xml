@@ -142,5 +142,7 @@
     <string name="delete_debt">Remove debt</string>
     <string name="at_least_one_currency_is_mandatory">At least one currency is mandatory</string>
     <string name="member_delete">Delete</string>
+    <string name="edit_amount">Edit amount</string>
+    <string name="enter_new_amount">Enter new amount</string>
     
 </resources>

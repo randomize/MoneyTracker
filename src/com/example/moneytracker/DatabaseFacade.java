@@ -2,8 +2,6 @@ package com.example.moneytracker;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -54,6 +52,7 @@ public class DatabaseFacade {
 		return GetCurrencyList(true);
 
 	}
+
 	public ArrayList<Currency> GetCurrencyList(boolean onlyActive) {
 
 		ArrayList<Currency> result = new ArrayList<Currency>(10);
@@ -133,7 +132,7 @@ public class DatabaseFacade {
 		Cursor c;
 		
 		if (slice) {
-			String[] params = new String[] { String.valueOf(f), String.valueOf(t)};
+			//String[] params = new String[] { String.valueOf(f), String.valueOf(t)};
 
 			String raw = "select sum(amount) as amount, type, category, name from transactions " +
 					"inner join transaction_category on transactions.category = transaction_category._id " +
@@ -196,6 +195,7 @@ public class DatabaseFacade {
 		return result;
 		
 	}
+
 	public float GetTotalOutcomeOn(int accountId) {
 		
 		float result = 0;
@@ -316,7 +316,6 @@ public class DatabaseFacade {
 		}
 		
 		database.update(DATABASE_TABLE_ACCOUNTS, cv, "_id = ?", new String[] {String.valueOf(replacer.id)});
-		// TODO: also fix currency change in transactions amount field WHERE id=_id
 		
 	}
 
@@ -606,7 +605,6 @@ public class DatabaseFacade {
 
 		return null;
 	}
-
 	
 	public int AddDebt(Debt newman) {
 		
@@ -641,7 +639,6 @@ public class DatabaseFacade {
 		return s;
 		
 	}
-	
 
 	public void RemoveDebt(int id) {
 		
@@ -670,6 +667,7 @@ public class DatabaseFacade {
 		database.delete(DATABASE_TABLE_DEBTS, "_id = ?", new String[] { String.valueOf(id)});
 
 	}
+
 	public void	PerformExchange(int accForm, int accTo, float amount) {
 		
 		Transaction tr = new Transaction();
@@ -785,6 +783,10 @@ public class DatabaseFacade {
 	
 	public void RemoveBuget(int id) {
 		database.delete(DATABASE_TABLE_BUGET, "_id = ?", new String[] { String.valueOf(id)});
+	}
+	
+	public void UpdateBugetAmount(int id, float amount ) {
+		
 	}
 
 	public float GetCategoryAmountWithSlice(int cagetoryId, long from, long to) {
