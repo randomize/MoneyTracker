@@ -2,5 +2,6 @@
 <resources>
     <string-array name="debt_actions">
         <item>@string/accepted</item>
+        <item>@string/delete_debt</item>
     </string-array>
 </resources>

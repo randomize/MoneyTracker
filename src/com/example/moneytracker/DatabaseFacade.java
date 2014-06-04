@@ -51,22 +51,28 @@ public class DatabaseFacade {
 
 
 	public ArrayList<Currency> GetCurrencyList() {
+		return GetCurrencyList(true);
+
+	}
+	public ArrayList<Currency> GetCurrencyList(boolean onlyActive) {
 
 		ArrayList<Currency> result = new ArrayList<Currency>(10);
 
-		Cursor c = database.query(DATABASE_TABLE_CURRENCY, null, null, null, null, null, null);
+		Cursor c = database.query(DATABASE_TABLE_CURRENCY, null, onlyActive ? "active = 1" : null, null, null, null, null);
 
 		if (c.moveToFirst()) {
 
 			int idColIndex = c.getColumnIndex("_id");
 			int nameColIndex = c.getColumnIndex("name");
 			int rateColIndex = c.getColumnIndex("rate");
+			int activeColIndex = c.getColumnIndex("active");
 
 			do {
 				Currency s = new Currency();
 				s.id = c.getInt(idColIndex);
 				s.name = c.getString(nameColIndex);
 				s.rate = c.getFloat(rateColIndex);
+				s.isActive = c.getInt(activeColIndex) == 1;
 				result.add(s);
 			} while (c.moveToNext());
 
@@ -74,6 +80,15 @@ public class DatabaseFacade {
 
 		c.close();
 		return result;
+	}
+	
+	public void UpdateCurrency(Currency replacer) {
+		
+		ContentValues cv = new ContentValues();
+		cv.put("active", replacer.isActive ? 1 : 0);
+		cv.put("name", replacer.name);
+		cv.put("rate", replacer.rate);
+		database.update(DATABASE_TABLE_CURRENCY, cv, "_id = ?", new String[] {String.valueOf(replacer.id)});
 	}
 
 	public void NewCurrency(String name, float rate) {
@@ -650,6 +665,11 @@ public class DatabaseFacade {
 
 	}
 
+	public void DeleteDebt(int id) {
+		
+		database.delete(DATABASE_TABLE_DEBTS, "_id = ?", new String[] { String.valueOf(id)});
+
+	}
 	public void	PerformExchange(int accForm, int accTo, float amount) {
 		
 		Transaction tr = new Transaction();

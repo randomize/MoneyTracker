@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/TextView_curr_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingLeft="10dp"
+        android:text="USD"
+        android:textSize="17sp"
+        android:textStyle="bold" >
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/TextView_rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="13.8"
+        android:textSize="16sp" />
+
+    <CheckBox
+        android:id="@+id/check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4px"
+        android:layout_marginRight="10px"
+        android:layout_weight="0.5"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="@string/active" >
+
+    </CheckBox>
+
+</LinearLayout> 

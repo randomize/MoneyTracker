@@ -96,7 +96,7 @@ public class DebtsCategoriesExpandableListAdapter extends BaseExpandableListAdap
 					
 					@Override
 					public boolean onLongClick(View v) {
-						((DebtsListActivity) activity).PopupActionsMenu(child.id);
+						((DebtsListActivity) activity).PopupActionsMenu(child.id, child.desc);
 						return false;
 					}
 				}

@@ -160,26 +160,34 @@ public class DebtsListActivity extends Activity {
 		
 	}
 
-	public void PopupActionsMenu(final int debtId) {
-
-		/*if (accountID == 1)  // never edit or delete default one
-			return;*/
+	public void PopupActionsMenu(final int debtId, String name) {
 
 		String[] cur_names = getResources().getStringArray(R.array.debt_actions);
 
 		// display chooser
 		new AlertDialog.Builder(this)
-		.setTitle(R.string.currency)
+		.setTitle(name)
 		.setCancelable(true)
 		.setItems(cur_names,
 			new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialoginterface, int i) {
 				if (i == 0) {
 					CommitDebt(debtId);
-				} 
+				} else if (i == 1) {
+					DeleteDebt(debtId);
+				}
 			}
 		})
 		.show();
+	}
+
+	protected void DeleteDebt(int debtId) {
+		db.open();
+		db.DeleteDebt(debtId);
+		db.close();
+		
+		LoadActualData();
+		
 	}
 
 }

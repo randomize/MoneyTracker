@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,6 +27,7 @@ public class AccountAddActivity extends Activity {
 	private String currency_spinner_lables[] = null;                  // index => label (like USD)
 	private int currency_spinner_add_index = 0;
 	private int currency_id;
+	private Spinner spinner_cur;
 	
 	private enum Mode {
 		NEW,
@@ -48,38 +50,14 @@ public class AccountAddActivity extends Activity {
 		}
 
 		db = new DatabaseFacade(this);
-		db.open();
-		ArrayList<Currency> currency_map = db.GetCurrencyList();
-		db.close();
 
-		currency_spinner_ids = new int[currency_map.size()+1]; // Reservin one for "new..."
-		currency_spinner_lables = new String[currency_map.size()+1];
-		for (int i = 0; i < currency_map.size(); i++) {
-			Currency c = currency_map.get(i);
-			currency_spinner_ids[i] = c.id;
-			currency_spinner_lables[i] = c.name;
-		}
+		spinner_cur = (Spinner) findViewById(R.id.SpinnerCurrency);
 
-		// Always add custom new currency item option
-		currency_spinner_add_index = currency_map.size();
-		currency_spinner_lables[currency_spinner_add_index] = getString(R.string.new_curr);
-		currency_spinner_ids[currency_spinner_add_index] = -1; // JIC
-		
 		if (mode == Mode.EDIT) {
-			Spinner currSpinner = (Spinner) findViewById(R.id.SpinnerCurrency);
-			currSpinner.setEnabled(false);
-			currSpinner.setVisibility(View.GONE);
+			spinner_cur.setEnabled(false);
+			spinner_cur.setVisibility(View.GONE);
 		}
 
-		/*final Spinner currSpinner = (Spinner) findViewById(R.id.SpinnerCurrency);
-		ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(activity, R.layout.simple_spinner_item);
-		spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);*/
-
-		// Set spinner items(using adapter)
-		Spinner spinner_cur = (Spinner) findViewById(R.id.SpinnerCurrency);
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, currency_spinner_lables);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner_cur.setAdapter(adapter);
 
 		// Set handler
 		spinner_cur.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -104,6 +82,42 @@ public class AccountAddActivity extends Activity {
 			LoadCurrentValues();
 		}
 	}
+	
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		
+		if (mode == Mode.NEW) {
+			LoadCurrency();
+		}
+	}
+	
+	private void LoadCurrency() {
+
+		db.open();
+		ArrayList<Currency> currency_map = db.GetCurrencyList();
+		db.close();
+
+		currency_spinner_ids = new int[currency_map.size()+1]; // Reservin one for "new..."
+		currency_spinner_lables = new String[currency_map.size()+1];
+		for (int i = 0; i < currency_map.size(); i++) {
+			Currency c = currency_map.get(i);
+			currency_spinner_ids[i] = c.id;
+			currency_spinner_lables[i] = c.name;
+		}
+
+		// Always add custom new currency item option
+		currency_spinner_add_index = currency_map.size();
+		currency_spinner_lables[currency_spinner_add_index] = getString(R.string.new_curr);
+		currency_spinner_ids[currency_spinner_add_index] = -1; // JIC
+		
+		// Set spinner items(using adapter)
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, currency_spinner_lables);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner_cur.setAdapter(adapter);
+		
+	}
 
 	private void LoadCurrentValues() {
 		
@@ -127,9 +141,12 @@ public class AccountAddActivity extends Activity {
 	}
 
 	private void ShowNewCurrencyDialog() {
-		// TODO Show activity and get result
-		Spinner spinner_cur = (Spinner) findViewById(R.id.SpinnerCurrency);
-		// spinner_cur.sele // select new currency
+		OpenCurrencyList();
+	}
+
+	private void OpenCurrencyList() {
+		Intent intent = new Intent(this, CurrencyListActivity.class);
+		startActivity(intent);
 	}
 	
 	// On result
@@ -156,13 +173,17 @@ public class AccountAddActivity extends Activity {
 		String accountType = typeSpinner.getSelectedItem().toString();
 		int indx_type = typeSpinner.getSelectedItemPosition(); 
 
-		final Spinner currSpinner = (Spinner) findViewById(R.id.SpinnerCurrency);
-		String currecy = currSpinner.getSelectedItem().toString();
-		int indx_cur = currSpinner.getSelectedItemPosition();
-		
 		Account newman = new Account();
+
+		if (mode == Mode.NEW) {
+			String currecy = spinner_cur.getSelectedItem().toString();
+			int indx_cur = spinner_cur.getSelectedItemPosition();
+			newman.currencyId = currency_spinner_ids[indx_cur];
+		} else {
+			newman.currencyId = currency_id;
+		}
+		
 		newman.name = name;
-		newman.currencyId = mode == Mode.NEW ? currency_spinner_ids[indx_cur] : currency_id;
 		newman.typeId = indx_type;
 		if (comment.isEmpty()) {
 			newman.comment = null;

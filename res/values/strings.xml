@@ -135,5 +135,10 @@
     <string name="buget_list_ampty">Your buget list is empty,\nadd new with \'Add Buget\' button</string>
     <string name="monthly">Monthly</string>
     <string name="weekly">Weekly</string>
+    <string name="members_list">Members list</string>
+    <string name="currency_list">Currency list</string>
+    <string name="active">Active</string>
+    <string name="inactive">Inactive</string>
+    <string name="delete_debt">Remove debt</string>
     
 </resources>
