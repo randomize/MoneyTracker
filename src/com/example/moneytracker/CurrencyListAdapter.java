@@ -11,17 +11,26 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CurrencyListAdapter extends ArrayAdapter<Currency>{
 
-	Activity context;
-	ArrayList<Currency> list;
+	private Activity context;
+	private ArrayList<Currency> list;
+	
+	private int acctives = 0;
 
 	public CurrencyListAdapter(Activity context, ArrayList<Currency> list) {
 		super(context, R.layout.currency_row ,list);
 
 		this.context = context;
 		this.list = list;
+		
+		for (Currency c : list) {
+			if (c.isActive) {
+				acctives++;
+			}
+		}
 	}
 	static class ViewHolder {
 		protected TextView text;
@@ -48,7 +57,19 @@ public class CurrencyListAdapter extends ArrayAdapter<Currency>{
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
               Currency element = (Currency) viewHolder.checkbox.getTag();
               element.isActive = buttonView.isChecked();
-              buttonView.setText(element.isActive ? context.getString(R.string.active) : context.getString(R.string.inactive));
+              if (isChecked) {
+            	  acctives++;
+              } else {
+            	  if (acctives <= 1) {
+            		  element.isActive = true;
+            		  buttonView.setChecked(true);
+            		  //notifyDataSetChanged();
+            		  Toast toast = Toast.makeText(context, R.string.at_least_one_currency_is_mandatory, Toast.LENGTH_SHORT); toast.show(); 
+            	  } else {
+            		  acctives--;
+            	  }
+              }
+              //buttonView.setText(element.isActive ? context.getString(R.string.active) : context.getString(R.string.inactive));
             }
 
           });

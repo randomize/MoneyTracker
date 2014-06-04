@@ -32,7 +32,7 @@
         android:layout_marginRight="10px"
         android:layout_weight="0.5"
         android:gravity="center_vertical|center_horizontal"
-        android:text="@string/active" >
+         >
 
     </CheckBox>
 

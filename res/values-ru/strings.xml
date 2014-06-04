@@ -77,7 +77,7 @@
     <!-- New Debt activity -->
     <string name="recieved_in_debt">Получено в долг</string>
     <string name="sent_in_debt">Отдано в долг</string>
-    <string name="i_returned_debt">Оплатил долг</string>
+    <string name="i_returned_debt">Отдал долг</string>
     <string name="they_returned_debt">Вернули долг</string>
 
     <!-- Default categories -->
@@ -98,4 +98,27 @@
     <string name="expired">Истёк</string>
     <string name="ago">назад</string>
     <string name="left">дн. осталось</string>
+    <string name="allow_manual_debts_categories">Показывать служебные категории</string>
+    <string name="when_enabled_you_can_manually_create_debts_transactions">Когда активно, можно вручную создать транзакции долга и обмена валют</string>
+    <string name="set_interval">Задать интервал</string>
+    <string name="start_date">Начало периода</string>
+    <string name="end_date">Конец периода</string>
+    <string name="pick_a_date_slice">Выбрать отрезок времени</string>
+    <string name="exchange">Обмен</string>
+    <string name="account_exchange_too_few_accounts">Пожалуйста, создайте хотябы два аккаунта</string>
+    <string name="new_buget">Новый бюджет</string>
+    <string name="add_buget">Добавить бюджет</string>
+    <string name="buget_add">Добавить</string>
+    <string name="delete_buget">Удалить бюджет</string>
+    <string name="buget_name">Имя бюджета</string>
+    <string name="buget_list_ampty">У вас пока нет бюджета\nиспользуйте кнопку \'Добаить\'</string>
+    <string name="monthly">Месячный</string>
+    <string name="weekly">Недельный</string>
+    <string name="members_list">Список членов семьи</string>
+    <string name="currency_list">Список валют</string>
+    <string name="active">Активна</string>
+    <string name="inactive">Неактивна</string>
+    <string name="delete_debt">Удалить долг</string>
+    
+    
 </resources>

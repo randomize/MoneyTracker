@@ -158,9 +158,9 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
    		" insert into accounts (currency,name,type) " + 
    		" values (3,'MASTERCARD',1); " + 
    		" insert into debts (desc, type, amount_start, amount_end, category_start, category_end, date_start, date_end, account, member) " + 
-   		" values ('vasea', 1, 10, 20, 2, 1, 1401388315000, 1401388315064, 2, 1 ); " + 
+   		" values ('vasea', 1, 10, 20, 4, 3, 1401388315000, 1401388315064, 2, 1 ); " + 
    		" insert into debts (desc, type, amount_start, amount_end, category_start, category_end, date_start, date_end, account, member) " + 
-   		" values ('kolea', 0, 30, 35, 1, 2, 1401388315064, 1401561050207, 2, 1 ); " + 
+   		" values ('kolea', 0, 30, 35, 3, 4, 1401388315064, 1401561050207, 2, 1 ); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 
    		" values (10,4,310012233, 2, 'given vasea', 1); " + 
    		" insert into transactions (amount, category, date, account, desc, member) " + 

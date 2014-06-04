@@ -29,8 +29,8 @@ public class DebtAddActivity extends Activity {
 
 	private int type;
 	
-	private static final int category_income_debt_id = 1;
-	private static final int category_outcome_debt_id = 2;
+	private static final int category_income_debt_id = 3;
+	private static final int category_outcome_debt_id = 4;
 	
 	private int member_ids[] = null;
 	private String member_labels[] = null;

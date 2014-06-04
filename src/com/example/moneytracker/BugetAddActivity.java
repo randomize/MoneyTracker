@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -130,6 +131,7 @@ public class BugetAddActivity extends Activity {
 				// If user clicked "New ..." item
 				if (position == currency_spinner_add_index) {
 					ShowNewCurrencyDialog();
+					parentView.setSelection(0);
 				} else {
 					currencyLabel.setText(currency_spinner_lables[position]);
 				}
@@ -174,7 +176,12 @@ public class BugetAddActivity extends Activity {
 	}
 	
 	private void ShowNewCurrencyDialog() {
+		OpenCurrencyList();
 
+	}
+	private void OpenCurrencyList() {
+		Intent intent = new Intent(this, CurrencyListActivity.class);
+		startActivity(intent);
 	}
 
 	private void CreateNewCategory(final int type) {

@@ -67,6 +67,7 @@ public class AccountAddActivity extends Activity {
 				// If user clicked "New ..." item
 				if (position == currency_spinner_add_index) {
 					ShowNewCurrencyDialog();
+					parentView.setSelection(0);
 				}
 				// your code here
 			}

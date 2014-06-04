@@ -647,7 +647,7 @@ public class DatabaseFacade {
 		
 		Debt newman = GetDebt(id);
 		
-		String desk = newman.type == 0 ? 
+		String desk = newman.type == 1 ? 
 				context.getString(R.string.they_returned_debt) :
 				context.getString(R.string.i_returned_debt);
 		
