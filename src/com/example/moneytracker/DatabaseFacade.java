@@ -2,6 +2,8 @@ package com.example.moneytracker;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -842,6 +844,18 @@ public class DatabaseFacade {
 
 	public void DeleteMember(int id) {
 		database.delete(DATABASE_TABLE_MEMBERS, "_id = ?", new String[] { String.valueOf(id)});
+	}
+
+	public void UpdateCurrencies(HashMap<String, Float> map) {
+		ArrayList<Currency> cs = GetCurrencyList(false);
+		
+		for(Currency c : cs) {
+			if (map.containsKey(c.name)) {
+				c.rate = map.get(c.name);
+				UpdateCurrency(c);
+			}
+		}
+		
 	}
 	
 	

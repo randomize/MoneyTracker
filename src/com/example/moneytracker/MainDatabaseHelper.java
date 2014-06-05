@@ -125,7 +125,15 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
    		" insert into currency (name, rate, active) " + 
    		" values ('EUR', 18.8, 1); " + 
    		" insert into currency (name, rate, active) " + 
-   		" values ('XXX', 48.8, 0); " + 
+   		" values ('RUB', 0.4, 0); " + 
+   		" insert into currency (name, rate, active) " + 
+   		" values ('UAH', 1.14, 0); " + 
+   		" insert into currency (name, rate, active) " + 
+   		" values ('RON', 4.3, 0); " + 
+   		" insert into currency (name, rate, active) " + 
+   		" values ('GBP', 23.4, 0); " + 
+   		" insert into currency (name, rate, active) " + 
+   		" values ('JPY', 13.5, 0); " + 
    		" insert into members (name) " + 
    		" values ('Myself'); " + 
    		" insert into accounts (currency,name,type) " + 
