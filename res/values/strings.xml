@@ -145,5 +145,7 @@
     <string name="edit_amount">Edit amount</string>
     <string name="enter_new_amount">Enter new amount</string>
     <string name="nodesc">" no desc "</string>
+    <string name="accumulation_list_is_empty">Accumulation list is empty</string>
+    <string name="add_accumulation">Add accumulation</string>
     
 </resources>

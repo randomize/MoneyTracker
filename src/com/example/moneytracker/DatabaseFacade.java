@@ -23,6 +23,7 @@ public class DatabaseFacade {
 	private static final String DATABASE_TABLE_TRANSACTIONS = "transactions";
 	private static final String DATABASE_TABLE_DEBTS = "debts";
 	private static final String DATABASE_TABLE_BUGET = "bugets";
+	private static final String DATABASE_TABLE_ACCUM = "accumulations";
 	private static final String DATABASE_VIEW_INCOME_SUMS = "accounts_income";
 	private static final String DATABASE_VIEW_OUTCOME_SUMS = "accounts_outcome";
 	private static final String DATABASE_VIEW_TRANS_SUMMARY = "trans_summary";
@@ -856,6 +857,31 @@ public class DatabaseFacade {
 			}
 		}
 		
+	}
+
+	public ArrayList<Accumulation> GetAccumulations() {
+
+		ArrayList<Accumulation> result = new ArrayList<Accumulation>();
+
+		Cursor c = database.query(DATABASE_TABLE_ACCUM, null, null, null , null, null, null);
+
+		if (c.moveToFirst()) {
+
+			do {
+				Accumulation s = new Accumulation();
+				s.id = c.getInt(0);
+				s.description = c.getString(1);
+				s.amount = c.getFloat(2);
+				s.target_amount = c.getFloat(3);
+
+				result.add(s);
+
+			} while (c.moveToNext());
+
+		}
+
+		c.close();
+		return result;
 	}
 	
 	

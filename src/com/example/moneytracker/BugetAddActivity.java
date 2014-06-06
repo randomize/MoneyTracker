@@ -357,7 +357,7 @@ public class BugetAddActivity extends Activity {
 		
 		boolean alow_debts_man = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("allow_debts_manual", false) ;
 		for (TransactionCategory cat : cats) {
-			if (alow_debts_man == false && cat.id <= 4) continue; // skipping debts default hidden catags
+			if (alow_debts_man == false && cat.id <= 6) continue; // skipping debts default hidden catags
 			if (cat.type == 0) {
 				out.add(cat);
 			}

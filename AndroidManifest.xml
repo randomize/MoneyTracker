@@ -73,6 +73,7 @@
 
  		<activity android:name="com.example.moneytracker.TransactionAddActivity" />
  		<activity android:name="com.example.moneytracker.Grapher" />
+ 		<activity android:name="com.example.moneytracker.AccumListActivity" />
 
  		<activity android:name="com.example.moneytracker.BugetListActivity" 
             android:label="@string/budget"

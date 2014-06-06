@@ -339,7 +339,7 @@ public class TransactionAddActivity extends Activity {
 		boolean alow_debts_man = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("allow_debts_manual", false) ;
 		for (TransactionCategory cat : cats) {
 			if (alow_debts_man == false) {
-				if (cat.id <= 4) continue; // skipping debts default categs
+				if (cat.id <= 6) continue; // skipping debts default categs
 			}
 			if (cat.type == 0) {
 				out.add(cat);

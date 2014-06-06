@@ -289,6 +289,12 @@ public class MainActivity extends Activity implements OnClickListener {
                 startActivity(intent);
                 break;
 		    }
+
+		    case R.id.ButtonAccumulations: {
+                Intent intent = new Intent(this, AccumListActivity.class);
+                startActivity(intent);
+                break;
+		    }
     
 		   /* case R.id.clickButton2: {
 			    // do something for button 2 click
