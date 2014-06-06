@@ -925,6 +925,27 @@ public class DatabaseFacade {
 		// When commited money just goes away
 		database.delete(DATABASE_TABLE_ACCUM, "_id = ?", new String[] { String.valueOf(id)});
 	}
+
+
+	public void AddAmountToAccum(int accumID, int accountID, float f) {
+
+		Accumulation s = GetAccumulation(accumID);
+		
+		Transaction tr = new Transaction();
+		tr.accountID = accountID;
+		tr.amount = f;
+		tr.memberID = Member.MYSELF_ID;
+		tr.categoryID = TransactionCategory.ACCUM_OUTCOME;
+		tr.date = System.currentTimeMillis();
+		tr.desc = "Performed accumulation : " + s.description;
+		AddNewTransaction(tr);
+		
+		
+		ContentValues cv = new ContentValues();
+		cv.put("amount", s.amount + f);
+		database.update(DATABASE_TABLE_ACCUM, cv, "_id = ?", new String[] {String.valueOf(accumID)});
+		
+	}
 	
 	
 }
