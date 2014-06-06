@@ -600,13 +600,13 @@ public class DatabaseFacade {
 				s.currencyID = ac.currencyId;
 				
 				c.close();
-				
 				return s;
 
 		}
-		c.close();
 
-		return null;
+		c.close();
+		return null; // was not found
+
 	}
 	
 	public int AddDebt(Debt newman) {
@@ -882,6 +882,48 @@ public class DatabaseFacade {
 
 		c.close();
 		return result;
+	}
+
+	public void RemoveAccumulation(int id, int accountId) {
+		// When removed - money went back
+		Accumulation targ = GetAccumulation(id);
+		
+		Transaction tr = new Transaction();
+		tr.accountID = accountId;
+		tr.amount = targ.amount;
+		tr.memberID = Member.MYSELF_ID;
+		tr.categoryID = TransactionCategory.ACCUM_INCOME;
+		tr.date = System.currentTimeMillis();
+		tr.desc = "cancelled accumulation : " + targ.description;
+		AddNewTransaction(tr);
+		
+		//Then removed accum
+		CommitAccumulation(id);
+	}
+
+	private Accumulation GetAccumulation(int id) {
+
+		Cursor c = database.query(DATABASE_TABLE_ACCUM, null, "_id = ?", new String[] { String.valueOf(id)} , null, null, null);
+
+		if (c.moveToFirst()) {
+
+				Accumulation s = new Accumulation();
+				s.id = c.getInt(0);
+				s.description = c.getString(1);
+				s.amount = c.getInt(2);
+				s.target_amount = c.getFloat(3);
+				
+				c.close();
+				return s;
+
+		}
+		c.close();
+		return null; // In case not founf return null
+	}
+
+	public void CommitAccumulation(int id) {
+		// When commited money just goes away
+		database.delete(DATABASE_TABLE_ACCUM, "_id = ?", new String[] { String.valueOf(id)});
 	}
 	
 	

@@ -138,14 +138,34 @@ public class AccumListActivity extends Activity {
 		} catch (ClassCastException e) {
 			return;
 		}
-		
+
 		menu.setHeaderTitle(names[info.position]);
-		menu.add(0, 142, 0, getString(R.string.delete_buget));
-		menu.add(0, 143, 0, getString(R.string.edit_amount));
+		menu.add(0, 143, 0, getString(R.string.accum_commit));
+		menu.add(0, 142, 0, getString(R.string.accum_delete));
+		menu.add(0, 141, 0, getString(R.string.accum_append));
 
 	};
 
-	private void DeleteBuget(final int id) 
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+
+		if(item.getItemId() == 142)
+		{
+			AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+			DeleteAccumulation(ids[info.position]);
+			return true;
+		}
+		else if (item.getItemId() == 143)
+		{
+			AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+			CommitAccumulation(info.position);
+			return true;
+		} 
+		
+		return false;
+	}
+
+	private void DeleteAccumulation(final int id) 
 	{
 		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
 			@Override
@@ -154,7 +174,7 @@ public class AccumListActivity extends Activity {
 				case DialogInterface.BUTTON_POSITIVE:
 					
 					db.open();
-					db.RemoveBuget(id);
+					db.RemoveAccumulation(id, 1); // TODO: must choose
 					db.close();
 					
 					LoadData();
@@ -172,79 +192,10 @@ public class AccumListActivity extends Activity {
 		.setNegativeButton(getString(R.string.no), dialogClickListener).show();
 	}
 
-	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-
-		if(item.getItemId() == 142)
-		{
-			AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-			DeleteBuget(ids[info.position]);
-			return true;
-		}
-		else if (item.getItemId() == 143)
-		{
-			AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-			EditBuget(info.position);
-			return true;
-		} 
-		
-		return false;
-	}
-
-	private void EditBuget(final int pos) {
-		
-		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(getString(R.string.enter_new_amount));
-
-		final EditText input = new EditText(this);
-		input.setInputType(InputType.TYPE_CLASS_NUMBER);
-		float cur_val = amounts[pos] / rates[pos];
-		input.setText(String.valueOf(cur_val));
-		//input.setText(String.format("%.2f", amounts[pos] ));
-		builder.setView(input);
-
-		// Set up the buttons
-		builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() { 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				String m_Text = input.getText().toString();
-				if (m_Text.isEmpty() == false) {
-
-					float amount= Float.parseFloat(m_Text);
-					db.open();
-					db.UpdateBugetAmount(ids[pos], amount * rates[pos]);
-					db.close();
-					LoadData();
-				}
-			}
-		});
-
-
-		builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.cancel();
-			}
-		});
-		
-		final AlertDialog dialog = builder.create();
-
-        input.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence c, int i, int i2, int i3) {}
-            @Override public void onTextChanged(CharSequence c, int i, int i2, int i3) {}
-            @Override
-            public void afterTextChanged(Editable editable) {
-                // Will be called AFTER text has been changed.
-                if (editable.toString().length() == 0){
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                } else {
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                }
-            }
-        });
-
-		dialog.show();
-		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+	private void CommitAccumulation(final int pos) {
+		db.open();
+		db.CommitAccumulation(ids[pos]);
+		db.close();
 	}
 
 	@Override

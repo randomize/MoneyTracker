@@ -9,9 +9,8 @@ import android.content.Context;
 
 public class TransactionCategoryGroup {
 	
-	// 1 - cash
-	// 2 - card
-	// 3 - bank_account
+	// Iccome = 1
+	// Outcome = 0
 	public enum GroupType { 
 
 		INCOME(1),    

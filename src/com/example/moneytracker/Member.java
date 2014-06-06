@@ -10,6 +10,8 @@ public class Member {
 	public int id;
 	
 	public String name;
+	
+	public static final int MYSELF_ID = 1;
 
 	private static final Map<String, Integer> member_hardcoded_names;
     static

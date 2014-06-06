@@ -142,25 +142,29 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
    		" values ('GBP', 23.4, 0); " + 
    		" insert into currency (name, rate, active) " + 
    		" values ('JPY', 13.5, 0); " + 
-   		" insert into members (name) " + 
-   		" values ('Myself'); " + 
+   		
+   		// Put myself
+   		" insert into members (_id,name) " + 
+   		" values (" + Member.MYSELF_ID + ",'Myself'); " + 
+
+   		// Put default cash
    		" insert into accounts (currency,name,type) " + 
    		" values (1,'Cash',0); " + 
 
    		" insert into transaction_category (_id, type, name) " + // Mandatory category for incoming exchange - id = 1
-   		" values (1,1,'Exchange in'); " + 
+   		" values (" + TransactionCategory.EXCHANGE_INCOME + ",1,'Exchange in'); " + 
    		" insert into transaction_category (_id, type, name) " +  // Mandatory category for outgoing exchange - id = 2
-   		" values (2,0,'Exchange out'); " + 
+   		" values (" + TransactionCategory.EXCHANGE_OUTCOME + ",0,'Exchange out'); " + 
 
    		" insert into transaction_category (_id, type, name) " +  // Mandatory category for incoming debt pays - id = 3
-   		" values (3,1,'Debts'); " + 
+   		" values (" + TransactionCategory.DEBT_INCOME + ",1,'Debts'); " + 
    		" insert into transaction_category (_id, type, name) " +  // Mandatory category for outgoing debt pays - id = 4
-   		" values (4,0,'Debts'); " + 
+   		" values (" + TransactionCategory.DEBT_OUTCOME + ",0,'Debts'); " + 
 
-   		" insert into transaction_category (_id, type, name) " +  // Mandatory category for incoming accums(cancelled)
-   		" values (5,1,'Accumulations'); " + 
-   		" insert into transaction_category (_id, type, name) " +  // Mandatory category for outgoing accums (while accumulating)
-   		" values (6,0,'Accumulations'); " + 
+   		" insert into transaction_category (_id, type, name) " +  // Mandatory category for incoming accums(cancelled) id = 5
+   		" values (" + TransactionCategory.ACCUM_INCOME + ",1,'Accumulations'); " + 
+   		" insert into transaction_category (_id, type, name) " +  // Mandatory category for outgoing accums (while accumulating) id = 6
+   		" values (" + TransactionCategory.ACCUM_OUTCOME + ",0,'Accumulations'); " + 
 
    		" insert into transaction_category (type, name) " + 
    		" values (1,'Salary'); " + 

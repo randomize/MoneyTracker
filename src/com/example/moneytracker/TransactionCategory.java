@@ -7,6 +7,31 @@ import android.content.Context;
 
 public class TransactionCategory {
 	
+	
+	// Special categories
+	// ids can be anu numbers, not req to be sequential
+	
+	public static final int EXCHANGE_INCOME = 1; 
+	public static final int EXCHANGE_OUTCOME = 2;
+	public static final int DEBT_INCOME = 3;
+	public static final int DEBT_OUTCOME = 4;
+	public static final int ACCUM_INCOME = 5;
+	public static final int ACCUM_OUTCOME = 6;
+	
+	public static boolean IsSpecial(int id) {
+		return 
+				id == EXCHANGE_INCOME ||
+				id == EXCHANGE_OUTCOME ||
+				id == DEBT_INCOME ||
+				id == DEBT_OUTCOME ||
+				id == ACCUM_INCOME ||
+				id == ACCUM_OUTCOME
+				;
+	}
+	
+	
+	// Base members
+	
 	public String name;
 	
 	public int id;
@@ -27,6 +52,7 @@ public class TransactionCategory {
         category_names.put("Services", R.string.category_services);
         category_names.put("Car", R.string.category_car);
         category_names.put("Debts", R.string.debts);
+        category_names.put("Accumulations", R.string.accumumations);
     }
     
     public static String GetLocalizedCategory(Context context, String key) {

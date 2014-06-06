@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="accum_actions">
+        <item>@string/accum_commit</item>
+        <item>@string/accum_delete</item>
+    </string-array>
+</resources>
