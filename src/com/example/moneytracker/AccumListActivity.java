@@ -6,6 +6,7 @@ import java.util.Stack;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,6 +37,7 @@ public class AccumListActivity extends Activity {
 
 	private int ids[];
 	private float amounts[];
+	private float target_amounts[];
 	private String names[];
 	private float rates[];
 	ListView lv ;
@@ -45,11 +47,17 @@ public class AccumListActivity extends Activity {
 	private int[] cur_ids = null;
 	
 	private AccumListAdapter main_adapter;
+	
+	private static final int ID_MENU_COMMIT = 142;
+	private static final int ID_MENU_CANCEL = 143;
+	private static final int ID_MENU_APPEN = 144;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
+		
+		setTitle(R.string.accumumations);
 
 		db = new DatabaseFacade(this);
 		
@@ -98,6 +106,7 @@ public class AccumListActivity extends Activity {
        ids = new int[bug.size()];
        names = new String[bug.size()];
        amounts = new float[bug.size()];
+       target_amounts = new float[bug.size()];
        rates = new float[bug.size()];
 
        for (int i = 0; i < bug.size(); i++) {
@@ -106,6 +115,7 @@ public class AccumListActivity extends Activity {
     	   ids[i] = b.id;
     	   names[i] = b.description;
     	   amounts[i] = b.amount;
+    	   target_amounts[i] = b.target_amount;
        }
 
        AccumListAdapter adapter = new AccumListAdapter(this, bug);
@@ -140,62 +150,81 @@ public class AccumListActivity extends Activity {
 		}
 
 		menu.setHeaderTitle(names[info.position]);
-		menu.add(0, 143, 0, getString(R.string.accum_commit));
-		menu.add(0, 142, 0, getString(R.string.accum_delete));
-		menu.add(0, 141, 0, getString(R.string.accum_append));
+		menu.add(0, ID_MENU_COMMIT, 1, getString(R.string.accum_commit));
+		menu.findItem(ID_MENU_COMMIT).setEnabled(amounts[info.position] >= target_amounts[info.position]);
+
+		menu.add(0, ID_MENU_CANCEL, 2, getString(R.string.accum_delete));
+		menu.add(0, ID_MENU_APPEN, 3, getString(R.string.accum_append));
 
 	};
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 
-		if(item.getItemId() == 142)
-		{
-			AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-			DeleteAccumulation(ids[info.position]);
-			return true;
-		}
-		else if (item.getItemId() == 143)
-		{
-			AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-			CommitAccumulation(info.position);
-			return true;
-		} 
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 		
-		return false;
+		switch (item.getItemId()) {
+		case ID_MENU_APPEN:
+			EditAccumulation(info.position);
+			break;
+		case ID_MENU_CANCEL:
+			DeleteAccumulation(info.position);
+			break;
+		case ID_MENU_COMMIT:
+			CommitAccumulation(info.position);
+			break;
+
+		default:
+			return false;
+		}
+		
+		return true;
+
 	}
 
-	private void DeleteAccumulation(final int id) 
-	{
-		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				switch (which){
-				case DialogInterface.BUTTON_POSITIVE:
-					
-					db.open();
-					db.RemoveAccumulation(id, 1); // TODO: must choose
-					db.close();
-					
-					LoadData();
-					break;
+	private void EditAccumulation(int position) {
+		
+		Intent intent = new Intent(this, AccumEditActivity.class);
+		intent.putExtra("AccumID", ids[position]);
+		intent.putExtra("Accumulating", true);
+		startActivity(intent);
+	}
 
-				case DialogInterface.BUTTON_NEGATIVE:
-					//No button clicked
-					break;
-				}
+	private void CancelAccumulation(int position) {
+		
+		Intent intent = new Intent(this, AccumEditActivity.class);
+		intent.putExtra("AccumID", ids[position]);
+		intent.putExtra("Accumulating", false);
+		intent.putExtra("Amount", amounts[position]);
+		startActivity(intent);
+		//startActivityForResult(intent, 42);
+	}
+	
+	/*@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == 1) {
+			if(resultCode == RESULT_OK){
+				String result=data.getStringExtra("result");
 			}
-		};
+			if (resultCode == RESULT_CANCELED) {
+				//Write your code if there's no result
+			}
+		}
+	}*/
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(getString(R.string.sure)).setPositiveButton(getString(R.string.yes), dialogClickListener)
-		.setNegativeButton(getString(R.string.no), dialogClickListener).show();
+	private void DeleteAccumulation(final int pos) 
+	{
+		CancelAccumulation(pos);
+		LoadData();
 	}
 
 	private void CommitAccumulation(final int pos) {
 		db.open();
 		db.CommitAccumulation(ids[pos]);
 		db.close();
+		LoadData();
 	}
 
 	@Override
@@ -239,8 +268,8 @@ public class AccumListActivity extends Activity {
 	}
 
 	private void AddAccumulation() {
-		//Intent intent = new Intent(this, BugetAddActivity.class);
-		//startActivity(intent);
+		Intent intent = new Intent(this, AccumulationAddActivity.class);
+		startActivity(intent);
 	}
 
 }

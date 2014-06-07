@@ -10,4 +10,8 @@ public class Accumulation {
 	
 	public float target_amount;
 	
+	// Calclulated 
+
+	public boolean isFulfilled;
+	
 }

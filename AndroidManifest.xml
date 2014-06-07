@@ -11,7 +11,6 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:debuggable="true"
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.example.moneytracker.MainActivity"
@@ -74,6 +73,11 @@
  		<activity android:name="com.example.moneytracker.TransactionAddActivity" />
  		<activity android:name="com.example.moneytracker.Grapher" />
  		<activity android:name="com.example.moneytracker.AccumListActivity" />
+ 		<activity android:name="com.example.moneytracker.AccumEditActivity"
+            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog"
+            android:excludeFromRecents="true"
+ 		     />
+ 		<activity android:name="com.example.moneytracker.AccumulationAddActivity" />
 
  		<activity android:name="com.example.moneytracker.BugetListActivity" 
             android:label="@string/budget"

@@ -28,7 +28,7 @@
     <string name="sure">Уверены?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
-    <string name="empty_account_list">У вас нет счетов,\nсоздайте их кнопкой "Новый"</string>
+    <string name="empty_account_list">У вас нет счетов,\nсоздайте их кнопкой \"Новый\"</string>
 
     <!-- New transaction activity  -->
     <string name="cancel">Отмена</string>
@@ -63,7 +63,7 @@
     <string name="new_category_income">Новая статья доходов</string>
     <string name="new_category_outcome">Новая статья расходов</string>
     <string name="change_currency">Валюта...</string>
-    <string name="empty_trans_list">У вас нет транзакций,\nсоздайте их кнопкой "Новая транзакция"</string>
+    <string name="empty_trans_list">У вас нет транзакций,\nсоздайте их кнопкой \"Новая транзакция\"</string>
 
     <!-- Debts activity -->
     <string name="new_debt_outcome">Взять</string>
@@ -107,11 +107,11 @@
     <string name="exchange">Обмен</string>
     <string name="account_exchange_too_few_accounts">Пожалуйста, создайте хотябы два аккаунта</string>
     <string name="new_buget">Новый бюджет</string>
-    <string name="add_buget">Добавить бюджет</string>
+    <string name="add_buget">Создать</string>
     <string name="buget_add">Добавить</string>
     <string name="delete_buget">Удалить бюджет</string>
     <string name="buget_name">Имя бюджета</string>
-    <string name="buget_list_ampty">У вас пока нет бюджета\nиспользуйте кнопку \'Добаить\'</string>
+    <string name="buget_list_ampty">У вас пока нет бюджета\nиспользуйте кнопку \"Создать\"</string>
     <string name="monthly">Месячный</string>
     <string name="weekly">Недельный</string>
     <string name="members_list">Список членов семьи</string>
@@ -119,6 +119,20 @@
     <string name="active">Активна</string>
     <string name="inactive">Неактивна</string>
     <string name="delete_debt">Удалить долг</string>
+
+    <string name="at_least_one_currency_is_mandatory">Хотябы одна валюта должна быть активна</string>
+    <string name="member_delete">Удалить</string>
+    <string name="edit_amount">Изменить сумму</string>
+    <string name="enter_new_amount">Введите новую сумму</string>
+    <string name="nodesc">" нет описания "</string>
+    
+    <!-- Accumulations -->
+    <string name="accumulation_list_is_empty">Список накоплений пуст, \nИспользуйте кнопку \"Создать\"</string>
+    <string name="add_accumulation">Создать</string>
+    <string name="accum_commit">Подтвердить накопление</string>
+    <string name="accum_delete">Отменить накопление</string>
+    <string name="accum_append">Отложить деньги</string>
+    <string name="new_accum">Новое накопление</string>
     
     
 </resources>

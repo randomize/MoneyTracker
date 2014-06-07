@@ -35,6 +35,8 @@ public class AccumEditActivity extends Activity {
 	
 	private int accumID;
 	private boolean isAccumulating;
+
+	private float amount;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,8 @@ public class AccumEditActivity extends Activity {
 				setTitle("Add to accumulation");
 				
 			} else {
-				setTitle("Put money back to");
+				setTitle("Choose account to put money");
+				amount = extras.getFloat("Amount", 0);
 			}
 		} else {
 			finish();
@@ -64,7 +67,7 @@ public class AccumEditActivity extends Activity {
 		transactionAmount = (EditText) findViewById(R.id.EditTextAccumAmount);
 		
 		if (isAccumulating == false) {
-			transactionAmount.setVisibility(View.GONE); // Hide amount when not accum
+			transactionAmount.setEnabled(false);
 		}
 		SetupAccountSpinner();
 	}
@@ -75,7 +78,27 @@ public class AccumEditActivity extends Activity {
 	}
 
 	public void CommitAccumAdd( View button ) {
+		
+		if (isAccumulating) {
+			Accumualting();
+		} else {
+			Reverting();
+		}
+	}
+	
+	void Reverting() {
 
+		int selFrom = accountSpinner.getSelectedItemPosition();
+
+		db.open();
+		db.RemoveAccumulation(accumID, account_spinner_ids[selFrom]); 
+		db.close();
+		
+		finish();
+	}
+	
+	void Accumualting() {
+		
 		boolean valida = true;
 
 		int selFrom = accountSpinner.getSelectedItemPosition();
@@ -117,10 +140,10 @@ public class AccumEditActivity extends Activity {
 		db.AddAmountToAccum(accumID, account_spinner_ids[selFrom], amount * account_spinner_currencies[selFrom].rate);
 		db.close();
 		
-		// check self assing
 		finish();
-	}
 
+	}
+ 
 	private void SetupAccountSpinner() {
 
 		db.open();
@@ -173,6 +196,11 @@ public class AccumEditActivity extends Activity {
 	}
 	
 	private void OnSelectedAccount(int index) {
+
+		if (!isAccumulating) { 
+			String ss = String.format("%.2f", amount / account_spinner_currencies[index].rate );
+			transactionAmount.setText(ss);
+		}
 		currencyLabel.setText(account_spinner_currencies[index].name);
 	}
 }

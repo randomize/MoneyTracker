@@ -147,10 +147,11 @@
     <string name="nodesc">" no desc "</string>
     
     <!-- Accumulations -->
-    <string name="accumulation_list_is_empty">Accumulation list is empty</string>
-    <string name="add_accumulation">Add accumulation</string>
-    <string name="accum_commit">Commit accumulation</string>
-    <string name="accum_delete">Delete accum</string>
+    <string name="accumulation_list_is_empty">Accumulation list is empty\n use "Add" button to add</string>
+    <string name="add_accumulation">Add</string>
+    <string name="accum_commit">Finish</string>
+    <string name="accum_delete">Delete</string>
     <string name="accum_append">Add money</string>
+    <string name="new_accum">New accumulation</string>
     
 </resources>

@@ -946,6 +946,17 @@ public class DatabaseFacade {
 		database.update(DATABASE_TABLE_ACCUM, cv, "_id = ?", new String[] {String.valueOf(accumID)});
 		
 	}
+
+	public int AddNewAccumulation(Accumulation newman) {
+
+		ContentValues cv = new ContentValues();
+		cv.put("desc", newman.description);
+		cv.put("amount", newman.amount);
+		cv.put("target_amount", newman.toString());
+
+		return (int) database.insert(DATABASE_TABLE_ACCUM, null, cv);
+		
+	}
 	
 	
 }
