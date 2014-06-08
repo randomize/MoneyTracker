@@ -25,7 +25,7 @@
 
 
     <!-- Main menu buttons -->
-    <string name="status">Status</string>
+    <string name="status">Summary</string>
     <string name="accounts">Accounts</string>
     <string name="events_and_tasks">Events and Tasks</string>
     <string name="debts">Debts</string>

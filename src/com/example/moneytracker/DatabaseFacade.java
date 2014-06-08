@@ -952,7 +952,7 @@ public class DatabaseFacade {
 		ContentValues cv = new ContentValues();
 		cv.put("desc", newman.description);
 		cv.put("amount", newman.amount);
-		cv.put("target_amount", newman.toString());
+		cv.put("target_amount", newman.target_amount);
 
 		return (int) database.insert(DATABASE_TABLE_ACCUM, null, cv);
 		

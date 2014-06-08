@@ -72,14 +72,14 @@ public class AccumulationAddActivity extends Activity {
 				if (position == currency_spinner_add_index) {
 					ShowNewCurrencyDialog();
 					parentView.setSelection(0);
+				} else {
+					currencyLabel.setText(currency_spinner_lables[position]);
 				}
-				// your code here
+
 			}
 
 			@Override
-			public void onNothingSelected(AdapterView<?> parentView) {
-				// your code here
-			}
+			public void onNothingSelected(AdapterView<?> parentView) { }
 
 		});
 	}
