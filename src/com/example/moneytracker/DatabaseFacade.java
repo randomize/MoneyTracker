@@ -679,7 +679,7 @@ public class DatabaseFacade {
 		tr.memberID = 1;
 		tr.categoryID = 2;
 		tr.date = System.currentTimeMillis();
-		tr.desc = "exchange";
+		tr.desc = context.getString(R.string.exchange_desc);
 		AddNewTransaction(tr);
 
 		Transaction tr2 = new Transaction();
@@ -688,7 +688,7 @@ public class DatabaseFacade {
 		tr2.memberID = 1;
 		tr2.categoryID = 1;
 		tr2.date = System.currentTimeMillis();
-		tr2.desc = "exchange";
+		tr2.desc = context.getString(R.string.exchange_desc);
 		
 		AddNewTransaction(tr2);
 		
@@ -894,14 +894,14 @@ public class DatabaseFacade {
 		tr.memberID = Member.MYSELF_ID;
 		tr.categoryID = TransactionCategory.ACCUM_INCOME;
 		tr.date = System.currentTimeMillis();
-		tr.desc = "cancelled accumulation : " + targ.description;
+		tr.desc = context.getString(R.string.cancelled_accumulation_) + targ.description;
 		AddNewTransaction(tr);
 		
 		//Then removed accum
 		CommitAccumulation(id);
 	}
 
-	private Accumulation GetAccumulation(int id) {
+	public Accumulation GetAccumulation(int id) {
 
 		Cursor c = database.query(DATABASE_TABLE_ACCUM, null, "_id = ?", new String[] { String.valueOf(id)} , null, null, null);
 
@@ -931,13 +931,19 @@ public class DatabaseFacade {
 
 		Accumulation s = GetAccumulation(accumID);
 		
+		float req = (s.target_amount - s.amount);
+		
+		if (f > req) {
+			f = req;
+		}
+		
 		Transaction tr = new Transaction();
 		tr.accountID = accountID;
 		tr.amount = f;
 		tr.memberID = Member.MYSELF_ID;
 		tr.categoryID = TransactionCategory.ACCUM_OUTCOME;
 		tr.date = System.currentTimeMillis();
-		tr.desc = "Performed accumulation : " + s.description;
+		tr.desc = context.getString(R.string.performed_accumulation_) + s.description;
 		AddNewTransaction(tr);
 		
 		

@@ -48,7 +48,8 @@
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:text="@string/events_and_tasks" />
+            android:text="@string/events_and_tasks"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/ButtonAccumulations"

@@ -15,14 +15,6 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
 	// DB creation SQL code string
 	private static final String DATABASE_CREATE =
 
-		// Old crap
-		"create table todo (" +
-             "_id integer primary key autoincrement," +
-             "category text not null, " +
-             "summary text not null, " + 
-             "description text not null" + 
-		");" +
-
         // Transaction categories table
         "create table transaction_category (" + 
              "_id integer primary key autoincrement, " + 
@@ -127,7 +119,7 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
    		     
    		// Base values
    		" insert into currency (name, rate, active) " + 
-   		" values ('MLD', 1.0, 1); " + 
+   		" values ('MDL', 1.0, 1); " + 
    		" insert into currency (name, rate, active) " + 
    		" values ('USD', 13.8, 1); " + 
    		" insert into currency (name, rate, active) " + 
@@ -250,9 +242,15 @@ public class MainDatabaseHelper extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
 		Log.e(MainDatabaseHelper.class.getName(), "Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy all old data");
-		database.execSQL("DROP TABLE IF EXISTS todo");
-		database.execSQL("DROP TABLE IF EXISTS trans");
-		database.execSQL("DROP TABLE IF EXISTS trans_type");
+		database.execSQL("DROP TABLE IF EXISTS transactions");
+      database.execSQL("DROP TABLE IF EXISTS transaction_category ");
+      database.execSQL("DROP TABLE IF EXISTS currency ");
+      database.execSQL("DROP TABLE IF EXISTS accounts ");
+      database.execSQL("DROP TABLE IF EXISTS members ");
+      database.execSQL("DROP TABLE IF EXISTS transactions ");
+      database.execSQL("DROP TABLE IF EXISTS debts ");
+      database.execSQL("DROP TABLE IF EXISTS bugets ");
+      database.execSQL("DROP TABLE IF EXISTS accumulations ");
 		onCreate(database);
 	}
 }

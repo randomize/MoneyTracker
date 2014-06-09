@@ -192,6 +192,21 @@ public class AccumListActivity extends Activity {
 
 	private void CancelAccumulation(int position) {
 		
+		int id = ids[position];
+		
+		db.open();
+		Accumulation s = db.GetAccumulation(id);
+		db.close();
+		
+		if (s.amount == 0 ) {
+			
+			db.open();
+			db.CommitAccumulation(id);
+			db.close();
+
+			return;
+		}
+		
 		Intent intent = new Intent(this, AccumEditActivity.class);
 		intent.putExtra("AccumID", ids[position]);
 		intent.putExtra("Accumulating", false);

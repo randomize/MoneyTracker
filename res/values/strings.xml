@@ -153,5 +153,8 @@
     <string name="accum_delete">Delete</string>
     <string name="accum_append">Add money</string>
     <string name="new_accum">New accumulation</string>
+    <string name="cancelled_accumulation_">"cancelled accumulation : "</string>
+    <string name="performed_accumulation_">"Performed accumulation : "</string>
+    <string name="exchange_desc">exchange</string>
     
 </resources>
